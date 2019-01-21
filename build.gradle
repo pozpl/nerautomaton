@@ -1,0 +1,93 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.pozpl'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.springframework.session:spring-session-jdbc'
+
+	implementation(project(':frontend'))
+	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+
+//jar {
+//	from('frontend/dist') {
+//		Public is a default supported Spring Boot resources directory.
+//		into 'public'
+//	}
+//}
+
+//frontend:build will be run before the processResources
+//processResources.dependsOn('frontend:npmbuild')
+
+//bootJar {
+//	dependsOn ':frontend:npmbuild'
+//
+//	into('BOOT-INF/classes/static') {
+//		from "${project(':frontend').projectDir}/dist"
+//	}
+//}
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Tasks - Standalone backend
+//------------------------------------------------------------------------------------------------------------------------
+
+task bootStandaloneBackend {
+	group 'application'
+	dependsOn bootRun
+}
+
+jar.dependsOn  ':buildJsAndCopyToSpring'
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Tasks - Application
+//------------------------------------------------------------------------------------------------------------------------
+
+task copyCompiledJs(type: Copy) {
+	group 'application'
+	from "${project(':frontend').projectDir}/dist"
+	into "${rootDir}/src/main/resources/static"
+}
+
+task buildJsAndCopyToSpring(type: GradleBuild){
+	group 'application'
+	setTasks([':frontend:buildClientToSpring', ':copyCompiledJs'])
+}
+
+task bootFullApplication(type: GradleBuild) {
+	group 'application'
+	setTasks([':frontend:npmUpdate', ':frontend:clean', ':buildJsAndCopyToSpring', ':bootRun'])
+}
