@@ -78,7 +78,7 @@ jar.dependsOn  ':buildJsAndCopyToSpring'
 
 task copyCompiledJs(type: Copy) {
 	group 'application'
-	from "${project(':frontend').projectDir}/dist"
+	from "${project(':frontend').projectDir}/dist/frontend"
 	into "${rootDir}/src/main/resources/static"
 }
 
