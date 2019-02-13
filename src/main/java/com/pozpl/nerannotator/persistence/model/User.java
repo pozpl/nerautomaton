@@ -25,6 +25,7 @@ public class User {
 	private String email;
 
 	private boolean enabled;
+	@Column(name = "is_using_2fa")
 	private boolean isUsing2FA;
 	private String secret;
 
