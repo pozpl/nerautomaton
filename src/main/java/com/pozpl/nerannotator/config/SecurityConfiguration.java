@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 //@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -25,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/index.html", "/", "/home", "/login")
 				.permitAll()
 				.antMatchers("/admin/**").hasAuthority("ADMIN")
-				.antMatchers("/*.js", "/*.css", "/*.ico").permitAll()
+				.antMatchers("/*.js", "/*.js.map" ,"/*.css", "/*.css.map", "/*.ico").permitAll()
 				.anyRequest().authenticated()
 				.and().csrf()
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
@@ -56,6 +59,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //			.antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
 //	}
 
+//	@Bean
+//	public CorsFilter corsFilter() {
+//		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//		CorsConfiguration config = new CorsConfiguration();
+//		config.setAllowCredentials(true);
+//		config.addAllowedOrigin("*");
+//		config.addAllowedHeader("*");
+//		config.addAllowedMethod("OPTIONS");
+//		config.addAllowedMethod("GET");
+//		config.addAllowedMethod("POST");
+//		config.addAllowedMethod("PUT");
+//		config.addAllowedMethod("DELETE");
+//		source.registerCorsConfiguration("/**", config);
+//		return new CorsFilter(source);
+//	}
 
 	@Autowired
 	private MyUserDetailService userDetailsService;
