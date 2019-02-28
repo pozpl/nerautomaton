@@ -1,0 +1,30 @@
+<mat-card class="login-card">
+  <mat-card-header>
+    <mat-card-title>Login</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <!-- The form goes here -->
+    <div class="alert alert-danger" [hidden]="!error">
+      There was a problem logging in. Please try again.
+    </div>
+    <form role="form"  class="login-form">
+
+      <mat-form-field>
+        <input  matInput  placeholder="Username" [(ngModel)]="credentials.username"  name="username"  required>
+      </mat-form-field>
+      <mat-form-field>
+        <input  matInput  placeholder="Password" [(ngModel)]="credentials.password"  type="password"  name="password"  required>
+      </mat-form-field>
+
+
+      <mat-card-actions>
+        <button  mat-raised-button (click)="login()"  color="primary">Login</button>
+      </mat-card-actions>
+
+    </form>
+
+  </mat-card-content>
+</mat-card>
+
+
+

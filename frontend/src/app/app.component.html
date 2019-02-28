@@ -1,0 +1,109 @@
+<!--<mat-toolbar color="primary">-->
+  <!--<mat-menu #appMenu="matMenu">-->
+    <!--<a mat-menu-item routerLinkActive="active" routerLink="/dashboard">Dashboard</a>-->
+    <!--<a mat-menu-item routerLinkActive="active" routerLink="/ner/text-item">Text Item editing</a>-->
+    <!--<a mat-menu-item routerLinkActive="active" routerLink="/heroes">Heroes List</a>-->
+    <!--<a mat-menu-item routerLinkActive="active" routerLink="/home">Home</a>-->
+    <!--<a mat-menu-item routerLinkActive="active" routerLink="/login">Login</a>-->
+    <!--<a mat-menu-item (click)="logout()">Logout</a>-->
+  <!--</mat-menu>-->
+
+  <!--<button mat-icon-button [matMenuTriggerFor]="appMenu">-->
+    <!--<mat-icon>more_vert</mat-icon>-->
+  <!--</button>-->
+<!--</mat-toolbar>-->
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav role="navigation">
+    <mat-nav-list>
+      <a mat-list-item *ngIf="!auth.authenticated"  routerLinkActive="active" routerLink="/login">
+        <mat-icon class="icon">input</mat-icon>
+        <span class="label">Login</span>
+      </a>
+      <a mat-list-item routerLinkActive="active" routerLink="/home">
+        <mat-icon class="icon">home</mat-icon>
+        <span class="label">Home</span>
+      </a>
+      <a mat-list-item routerLinkActive="active" routerLink="/dashboard">
+        <mat-icon class="icon">dashboard</mat-icon>
+        <span class="label">Dashboard</span>
+      </a>
+      <a mat-list-item routerLinkActive="active" routerLink="/ner/text-item">
+        <mat-icon class="icon">code</mat-icon>
+        <span class="label">Annotator</span>
+      </a>
+      <a mat-list-item type="button" *ngIf="auth.authenticated" (click)="logout()">
+        <mat-icon class="icon">input</mat-icon>
+        <span class="label">LogOut</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <div fxHide.gt-xs>
+        <button (click)="sidenav.toggle()" mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <div>
+        <a routerLink="/">
+          Material Blog
+        </a>
+      </div>
+      <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
+        <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+          <li>
+            <a routerLinkActive="active" *ngIf="! auth.authenticated" routerLink="/login">
+              <mat-icon class="icon">input</mat-icon>
+              <span class="label">Login</span>
+            </a>
+          </li>
+          <li>
+            <a routerLinkActive="active" routerLink="/home">
+              <mat-icon class="icon">home</mat-icon>
+              <span class="label">Home</span>
+            </a>
+          </li>
+          <li>
+            <a routerLinkActive="active" routerLink="/dashboard">
+              <mat-icon class="icon">dashboard</mat-icon>
+              <span class="label">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a routerLinkActive="active" routerLink="/ner/text-item">
+              <mat-icon class="icon">code</mat-icon>
+              <span class="label">Annotator</span>
+            </a>
+          </li>
+          <li>
+            <a *ngIf="auth.authenticated" (click)="logout()" >
+              <mat-icon class="icon">input</mat-icon>
+              <span class="label">LogOut</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </mat-toolbar>
+    <main>
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<!--<div class="container">-->
+<!--<ul class="nav nav-pills">-->
+<!--<li><a routerLinkActive="active" routerLink="/dashboard">Heroes Dashboard</a></li>-->
+<!--<li><a routerLinkActive="active" routerLink="/ner/text-item">Text Item editing</a></li>-->
+<!--<li><a routerLinkActive="active" routerLink="/heroes">Heroes List</a></li>-->
+<!--<li><a routerLinkActive="active" routerLink="/home">Home</a></li>-->
+<!--<li><a routerLinkActive="active" routerLink="/login">Login</a></li>-->
+<!--<li><a (click)="logout()">Logout</a></li>-->
+<!--</ul>-->
+<!--</div>-->
+
+
+

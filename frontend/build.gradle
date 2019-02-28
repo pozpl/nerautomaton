@@ -1,0 +1,83 @@
+plugins {
+	id 'java'
+	id "com.moowork.node" version "1.2.0"
+}
+
+apply plugin: 'com.moowork.node'
+
+version '0.0.1'
+
+
+node {
+	version = '8.12.0'
+	npmVersion = '6.4.1'
+	download = true
+  workDir = file("${project.projectDir}/node")
+  nodeModulesDir = file("${project.projectDir}")
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Tasks - NPM
+//------------------------------------------------------------------------------------------------------------------------
+
+task clean(type: Delete, overwrite: true) {
+  group 'build frontend'
+  delete "${rootDir}/frontend/dist", "${rootDir}/src/main/resources/static"
+}
+
+task cleanNpm(type: Delete) {
+  group 'build frontend'
+  dependsOn 'clean'
+  delete "${rootDir}/frontend/node", "${rootDir}/frontend/node_modules"
+}
+
+task npmUpdate {
+  group 'build frontend'
+  dependsOn 'npm_update'
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Tasks - Standalone client
+//------------------------------------------------------------------------------------------------------------------------
+
+task buildStandaloneClient(type: NpmTask, dependsOn: npmInstall) {
+  group 'build frontend'
+  description = 'Compile client side folder for development'
+  args = ['run', 'buildStandalone']
+}
+
+task serveStandaloneClientWatch(type: NpmTask, dependsOn: npmInstall) {
+  group 'build frontend'
+  description = "Builds, serves and watches the client side assets for rebuilding"
+  args = ['run', 'serveStandaloneWatch']
+}
+
+task serveStandaloneClient(type: NpmTask, dependsOn: npmInstall) {
+  group 'build frontend'
+  description = "Compile client side folder for production"
+  args = ['start']
+}
+
+task bootStandaloneClient(type: GradleBuild) {
+  group 'application'
+  setTasks(['clean', 'buildStandaloneClient', 'serveStandaloneClient'])
+//    finalizedBy 'npm_shutdown'
+}
+
+task bootStandaloneClientWatch(type: GradleBuild) {
+  group 'application'
+  setTasks(['clean', 'serveStandaloneClientWatch'])
+//    finalizedBy 'npm_shutdown'
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+//    Tasks - Integrated client
+//------------------------------------------------------------------------------------------------------------------------
+
+task buildClientToSpring(type: NpmTask, dependsOn: npmInstall) {
+  group 'build frontend'
+  description = 'Compile client side folder for production'
+  args = ['run', 'buildToSpring']
+}
+
+
