@@ -9,11 +9,13 @@
           <mat-card-content>
             <div fxLayout fxLayoutAlign="center">
               <div (textSelect)="renderRectangles( $event )"
-                   class="text-working-area mat-elevation-z3 container">
-                 <span *ngFor="let term of tokens;  let idx = index" id="tok_{{idx}}"
-                       [attr.index]="idx"
-                       style="display: inline-block; padding-right: 1ch;"
-                 >{{term}}</span>
+                   class="mat-elevation-z3 container">
+                  <div class="text-working-area">
+                     <span *ngFor="let term of tokens;  let idx = index" id="tok_{{idx}}"
+                           [attr.index]="idx"
+                           style="display: inline-block; padding-right: 1ch;"
+                     >{{term}}</span>
+                  </div>
 
                 <!--
                 The host rectangle has to be contained WITHIN the element that has the
