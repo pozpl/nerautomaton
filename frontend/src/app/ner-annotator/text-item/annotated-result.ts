@@ -1,11 +1,11 @@
 export class AnnotatedResult {
 
-  private readonly _tokens: String[];
-  private readonly _annotation: String;
-  private readonly _begin: Number;
-  private readonly _end: Number;
+  private readonly _tokens: string[];
+  private readonly _annotation: string;
+  private readonly _begin: number;
+  private readonly _end: number;
 
-  public constructor(terms: String[], annotation: String, begin: Number, end: Number) {
+  public constructor(terms: string[], annotation: string, begin: number, end: number) {
     this._tokens = terms;
     this._annotation = annotation;
     this._begin = begin;
@@ -13,19 +13,19 @@ export class AnnotatedResult {
   }
 
 
-  get tokens(): String[] {
+  get tokens(): string[] {
     return this._tokens;
   }
 
-  get annotation(): String {
+  get annotation(): string {
     return this._annotation;
   }
 
-  get begin(): Number {
+  get begin(): number {
     return this._begin;
   }
 
-  get end(): Number {
+  get end(): number {
     return this._end;
   }
 }

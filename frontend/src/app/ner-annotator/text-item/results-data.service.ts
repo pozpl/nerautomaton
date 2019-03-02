@@ -1,35 +1,39 @@
 import {Injectable} from "@angular/core";
-import {Observable, of} from "rxjs";
+import {BehaviorSubject, Observable, of} from "rxjs";
 import {AnnotatedResult} from "./annotated-result";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ResultsDataService {
 
-  results: AnnotatedResult[];
+    results: BehaviorSubject<AnnotatedResult[]>;
 
-  constructor() {
-    this.results = new Array<AnnotatedResult>();
-  }
+    constructor() {
+        this.results = new BehaviorSubject<AnnotatedResult[]>(new Array<AnnotatedResult>());
+    }
 
-  getResults(): Observable<AnnotatedResult[]> {
-    return of<AnnotatedResult[]>(this.results);
-  }
+    getResults(): Observable<AnnotatedResult[]> {
+        return this.results;
+    }
 
-  addResult(data: AnnotatedResult) {
-    this.results.push(data);
-  }
+    addResult(data: AnnotatedResult) {
+        let currentResult: AnnotatedResult[] = this.results.getValue();
+        currentResult.push(data);
+        this.results.next(currentResult);
+    }
 
-  deleteResult(beginIdx: number, endIdx: number) {
-    this.results = this.results.filter(value => {
-       return value.begin != beginIdx && value.end != endIdx;
-    });
-  }
+    deleteResult(beginIdx: number, endIdx: number) {
+        let currentResult: AnnotatedResult[] = this.results.getValue();
+        let filteredResults = currentResult.filter(value => {
+            return value.begin != beginIdx && value.end != endIdx;
+        });
+        this.results.next(filteredResults);
+    }
 
-  dataLength() {
-    return this.results.length;
-  }
+    dataLength() {
+        return this.results.getValue().length;
+    }
 
 
 }

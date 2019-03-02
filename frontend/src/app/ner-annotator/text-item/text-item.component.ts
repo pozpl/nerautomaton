@@ -26,16 +26,16 @@ export class TextItemComponent implements OnInit {
 
   itemDto: TextItemDto;
 
-  tokens: String[];
+  tokens: string[];
 
   results: AnnotatedResult[];
 
   resultsDisplayedColumns = ['tokens', 'annotation', 'delete'];
   resultsDataSource: ResultsDataSource;
 
-  annotationCandidateBeginIndex: Number;
+  annotationCandidateBeginIndex: number;
   annotationCandidate: AnnotationCandidate;
-  selectedAnnotation: String;
+  selectedAnnotation: string;
 
   public hostRectangle: SelectionRectangle | null;
   private selectedText: string;
@@ -67,7 +67,7 @@ export class TextItemComponent implements OnInit {
     );
   }
 
-  selectStart(index: Number) {
+  selectStart(index: number) {
     this.annotationCandidateBeginIndex = index;
     this.annotationCandidate = null;
     this.selectedAnnotation = null;
@@ -138,7 +138,7 @@ export class TextItemComponent implements OnInit {
   }
 
 
-  selectAnnotation(annotation: String) {
+  selectAnnotation(annotation: string) {
     if (this.annotationCandidate != null) {
       this.selectedAnnotation = annotation;
     }
@@ -165,7 +165,7 @@ export class TextItemComponent implements OnInit {
     this.hideSelection()
   }
 
-  selectAndApprove(annotation: String){
+  selectAndApprove(annotation: string){
     this.selectAnnotation(annotation);
     this.approveAnnotation();
   }
@@ -183,27 +183,27 @@ export class TextItemComponent implements OnInit {
 }
 
 class AnnotationCandidate {
-  private readonly _terms: String[];
-  private readonly _begin: Number;
-  private readonly _end: Number;
+  private readonly _terms: string[];
+  private readonly _begin: number;
+  private readonly _end: number;
 
 
-  constructor(terms: String[], begin: Number, end: Number) {
+  constructor(terms: string[], begin: number, end: number) {
     this._terms = terms;
     this._begin = begin;
     this._end = end;
   }
 
 
-  get terms(): String[] {
+  get terms(): string[] {
     return this._terms;
   }
 
-  get begin(): Number {
+  get begin(): number {
     return this._begin;
   }
 
-  get end(): Number {
+  get end(): number {
     return this._end;
   }
 }
