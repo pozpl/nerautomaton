@@ -13,7 +13,7 @@ export class ResultsDataService {
     this.results = new Array<AnnotatedResult>();
   }
 
-  getData(): Observable<AnnotatedResult[]> {
+  getResults(): Observable<AnnotatedResult[]> {
     return of<AnnotatedResult[]>(this.results);
   }
 
@@ -21,7 +21,7 @@ export class ResultsDataService {
     this.results.push(data);
   }
 
-  deletePost(beginIdx: number, endIdx: number) {
+  deleteResult(beginIdx: number, endIdx: number) {
     this.results = this.results.filter(value => {
        return value.begin != beginIdx && value.end != endIdx;
     });
@@ -30,4 +30,6 @@ export class ResultsDataService {
   dataLength() {
     return this.results.length;
   }
+
+
 }

@@ -172,7 +172,7 @@ export class TextItemComponent implements OnInit {
 
   
   deleteResult(beginIdx, endIdx) {
-    this.resultsDataService.deletePost(beginIdx, endIdx);
+    this.resultsDataService.deleteResult(beginIdx, endIdx);
     this.resultsDataSource = new ResultsDataSource(this.resultsDataService);
   }
 
@@ -215,7 +215,7 @@ class ResultsDataSource extends DataSource<any> {
   }
 
   connect(): Observable<AnnotatedResult[]> {
-    return this.dataService.getData();
+    return this.dataService.getResults();
   }
 
   disconnect() {
