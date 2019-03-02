@@ -1,162 +1,158 @@
 <div class="container">
-  <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px" class="content">
-    <div fxFlex="1 1 calc(60% - 10px)">
-      <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px">
-        <mat-card fxFlex="1 1 auto">
-          <mat-card-header>
-            <mat-card-title>Text:</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div fxLayout fxLayoutAlign="center">
-              <div (textSelect)="renderRectangles( $event )"
-                   class="mat-elevation-z3 container">
-                  <div class="text-working-area">
-                     <span *ngFor="let term of tokens;  let idx = index" id="tok_{{idx}}"
+    <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px" class="content">
+        <div fxFlex="1 1 calc(60% - 10px)">
+            <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px">
+                <mat-card fxFlex="1 1 auto">
+                    <mat-card-header>
+                        <mat-card-title>Text:</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div fxLayout fxLayoutAlign="center">
+                            <div (textSelect)="renderRectangles( $event )"
+                                 class="mat-elevation-z3 container">
+                                <div class="text-working-area">
+                     <span *ngFor="let term of tokens;  let idx = index"
                            [attr.index]="idx"
                            style="display: inline-block; padding-right: 1ch;"
                      >{{term}}</span>
-                  </div>
+                                </div>
 
-                <!--
-                The host rectangle has to be contained WITHIN the element that has the
-                [textSelect] directive because the rectangle will be absolutely
-                positioned relative to said element.
-                -->
-                <div
-                  *ngIf="hostRectangle"
-                  class="indicator"
-                  [style.left.px]="hostRectangle.left"
-                  [style.top.px]="hostRectangle.top"
-                  [style.width.px]="hostRectangle.width"
-                  [style.height.px]="0">
+                                <!--
+								The host rectangle has to be contained WITHIN the element that has the
+								[textSelect] directive because the rectangle will be absolutely
+								positioned relative to said element.
+								-->
+                                <div
+                                    *ngIf="hostRectangle"
+                                    class="indicator"
+                                    [style.left.px]="hostRectangle.left"
+                                    [style.top.px]="hostRectangle.top"
+                                    [style.width.px]="hostRectangle.width"
+                                    [style.height.px]="0">
 
-                  <div class="indicator__cta">
-                    <div class="indicator__cta-link" fxLayout="row wrap" fxLayoutAlign="flex-start" fxLAyoutGap="3px">
-                      <!--
-                        NOTE: Because we DON'T WANT the selected text to get deselected
-                        when we click on the call-to-action, we have to PREVENT THE
-                        DEFAULT BEHAVIOR and STOP PROPAGATION on some of the events. The
-                        byproduct of this is that the (click) event won't fire. As such,
-                        we then have to consume the click-intent by way of the (mouseup)
-                        event.
-                    -->
-                      <a *ngFor="let annotation of itemDto.annotations"
-                         (mousedown)="$event.preventDefault()"
-                         (mouseup)="$event.stopPropagation(); selectAndApprove(annotation);"
-                        class="mat-flat-button indicator__cta-link_annotation"
-                         fxFlex="1 1 auto"
-                      >
-                        {{annotation}}
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                                    <div class="indicator__cta">
+                                        <div class="indicator__cta-link" fxLayout="row wrap" fxLayoutAlign="flex-start"
+                                             fxLAyoutGap="3px">
+                                            <!--
+											  NOTE: Because we DON'T WANT the selected text to get deselected
+											  when we click on the call-to-action, we have to PREVENT THE
+											  DEFAULT BEHAVIOR and STOP PROPAGATION on some of the events. The
+											  byproduct of this is that the (click) event won't fire. As such,
+											  we then have to consume the click-intent by way of the (mouseup)
+											  event.
+										  -->
+                                            <a *ngFor="let annotation of itemDto.annotations"
+                                               (mousedown)="$event.preventDefault()"
+                                               (mouseup)="$event.stopPropagation(); selectAndApprove(annotation);"
+                                               class="mat-flat-button indicator__cta-link_annotation"
+                                               fxFlex="1 1 auto"
+                                            >
+                                                {{annotation}}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
 
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
 
-        <mat-card *ngIf="resultsDataService.dataLength() > 0"
-                  fxFlex="1 1 auto">
-          <mat-card-header>
-            <mat-card-title>Results:</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
+                <mat-card *ngIf="resultsDataService.dataLength() > 0"
+                          fxFlex="1 1 auto">
+                    <mat-card-header>
+                        <mat-card-title>Results:</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
 
-            <div class="example-container mat-elevation-z8">
-              <mat-table #table [dataSource]="resultsDataSource">
-                <ng-container matColumnDef="tokens">
-                  <mat-header-cell *matHeaderCellDef> Tokens</mat-header-cell>
-                  <mat-cell *matCellDef="let element">
+                        <div class="example-container mat-elevation-z8">
+                            <mat-table #table [dataSource]="resultsDataSource">
+                                <ng-container matColumnDef="tokens">
+                                    <mat-header-cell *matHeaderCellDef> Tokens</mat-header-cell>
+                                    <mat-cell *matCellDef="let element">
                     <span *ngIf="element.tokens">
                         {{element.tokens.join(" ") }}
                     </span>
-                  </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="annotation">
-                  <mat-header-cell *matHeaderCellDef> Annotation</mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.annotation}} </mat-cell>
-                </ng-container>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="annotation">
+                                    <mat-header-cell *matHeaderCellDef> Annotation</mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.annotation}}</mat-cell>
+                                </ng-container>
 
-                <ng-container matColumnDef="delete">
-                  <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    <a (click)="deleteResult(element.begin, element.end)"
-                       type="button">
-                      <mat-icon class="icon">delete</mat-icon>
-                    </a>
-                  </mat-cell>
-                </ng-container>
+                                <ng-container matColumnDef="delete">
+                                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                                    <mat-cell *matCellDef="let element">
+                                        <a (click)="deleteResult(element.begin, element.end)"
+                                           type="button">
+                                            <mat-icon class="icon">delete</mat-icon>
+                                        </a>
+                                    </mat-cell>
+                                </ng-container>
 
-                <mat-header-row *matHeaderRowDef="resultsDisplayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: resultsDisplayedColumns;"></mat-row>
-              </mat-table>
+                                <mat-header-row *matHeaderRowDef="resultsDisplayedColumns"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: resultsDisplayedColumns;"></mat-row>
+                            </mat-table>
+                        </div>
+
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+
+
+        <div fxFlex="1 1 auto" class="annotations-area">
+            <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px" fxFill>
+
+                <mat-card fxFlex="1 1 auto">
+                    <mat-card-header>
+                        <mat-card-title>Annotations</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="10px" *ngIf="itemDto"
+                             [ngClass]="{ 'existing-candidate': annotationCandidate != null }">
+
+                            <div *ngFor="let annotation of itemDto.annotations">
+                                <button mat-stroked-button
+                                        (click)="selectAnnotation(annotation)"
+                                        [ngClass]="{'annotation-selected' : selectedAnnotation == annotation }"
+                                >
+                                    {{annotation}}
+                                </button>
+                            </div>
+
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card *ngIf="annotationCandidate != null" fxFlex="1 1 auto">
+
+                    <mat-card-header>
+                        <mat-card-title>Annotation candidate</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+
+                        <span *ngFor="let term of annotationCandidate.terms ;  let idx = index">
+                          {{term}}
+                        </span>
+
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button *ngIf="selectedAnnotation != null"
+                                (click)="approveAnnotation()"
+                                mat-raised-button
+                        >
+                            Approve
+                        </button>
+                    </mat-card-actions>
+
+                </mat-card>
+
             </div>
 
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-
-
-    <div fxFlex="1 1 auto">
-      <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px" fxFill>
-
-        <mat-card fxFlex="1 1 auto">
-          <mat-card-header>
-            <mat-card-title>Annotations</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="10px" *ngIf="itemDto">
-              <div *ngFor="let annotation of itemDto.annotations">
-                <button mat-stroked-button
-                        (click)="selectAnnotation(annotation)"
-                        [ngClass]="{'annotation-selected' : selectedAnnotation == annotation }"
-                >
-                  {{annotation}}
-                </button>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card *ngIf="annotationCandidate != null" fxFlex="1 1 auto">
-
-          <mat-card-header>
-            <mat-card-title>Annotation candidate</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <a (click)="shrinkCandidateStart()"
-               type="button"
-            >
-              <mat-icon class="icon">fast_forward</mat-icon>
-            </a>
-            <span *ngFor="let term of annotationCandidate.terms ;  let idx = index">
-              {{term}}
-            </span>
-            <a (click)="shrinkCandidateEnd()"
-               type="button"
-            >
-              <mat-icon class="icon">fast_rewind</mat-icon>
-            </a>
-          </mat-card-content>
-          <mat-card-actions>
-            <button *ngIf="selectedAnnotation != null"
-                    (click)="approveAnnotation()"
-                    mat-raised-button
-            >
-              Approve
-            </button>
-          </mat-card-actions>
-
-        </mat-card>
-
-      </div>
+        </div>
 
     </div>
-
-  </div>
 
 
 </div>

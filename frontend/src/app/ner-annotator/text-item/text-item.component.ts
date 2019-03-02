@@ -19,7 +19,7 @@ interface SelectionRectangle {
 @Component({
   selector: 'app-text-item',
   templateUrl: './text-item.component.html',
-  styleUrls: ['./text-item.component.css']
+  styleUrls: ['./text-item.component.scss']
 })
 export class TextItemComponent implements OnInit {
 
@@ -94,7 +94,7 @@ export class TextItemComponent implements OnInit {
   // Render the rectangles emitted by the  [textSelect] directive.
   public renderRectangles(event: TextSelectEvent): void {
     
-    if (event.startElIdx > 0 && event.endElIdx > 0) {
+    if (event.startElIdx >= 0 && event.endElIdx >= 0) {
       if (event.startElIdx < event.endElIdx) {
         this.selectStart(event.startElIdx);
         this.selectEnd(event.endElIdx);
@@ -121,7 +121,9 @@ export class TextItemComponent implements OnInit {
 
   }
 
-  // I share the selected text with friends :)
+    /**
+     * Hide selection and remove all controls
+     */
   private hideSelection(): void {
     
     // Now that we've shared the text, let's clear the current selection.
@@ -143,6 +145,9 @@ export class TextItemComponent implements OnInit {
 
   }
 
+    /**
+     * Approve annotation candidate thus edding it into the list of annotations for given text
+     */
   approveAnnotation() {
     this.resultsDataService.addResult(
       new AnnotatedResult(
@@ -165,15 +170,7 @@ export class TextItemComponent implements OnInit {
     this.approveAnnotation();
   }
 
-  shrinkCandidateStart() {
-
-  }
-
-  shrinkCandidateEnd() {
-
-  }
-
-
+  
   deleteResult(beginIdx, endIdx) {
     this.resultsDataService.deletePost(beginIdx, endIdx);
     this.resultsDataSource = new ResultsDataSource(this.resultsDataService);
@@ -212,7 +209,7 @@ class AnnotationCandidate {
 }
 
 
-export class ResultsDataSource extends DataSource<any> {
+class ResultsDataSource extends DataSource<any> {
   constructor(private dataService: ResultsDataService) {
     super();
   }
