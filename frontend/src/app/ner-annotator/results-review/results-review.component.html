@@ -22,10 +22,12 @@
                 <ng-container matColumnDef="delete">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let element">
-                        <a (click)="deleteResult(element.begin, element.end)"
-                           type="button" class="delete-result-icon">
-                            <mat-icon class="icon">delete</mat-icon>
-                        </a>
+                        <div style="text-align:right;width: 100%;">
+                            <a (click)="deleteResult(element.begin, element.end)"
+                               type="button" class="delete-result-icon">
+                                <mat-icon class="icon">delete</mat-icon>
+                            </a>
+                        </div>
                     </mat-cell>
                 </ng-container>
 
