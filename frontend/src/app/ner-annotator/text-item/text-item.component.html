@@ -32,8 +32,8 @@
                                     [style.height.px]="0">
 
                                     <div class="indicator__cta">
-                                        <div class="indicator__cta-link" fxLayout="row wrap" fxLayoutAlign="flex-start"
-                                             fxLAyoutGap="3px">
+                                        <div class="indicator__cta-link"
+                                             gdGap="5px 5px" gdColumns="repeat(3, [col] auto)">
                                             <!--
 											  NOTE: Because we DON'T WANT the selected text to get deselected
 											  when we click on the call-to-action, we have to PREVENT THE
@@ -42,14 +42,15 @@
 											  we then have to consume the click-intent by way of the (mouseup)
 											  event.
 										  -->
-                                            <a *ngFor="let annotation of itemDto.annotations"
-                                               (mousedown)="$event.preventDefault()"
-                                               (mouseup)="$event.stopPropagation(); selectAndApprove(annotation);"
-                                               class="mat-flat-button indicator__cta-link_annotation"
-                                               fxFlex="1 1 auto"
-                                            >
-                                                {{annotation}}
-                                            </a>
+                                            <div *ngFor="let annotation of itemDto.annotations" class="box">
+                                                <a (mousedown)="$event.preventDefault()"
+                                                   (mouseup)="$event.stopPropagation(); selectAndApprove(annotation);"
+                                                   class="mat-flat-button indicator__cta-link_annotation"
+                                                >
+                                                    {{annotation}}
+                                                </a>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +74,8 @@
                     </mat-card-content>
                 </mat-card>
 
-                <item-results-review *ngIf="resultsDataService.dataLength() > 0" fxFlex="1 1 auto"></item-results-review>
+                <item-results-review *ngIf="resultsDataService.dataLength() > 0"
+                                     fxFlex="1 1 auto"></item-results-review>
             </div>
         </div>
 
@@ -83,22 +85,29 @@
 
                 <mat-card fxFlex="1 1 auto">
                     <mat-card-header>
-                        <mat-card-title>Annotations</mat-card-title>
+                        <mat-card-title>Available annotations</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="10px" *ngIf="itemDto"
-                             [ngClass]="{ 'existing-candidate': annotationCandidate != null }">
 
-                            <div *ngFor="let annotation of itemDto.annotations">
-                                <button mat-stroked-button
-                                        (click)="selectAnnotation(annotation)"
-                                        [ngClass]="{'annotation-selected' : selectedAnnotation == annotation }"
-                                >
-                                    {{annotation}}
-                                </button>
-                            </div>
+                        <mat-chip-list>
+                            <mat-chip *ngFor="let annotation of itemDto.annotations">
+                                {{annotation}}
+                            </mat-chip>
+                        </mat-chip-list>
 
-                        </div>
+                        <!--<div gdGap="5px" gdColumns="repeat(3, [col] auto)"  *ngIf="itemDto"-->
+                        <!--[ngClass]="{ 'existing-candidate': annotationCandidate != null }">-->
+
+                        <!--<div *ngFor="let annotation of itemDto.annotations" class="box">-->
+                        <!--<button mat-stroked-button-->
+                        <!--(click)="selectAnnotation(annotation)"-->
+                        <!--[ngClass]="{'annotation-selected' : selectedAnnotation == annotation }"-->
+                        <!--&gt;-->
+                        <!--{{annotation}}-->
+                        <!--</button>-->
+                        <!--</div>-->
+
+                        <!--</div>-->
                     </mat-card-content>
                 </mat-card>
 

@@ -46,7 +46,7 @@ export class TextItemComponent implements OnInit {
 
     ngOnInit() {
         this.itemDto = new TextItemDto("text>>term1>>term2>>term3>>term4", [
-            "annotation1", "annotation2"
+            "annotation1", "annotation2", "annotation3", "annotation4"
         ]);
 
         this.createTextFromTokens(this.itemDto.text);

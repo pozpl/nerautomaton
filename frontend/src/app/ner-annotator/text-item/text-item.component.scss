@@ -1,82 +1,68 @@
-.annotation-selected{
-  color: aqua;
-}
 
-.annotations-area{
-}
-
-.annotations-area .existing-candidate{
-    border: #008800 solid thick;
-}
-
-.annotated-term{
+.annotated-term {
     background-color: #607D8B;
 }
 
 a {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-.text-working-area{
-  margin: 20px 20px 20px 20px;
+.text-working-area {
+    margin: 20px 20px 20px 20px;
 }
 
 
 :host {
-  display: block ;
-  font-size: 18px ;
+    display: block;
+    font-size: 18px;
 }
 
 div.container {
-  position: relative ;
+    position: relative;
 }
 
 .indicator {
-  /*background-color: fade(gold, 10%);*/
-  position: absolute;
-  z-index: 2;
+    /*background-color: fade(gold, 10%);*/
+    position: absolute;
+    z-index: 2;
 }
 
 .indicator__cta {
-   top: -20px ;
-   left: 50% ;
-   position: absolute ;
- }
+    top: -20px;
+    left: 50%;
+    position: absolute;
+}
 
 .indicator__cta-link {
-  background-color: #333333;
-  border-radius: 5px 5px 5px 5px;
-  bottom: 0px;
-  box-shadow: 2px 2px 5px;
-  color: #FFFFFF;
-  cursor: pointer;
-  left: 0px;
-  padding: 11px 22px 10px 22px;
-  position: absolute;
-  transform: translateX(-50%);
-  white-space: nowrap;
+    background-color: #333333;
+    border-radius: 5px 5px 5px 5px;
+    bottom: 0px;
+    box-shadow: 2px 2px 5px;
+    color: #FFFFFF;
+    cursor: pointer;
+    left: 0px;
+    padding: 11px 22px 10px 22px;
+    position: absolute;
+    transform: translateX(-50%);
+    white-space: nowrap;
 }
 
 .indicator__cta-link:after {
-   bottom: -11px ;
-   font-size: 15px ;
-   left: 50% ;
-   line-height: 15px ;
-   content: "▼" ;
-   color: #333333 ;
-   position: absolute ;
-   transform: translateX( -50% ) ;
- }
+    bottom: -11px;
+    font-size: 15px;
+    left: 50%;
+    line-height: 15px;
+    content: "▼";
+    color: #333333;
+    position: absolute;
+    transform: translateX(-50%);
+}
 
-.indicator__cta-link_annotation{
-  margin-bottom: 3px;
+.indicator__cta-link_annotation {
+    margin-bottom: 3px;
 }
 
 .indicator__cta-link_annotation:hover {
-  background-color: gold;
-  color: #000000;
+    background-color: gold;
+    color: #000000;
 }
-
-/*.indicator__cta-link:hover:after {*/
-   /*color: gold ;*/
- /*}*/
