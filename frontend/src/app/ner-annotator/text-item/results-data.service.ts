@@ -2,9 +2,7 @@ import {Injectable} from "@angular/core";
 import {BehaviorSubject, Observable} from "rxjs";
 import {AnnotatedResult} from "./annotated-result";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()//Providing this service only in ner module
 export class ResultsDataService {
 
     results: BehaviorSubject<AnnotatedResult[]>;

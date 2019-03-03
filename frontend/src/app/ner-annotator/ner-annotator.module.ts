@@ -6,6 +6,7 @@ import {MaterialModule} from "../material.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {TextSelectDirective} from "./text-item/text-select.directive";
 import {TermsAnnotationsService} from "./text-item/terms-annotations.service";
+import {ResultsDataService} from "./text-item/results-data.service";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {TermsAnnotationsService} from "./text-item/terms-annotations.service";
     FlexLayoutModule
   ],
   providers: [
+      ResultsDataService,
       TermsAnnotationsService
   ]
 })
