@@ -11,10 +11,11 @@
                             <div (textSelect)="renderRectangles( $event )"
                                  class="mat-elevation-z3 container">
                                 <div class="text-working-area">
-                     <span *ngFor="let term of tokens;  let idx = index"
-                           [attr.index]="idx"
-                           style="display: inline-block; padding-right: 1ch;"
-                     >{{term}}</span>
+                                     <span *ngFor="let term of tokens;  let idx = index"
+                                           [attr.index]="idx"
+                                           style="display: inline-block; padding-right: 1ch;"
+                                           [ngClass]="{'annotated-term': tokensAnnotations[idx] != null}"
+                                     >{{term}}</span>
                                 </div>
 
                                 <!--
