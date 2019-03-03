@@ -24,7 +24,7 @@
 								positioned relative to said element.
 								-->
                                 <div
-                                    *ngIf="hostRectangle"
+                                    *ngIf="hostRectangle && !showOverlappingRegionsMessage"
                                     class="indicator"
                                     [style.left.px]="hostRectangle.left"
                                     [style.top.px]="hostRectangle.top"
@@ -53,51 +53,27 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div
+                                    *ngIf="hostRectangle && showOverlappingRegionsMessage"
+                                    class="indicator"
+                                    [style.left.px]="hostRectangle.left"
+                                    [style.top.px]="hostRectangle.top"
+                                    [style.width.px]="hostRectangle.width"
+                                    [style.height.px]="0">
+
+                                    <div class="indicator__cta">
+                                        <div class="indicator__cta-link">
+                                            Annotated regions should not overlap
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
                     </mat-card-content>
                 </mat-card>
 
-                <mat-card *ngIf="resultsDataService.dataLength() > 0"
-                          fxFlex="1 1 auto">
-                    <mat-card-header>
-                        <mat-card-title>Results:</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-
-                        <div class="example-container mat-elevation-z8">
-                            <mat-table #table [dataSource]="resultsDataSource">
-                                <ng-container matColumnDef="tokens">
-                                    <mat-header-cell *matHeaderCellDef> Tokens</mat-header-cell>
-                                    <mat-cell *matCellDef="let element">
-                    <span *ngIf="element.tokens">
-                        {{element.tokens.join(" ") }}
-                    </span>
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="annotation">
-                                    <mat-header-cell *matHeaderCellDef> Annotation</mat-header-cell>
-                                    <mat-cell *matCellDef="let element"> {{element.annotation}}</mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="delete">
-                                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                                    <mat-cell *matCellDef="let element">
-                                        <a (click)="deleteResult(element.begin, element.end)"
-                                           type="button">
-                                            <mat-icon class="icon">delete</mat-icon>
-                                        </a>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <mat-header-row *matHeaderRowDef="resultsDisplayedColumns"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: resultsDisplayedColumns;"></mat-row>
-                            </mat-table>
-                        </div>
-
-                    </mat-card-content>
-                </mat-card>
+                <item-results-review *ngIf="resultsDataService.dataLength() > 0" fxFlex="1 1 auto"></item-results-review>
             </div>
         </div>
 
@@ -146,6 +122,20 @@
                             Approve
                         </button>
                     </mat-card-actions>
+
+                </mat-card>
+
+
+                <mat-card *ngIf="showOverlappingRegionsMessage" fxFlex="1 1 auto">
+
+                    <mat-card-header>
+                        <mat-card-title>Selection error</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+
+                        Annotated regions should not overlap
+
+                    </mat-card-content>
 
                 </mat-card>
 

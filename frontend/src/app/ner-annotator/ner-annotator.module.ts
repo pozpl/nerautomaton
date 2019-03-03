@@ -7,11 +7,13 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {TextSelectDirective} from "./text-item/text-select.directive";
 import {TermsAnnotationsService} from "./text-item/terms-annotations.service";
 import {ResultsDataService} from "./text-item/results-data.service";
+import { ResultsReviewComponent } from './results-review/results-review.component';
 
 @NgModule({
   declarations: [
     TextItemComponent,
-    TextSelectDirective
+    TextSelectDirective,
+    ResultsReviewComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +21,6 @@ import {ResultsDataService} from "./text-item/results-data.service";
     FlexLayoutModule
   ],
   providers: [
-      ResultsDataService,
       TermsAnnotationsService
   ]
 })

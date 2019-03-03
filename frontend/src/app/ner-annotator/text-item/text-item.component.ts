@@ -1,10 +1,5 @@
 import {Component, HostListener, Injectable, OnInit} from '@angular/core';
 import {TextItemDto} from "./text-item-dto";
-import {PostDataSource} from "../../dashboard/dashboard.component";
-import {DataSource} from "@angular/cdk/table";
-import {DataService} from "../../data/data.service";
-import {Observable, of} from "rxjs";
-import {Post} from "../../Post";
 import {ResultsDataService} from "./results-data.service";
 import {AnnotatedResult} from "./annotated-result";
 import {TextSelectEvent} from "./text-select.directive";
@@ -20,7 +15,8 @@ interface SelectionRectangle {
 @Component({
     selector: 'app-text-item',
     templateUrl: './text-item.component.html',
-    styleUrls: ['./text-item.component.scss']
+    styleUrls: ['./text-item.component.scss'],
+    providers: [ResultsDataService,TermsAnnotationsService]
 })
 export class TextItemComponent implements OnInit {
 
@@ -28,11 +24,6 @@ export class TextItemComponent implements OnInit {
     itemDto: TextItemDto;
 
     tokens: string[];
-
-    results: AnnotatedResult[];
-
-    resultsDisplayedColumns = ['tokens', 'annotation', 'delete'];
-    resultsDataSource: ResultsDataSource;
 
     annotationCandidateBeginIndex: number;
     annotationCandidate: AnnotationCandidate;
@@ -42,10 +33,10 @@ export class TextItemComponent implements OnInit {
     private selectedText: string;
 
     tokensAnnotations: string[];
+    showOverlappingRegionsMessage: boolean = false;
 
     constructor(private resultsDataService: ResultsDataService,
                 private termsAnnotationsService: TermsAnnotationsService) {
-        this.results = new Array<AnnotatedResult>();
 
         this.hostRectangle = null;
         this.selectedText = "";
@@ -60,7 +51,6 @@ export class TextItemComponent implements OnInit {
 
         this.createTextFromTokens(this.itemDto.text);
 
-        this.resultsDataSource = new ResultsDataSource(this.resultsDataService);
 
         this.onResultsChange();
     }
@@ -97,19 +87,11 @@ export class TextItemComponent implements OnInit {
         this.annotationCandidate = new AnnotationCandidate(annotationCandidateTerms, beginIdx, endIdx);
     }
 
-    // Render the rectangles emitted by the  [textSelect] directive.
+    /**
+     * Render the rectangles emitted by the  [textSelect] directive.
+     * @param event
+     */
     public renderRectangles(event: TextSelectEvent): void {
-
-        if (event.startElIdx >= 0 && event.endElIdx >= 0) {
-            if (event.startElIdx < event.endElIdx) {
-                this.selectStart(event.startElIdx);
-                this.selectEnd(event.endElIdx);
-            } else {
-                this.selectStart(event.endElIdx);
-                this.selectEnd(event.startElIdx);
-            }
-
-        }
 
         // If a new selection has been created, the viewport and host rectangles will
         // exist. Or, if a selection is being removed, the rectangles will be null.
@@ -118,10 +100,31 @@ export class TextItemComponent implements OnInit {
             this.hostRectangle = event.hostRectangle;
             this.selectedText = event.text;
 
+            if (event.startElIdx >= 0 && event.endElIdx >= 0) {
+                let startSel: number;
+                let endSel: number;
+                if (event.startElIdx < event.endElIdx) {
+                    startSel = event.startElIdx;
+                    endSel = event.endElIdx;
+                } else {
+                    startSel = event.endElIdx;
+                    endSel = event.startElIdx;
+                }
+
+                if(this.checkThatRegionsCanBeAnnotated(startSel, endSel)) {
+                    this.selectStart(startSel);
+                    this.selectEnd(endSel);
+                }else{
+                    this.showOverlappingRegionsMessage = true;
+                }
+
+            }
+
         } else {
 
             this.hostRectangle = null;
             this.selectedText = "";
+            this.showOverlappingRegionsMessage = false;
 
         }
 
@@ -140,6 +143,7 @@ export class TextItemComponent implements OnInit {
         // event. As such, we need to remove the host rectangle explicitly.
         this.hostRectangle = null;
         this.selectedText = "";
+        this.showOverlappingRegionsMessage = false; //returning to default state if we showed error about overlapping regions
 
     }
 
@@ -164,7 +168,7 @@ export class TextItemComponent implements OnInit {
             )
         );
 
-        this.resultsDataSource = new ResultsDataSource(this.resultsDataService);
+        // this.resultsDataSource = new ResultsDataSource(this.resultsDataService);
         this.annotationCandidate = null;
         this.selectedAnnotation = null;
 
@@ -175,16 +179,18 @@ export class TextItemComponent implements OnInit {
         this.selectAnnotation(annotation);
         this.approveAnnotation();
     }
-
-
-    deleteResult(beginIdx, endIdx) {
-        this.resultsDataService.deleteResult(beginIdx, endIdx);
-        this.resultsDataSource = new ResultsDataSource(this.resultsDataService);
-    }
+    
 
     private createTextFromTokens(tokensSequence: String) {
         this.tokens = tokensSequence.split(">>");
         this.tokensAnnotations = this.tokens.map(value => null);
+    }
+
+    private checkThatRegionsCanBeAnnotated(begin: number,
+                                           end: number): boolean {
+        return this.tokensAnnotations.slice(begin, end).every(termAnnotation => {
+            return termAnnotation == null;
+        });
     }
 
 }
@@ -216,18 +222,7 @@ class AnnotationCandidate {
 }
 
 
-class ResultsDataSource extends DataSource<any> {
-    constructor(private dataService: ResultsDataService) {
-        super();
-    }
 
-    connect(): Observable<AnnotatedResult[]> {
-        return this.dataService.getResults();
-    }
-
-    disconnect() {
-    }
-}
 
 
 
