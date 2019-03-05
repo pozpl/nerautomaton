@@ -1,10 +1,10 @@
 export class TextItemDto{
 
   private _text: string;
-  private _annotations: Array<String>;
+  private _annotations: Array<string>;
 
 
-  constructor(text: string, annotations: Array<String>) {
+  constructor(text: string, annotations: Array<string>) {
     this._text = text;
     this._annotations = annotations;
   }
@@ -14,7 +14,7 @@ export class TextItemDto{
     return this._text;
   }
 
-  get annotations(): Array<String> {
+  get annotations(): Array<string> {
     return this._annotations;
   }
 }

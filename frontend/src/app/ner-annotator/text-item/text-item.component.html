@@ -14,7 +14,7 @@
                                      <span *ngFor="let term of tokens;  let idx = index"
                                            [attr.index]="idx"
                                            style="display: inline-block; padding-right: 1ch;"
-                                           [ngClass]="{'annotated-term': tokensAnnotations[idx] != null}"
+                                           [ngClass]="tokensAnnotations[idx]!= null && annotationsMap.get(tokensAnnotations[idx]) != null ? 'annotation-' +annotationsMap.get(tokensAnnotations[idx]) + '-applied'  : ''"
                                      >{{term}}</span>
                                 </div>
 
@@ -90,7 +90,10 @@
                     <mat-card-content>
 
                         <mat-chip-list>
-                            <mat-chip *ngFor="let annotation of itemDto.annotations">
+                            <mat-chip *ngFor="let annotation of itemDto.annotations"
+                                      [ngClass]="annotationsMap.get(annotation) != null
+                                      ? 'annotation-' +annotationsMap.get(annotation) + '-marker'  : ''"
+                            >
                                 {{annotation}}
                             </mat-chip>
                         </mat-chip-list>

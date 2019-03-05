@@ -35,6 +35,8 @@ export class TextItemComponent implements OnInit {
     tokensAnnotations: string[];
     showOverlappingRegionsMessage: boolean = false;
 
+    annotationsMap: Map<string, number>;
+
     constructor(private resultsDataService: ResultsDataService,
                 private termsAnnotationsService: TermsAnnotationsService) {
 
@@ -51,6 +53,7 @@ export class TextItemComponent implements OnInit {
 
         this.createTextFromTokens(this.itemDto.text);
 
+        this.annotationsMap = this.assignColoursIdxesToAnnotations(this.itemDto.annotations)
 
         this.onResultsChange();
     }
@@ -191,6 +194,15 @@ export class TextItemComponent implements OnInit {
         return this.tokensAnnotations.slice(begin, end).every(termAnnotation => {
             return termAnnotation == null;
         });
+    }
+
+    private assignColoursIdxesToAnnotations(annotaitons: string[]): Map<string, number>{
+        let annotationsMap: Map<string, number> = new Map();
+        annotaitons.forEach((annotation, index) => {
+            annotationsMap.set(annotation, index + 1);
+        });
+
+        return annotationsMap;
     }
 
 }
