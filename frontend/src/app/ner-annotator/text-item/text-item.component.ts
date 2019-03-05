@@ -182,6 +182,10 @@ export class TextItemComponent implements OnInit {
         this.selectAnnotation(annotation);
         this.approveAnnotation();
     }
+
+    submitAndGoToNewTask(){
+
+    }
     
 
     private createTextFromTokens(tokensSequence: String) {

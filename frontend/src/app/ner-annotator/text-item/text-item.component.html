@@ -81,7 +81,7 @@
 
 
         <div fxFlex="1 1 auto" class="annotations-area">
-            <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px" fxFill>
+            <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px" >
 
                 <mat-card fxFlex="1 1 auto">
                     <mat-card-header>
@@ -98,19 +98,6 @@
                             </mat-chip>
                         </mat-chip-list>
 
-                        <!--<div gdGap="5px" gdColumns="repeat(3, [col] auto)"  *ngIf="itemDto"-->
-                        <!--[ngClass]="{ 'existing-candidate': annotationCandidate != null }">-->
-
-                        <!--<div *ngFor="let annotation of itemDto.annotations" class="box">-->
-                        <!--<button mat-stroked-button-->
-                        <!--(click)="selectAnnotation(annotation)"-->
-                        <!--[ngClass]="{'annotation-selected' : selectedAnnotation == annotation }"-->
-                        <!--&gt;-->
-                        <!--{{annotation}}-->
-                        <!--</button>-->
-                        <!--</div>-->
-
-                        <!--</div>-->
                     </mat-card-content>
                 </mat-card>
 
@@ -148,6 +135,23 @@
                         Annotated regions should not overlap
 
                     </mat-card-content>
+
+                </mat-card>
+
+                <mat-card fxFlex="1 1 auto" *ngIf="selectedAnnotation == null">
+
+                    <mat-card-header>
+                        <mat-card-title>Submit work</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button (click)="submitAndGoToNewTask()"
+                                mat-raised-button
+                        >
+                            Next text
+                        </button>    
+                    </mat-card-actions>
 
                 </mat-card>
 
