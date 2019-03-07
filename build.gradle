@@ -7,6 +7,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "org.postgresql:postgresql:42.2.5"
 	}
 }
 
@@ -43,7 +44,7 @@ dependencies {
 	implementation(project(':frontend'))
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
-	compile 'mysql:mysql-connector-java'
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
@@ -66,6 +67,13 @@ dependencies {
 //		from "${project(':frontend').projectDir}/dist"
 //	}
 //}
+
+
+flyway {
+	url = 'jdbc:postgresql://localhost:5432/ner'
+	user = 'ner_user'
+//	password = 'mySecretPwd'
+}
 
 
 //------------------------------------------------------------------------------------------------------------------------
