@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS ner_jobs_texts (
   md5_hash VARCHAR(32) NOT NULL,
   job_id INT NOT NULL,
   text TEXT NOT NULL,
-  tokens TEXT NOT NULL,
+  tokens TEXT,
   PRIMARY KEY (id),
   CONSTRAINT njt_md5_hash_job_id_uc UNIQUE (md5_hash, job_id),
   CONSTRAINT njt_job_id_fk FOREIGN KEY (job_id) REFERENCES ner_jobs (id) ON DELETE CASCADE
