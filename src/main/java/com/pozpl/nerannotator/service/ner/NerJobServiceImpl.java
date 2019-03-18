@@ -4,6 +4,7 @@ import com.pozpl.nerannotator.persistence.dao.ner.NerJobRepository;
 import com.pozpl.nerannotator.persistence.model.User;
 import com.pozpl.nerannotator.persistence.model.ner.NerJob;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,6 +20,7 @@ public class NerJobServiceImpl implements INerJobService {
 
 	private final NerJobRepository nerJobRepository;
 
+	@Autowired
 	public NerJobServiceImpl(final NerJobRepository nerJobRepository) {
 		this.nerJobRepository = nerJobRepository;
 	}
