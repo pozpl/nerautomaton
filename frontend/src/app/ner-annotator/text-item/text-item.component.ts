@@ -37,7 +37,7 @@ export class TextItemComponent implements OnInit {
 
     annotationsMap: Map<string, number>;
 
-    constructor(private resultsDataService: ResultsDataService,
+    constructor(public resultsDataService: ResultsDataService,
                 private termsAnnotationsService: TermsAnnotationsService) {
 
         this.hostRectangle = null;

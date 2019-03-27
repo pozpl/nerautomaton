@@ -55,8 +55,10 @@ public class NerJobRepositoryTest {
 
 		Calendar now = Calendar.getInstance();
 
-		jobOne = new NerJob("ner job One", userOne, LanguageCodes.EN, hourAgo, hourAgo);
-		jobTwo = new NerJob("ner job Two", userOne, LanguageCodes.EN, now, now);
+		jobOne = NerJob.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
+				.updated(hourAgo).created( hourAgo).build();
+		jobTwo = NerJob.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
+				.created(now).updated( now).build();
 
 		nerJobRepository.save(jobOne);
 		nerJobRepository.save(jobTwo);

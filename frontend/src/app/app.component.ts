@@ -10,7 +10,7 @@ import { finalize } from 'rxjs/operators'
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private auth: AuthService, private http: HttpClient, private router: Router) {
+  constructor(public auth: AuthService, private http: HttpClient, private router: Router) {
     this.auth.isLoggedIn();
   }
   logout() {

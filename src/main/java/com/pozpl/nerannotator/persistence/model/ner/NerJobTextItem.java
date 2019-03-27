@@ -1,5 +1,6 @@
 package com.pozpl.nerannotator.persistence.model.ner;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -41,6 +42,8 @@ public class NerJobTextItem {
 	@Column(name = "updated", nullable = false)
 	private Calendar updated;
 
+	public NerJobTextItem() {
+	}
 
 	public NerJobTextItem(NerJob job, String text, String md5Hash) {
 		this.job = job;
