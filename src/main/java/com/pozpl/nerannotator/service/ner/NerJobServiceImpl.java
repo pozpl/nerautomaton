@@ -40,7 +40,7 @@ public class NerJobServiceImpl implements INerJobService {
 
 			return nerJobOpt.map(nerJob -> toDto(nerJob));
 
-		}catch (Exception e){
+		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
 	}
@@ -59,7 +59,7 @@ public class NerJobServiceImpl implements INerJobService {
 			Page<NerJob> userJobs = nerJobRepository.getJobsForOwner(owner, PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "created")));
 
 			return userJobs.map(nerJob -> toDto(nerJob));
-		}catch (Exception e){
+		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
 	}
@@ -77,19 +77,23 @@ public class NerJobServiceImpl implements INerJobService {
 		try {
 			final NerJob nerJobOriginal;
 
-			if(nerJobDto.getId() != null){ //Update case
+			if (nerJobDto.getId() != null) { //Update case
 				final Optional<NerJob> nerJobOpt = nerJobRepository.findByIdAndOwner(new Long(nerJobDto.getId()), user);
 
-				if(nerJobOpt.isPresent()){
-					nerJobOriginal= nerJobOpt.get();
-				}else{
-					nerJobOriginal = new NerJob();
-					nerJobOriginal.setCreated(Calendar.getInstance());
+				if (nerJobOpt.isPresent()) {
+					nerJobOriginal = nerJobOpt.get();
+				} else {
+					nerJobOriginal = NerJob.builder()
+							.owner(user)
+							.created(Calendar.getInstance())
+							.build();
 				}
 
-			} else{
-				nerJobOriginal = new NerJob();
-				nerJobOriginal.setCreated(Calendar.getInstance());
+			} else {
+				nerJobOriginal = NerJob.builder()
+						.owner(user)
+						.created(Calendar.getInstance())
+						.build();
 			}
 
 			final NerJob nerJobToSave = nerJobOriginal.toBuilder()
@@ -105,7 +109,7 @@ public class NerJobServiceImpl implements INerJobService {
 					.build();
 
 			return nerJobSaveStatusDto;
-		}catch (Exception e){
+		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
 	}
@@ -119,19 +123,19 @@ public class NerJobServiceImpl implements INerJobService {
 	 */
 	@Override
 	public void deleteJob(User user, Integer jobId) throws NerServiceException {
-		 try{
-		 	final Optional<NerJob> nerJobOpt = nerJobRepository.findByIdAndOwner(new Long(jobId), user);
-		 	if (nerJobOpt.isPresent()) {
-		 		nerJobRepository.delete(nerJobOpt.get());
+		try {
+			final Optional<NerJob> nerJobOpt = nerJobRepository.findByIdAndOwner(new Long(jobId), user);
+			if (nerJobOpt.isPresent()) {
+				nerJobRepository.delete(nerJobOpt.get());
 			}
-		 } catch (Exception e){
-		 	throw new NerServiceException(e);
-		 }
+		} catch (Exception e) {
+			throw new NerServiceException(e);
+		}
 
 	}
 
 
-	private NerJobDto toDto(final NerJob nerJob){
+	private NerJobDto toDto(final NerJob nerJob) {
 		return NerJobDto.builder()
 				.id(nerJob.getId().intValue())
 				.name(nerJob.getName())

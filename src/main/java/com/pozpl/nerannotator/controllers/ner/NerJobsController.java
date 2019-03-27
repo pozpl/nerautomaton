@@ -9,14 +9,14 @@ import com.pozpl.nerannotator.service.ner.NerJobDto;
 import com.pozpl.nerannotator.service.ner.NerJobSaveStatusDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/ner/edit")
+@PreAuthorize("hasRole('ROLE_PRIVILEGED_USER') OR hasRole('ROLE_ADMIN')")
 public class NerJobsController {
 
 	private final INerJobService nerJobService;
@@ -54,6 +54,16 @@ public class NerJobsController {
 	public NerJobSaveStatusDto save(NerJobDto nerJobDto, User user){
 		try{
 			return nerJobService.saveJob(nerJobDto, user);
+		}catch (NerServiceException e){
+			throw new NerWebException(e);
+		}
+	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	@ResponseStatus(code = HttpStatus.OK)
+	public void delete(Integer jobId, User user){
+		try{
+			nerJobService.deleteJob(user, jobId);
 		}catch (NerServiceException e){
 			throw new NerWebException(e);
 		}
