@@ -11,7 +11,7 @@ import java.util.Calendar;
 @Data
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "ner_job",
+@Table(name = "ner_jobs",
 		uniqueConstraints = { @UniqueConstraint(columnNames = { "owner_id", "name" }) })
 public class NerJob {
 

@@ -39,7 +39,7 @@ public class NerJobsController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
-	public Page<NerJobDto> list(@RequestParam("page") Integer page
+	public Page<NerJobDto> list(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page
 								, User user) {
 
 		try {
