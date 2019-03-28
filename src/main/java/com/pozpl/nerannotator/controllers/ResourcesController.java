@@ -24,4 +24,9 @@ public class ResourcesController {
 	public Principal user(Principal user) {
 		return user;
 	}
+
+	@RequestMapping("/login")
+	public Principal login(Principal user) {
+		return user;
+	}
 }
