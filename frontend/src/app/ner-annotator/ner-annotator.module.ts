@@ -10,13 +10,15 @@ import {ResultsDataService} from "./text-item/results-data.service";
 import { ResultsReviewComponent } from './results-review/results-review.component';
 import { NerJobsComponent } from './ner-jobs/ner-jobs.component';
 import {NerJobsService} from "./ner-jobs/ner-jobs.service";
+import { NerJobEditComponent } from './ner-jobs/ner-job-edit/ner-job-edit.component';
 
 @NgModule({
   declarations: [
     TextItemComponent,
     TextSelectDirective,
     ResultsReviewComponent,
-    NerJobsComponent
+    NerJobsComponent,
+    NerJobEditComponent
   ],
   imports: [
     CommonModule,

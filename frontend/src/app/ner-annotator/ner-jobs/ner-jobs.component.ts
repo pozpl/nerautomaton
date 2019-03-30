@@ -17,6 +17,8 @@ export class NerJobsComponent implements OnInit {
     currentPageContent: NerJobDto[];
     pagedContent: Page<NerJobDto>;
 
+    //Things related to JObs table
+    displayedColumns = ['dateCreated', 'name', 'delete'];
     nerJobsDataSource: NerJobsDataSource;
 
     constructor(public auth: AuthService,

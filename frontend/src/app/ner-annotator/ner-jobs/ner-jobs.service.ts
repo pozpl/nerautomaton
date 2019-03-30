@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {NerJobDto} from "./ner-job.dto";
 
@@ -9,8 +9,11 @@ export class NerJobsService {
   constructor(private http: HttpClient) { }
 
 
-  getJobs(): Observable<Page<NerJobDto>>{
-      return this.http.get<Page<NerJobDto>>('/ner/edit/list');
+  getJobs(page: number): Observable<Page<NerJobDto>>{
+      return this.http.get<Page<NerJobDto>>('/ner/edit/list', {
+          params: new HttpParams().set('page', page.toString()),
+          responseType: 'json'
+      });
   }
 }
 
