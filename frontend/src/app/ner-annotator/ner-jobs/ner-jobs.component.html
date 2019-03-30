@@ -2,14 +2,14 @@
     <br>
     <div class="container">
         <div class="container">
-            <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
-                <div class="blocks" *ngIf="auth.authenticated">
-                    <button button="submit" (click)="goToAddEditJob()" mat-raised-button color="primary">
+            <div fxLayout="column" fxLayoutGap="20px"  fxLayoutAlign="space-around center" class="content">
+                <div class="blocks">
+                    <a button mat-raised-button color="primary" (click)="goToAddEditJob()" *ngIf="auth.authenticated">
                         <mat-icon>add</mat-icon> Add Job
-                    </button>
+                    </a>
                 </div>
                 <div class="blocks">
-                    <a button mat-raised-button color="primary" routerLink="/login" *ngIf="! auth.authenticated">
+                    <a button mat-raised-button color="primary"  routerLink="/login" *ngIf="! auth.authenticated">
                         <mat-icon>input</mat-icon>Login to Add job
                     </a>
                 </div>
@@ -18,7 +18,7 @@
         <br>
         <div class="container">
             <div fxLayout="row" fxLayoutAlign="center center" class="content">
-                <mat-card class="card" >
+                <mat-card class="card" style="min-width: 300px;">
                     <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
                         <h3>Recent Jobs</h3>
                     </mat-card-title>
