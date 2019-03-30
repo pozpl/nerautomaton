@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../auth.service";
-import {MatDialog} from "@angular/material";
 import {NerJobsService, Page} from "./ner-jobs.service";
 import {NerJobDto} from "./ner-job.dto";
 import {DataSource} from "@angular/cdk/table";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-ner-jobs',
@@ -14,7 +14,7 @@ import {map} from "rxjs/operators";
 })
 export class NerJobsComponent implements OnInit {
 
-    currentPageContent: NerJobDto[];
+    
     pagedContent: Page<NerJobDto>;
 
     //Things related to JObs table
@@ -23,7 +23,7 @@ export class NerJobsComponent implements OnInit {
 
     constructor(public auth: AuthService,
                 public nerJobsService: NerJobsService,
-                public dialog: MatDialog) {
+                private router: Router) {
     }
 
     ngOnInit() {
@@ -33,8 +33,12 @@ export class NerJobsComponent implements OnInit {
         });
     }
 
-    goToAddEditJob() {
+    goToAddJob() {
+        this.router.navigateByUrl("/ner/job/edit/");
+    }
 
+    goToEditJob(jobId: number){
+        this.router.navigate(["/ner/job/edit/", jobId])
     }
 
 }

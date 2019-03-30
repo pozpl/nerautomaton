@@ -4,7 +4,7 @@
         <div class="container">
             <div fxLayout="column" fxLayoutGap="20px"  fxLayoutAlign="space-around center" class="content">
                 <div class="blocks">
-                    <a button mat-raised-button color="primary" (click)="goToAddEditJob()" *ngIf="auth.authenticated">
+                    <a button mat-raised-button color="primary" (click)="goToAddJob()" *ngIf="auth.authenticated">
                         <mat-icon>add</mat-icon> Add Job
                     </a>
                 </div>
@@ -31,7 +31,9 @@
                                 </ng-container>
                                 <ng-container matColumnDef="name">
                                     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                                    <mat-cell *matCellDef="let element">
+                                        <a (click)="goToEditJob(element.id)">{{element.name}}</a>
+                                    </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="delete">
                                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
