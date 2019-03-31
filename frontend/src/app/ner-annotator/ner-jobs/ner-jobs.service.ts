@@ -21,7 +21,7 @@ export class NerJobsService {
     }
 
     getJob(jobId): Observable<NerJobDto> {
-        return this.http.get<NerJobDto>('/ner/edit/list', {
+        return this.http.get<NerJobDto>('/ner/edit/get', {
             params: new HttpParams().set('id', jobId),
             responseType: 'json'
         });
@@ -50,7 +50,7 @@ export interface Page<T> {
 }
 
 export class NerJobSaveStatus {
-    job: NerJobDto;
+    nerJobDto: NerJobDto;
 
     status: string;
 

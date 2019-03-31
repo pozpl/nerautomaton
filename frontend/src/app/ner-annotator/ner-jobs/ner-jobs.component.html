@@ -18,27 +18,30 @@
         <br>
         <div class="container">
             <div fxLayout="row" fxLayoutAlign="center center" class="content">
-                <mat-card class="card" style="min-width: 300px;">
+                <mat-card class="card">
                     <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
                         <h3>Recent Jobs</h3>
                     </mat-card-title>
                     <mat-card-content>
-                        <div class="example-container mat-elevation-z8">
-                            <mat-table #table [dataSource]="nerJobsDataSource">
-                                <ng-container matColumnDef="dateCreated">
-                                    <mat-header-cell *matHeaderCellDef> Date Created </mat-header-cell>
-                                    <mat-cell *matCellDef="let element"> {{element.dateCreated  | date: 'd/M/y'}} </mat-cell>
-                                </ng-container>
+                        <div  *ngIf="pagedContent != null" class="example-container mat-elevation-z8">
+                            <mat-table #table [dataSource]="pagedContent.content">
+
                                 <ng-container matColumnDef="name">
                                     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
                                     <mat-cell *matCellDef="let element">
-                                        <a (click)="goToEditJob(element.id)">{{element.name}}</a>
+                                        <a (click)="goToEditJob(element.id)" class="pointer">{{element.name}}</a>
                                     </mat-cell>
                                 </ng-container>
+
+                                <ng-container matColumnDef="dateCreated">
+                                    <mat-header-cell *matHeaderCellDef> Date Created </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.created  | date: 'd/M/y'}} </mat-cell>
+                                </ng-container>
+
                                 <ng-container matColumnDef="delete">
                                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                                     <mat-cell *matCellDef="let element">
-                                        <a (click)="deletePost(element.position)"
+                                        <a (click)="deleteJob(element.id)"
                                            type="button">
                                             <mat-icon class="icon">delete</mat-icon>
                                         </a>

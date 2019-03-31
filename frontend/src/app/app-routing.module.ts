@@ -7,10 +7,12 @@ import {HeroDetailComponent} from "./hero-detail/hero-detail.component";
 import {TextItemComponent} from "./ner-annotator/text-item/text-item.component";
 import {NerJobsComponent} from "./ner-annotator/ner-jobs/ner-jobs.component";
 import {NerJobEditComponent} from "./ner-annotator/ner-jobs/ner-job-edit/ner-job-edit.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 
 const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'dashboard'},
     {path: 'home', component: HomeComponent},
+    {path: 'dashboard', component: DashboardComponent},
     {path: 'login', component: LoginComponent},
     {path: 'heroes', component: HeroesComponent},
     {path: 'ner/jobs', component: NerJobsComponent},

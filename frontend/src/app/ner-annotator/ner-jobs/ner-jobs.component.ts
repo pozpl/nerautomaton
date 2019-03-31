@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from "../../auth.service";
 import {NerJobsService, Page} from "./ner-jobs.service";
 import {NerJobDto} from "./ner-job.dto";
 import {DataSource} from "@angular/cdk/table";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {Observable, Subject} from "rxjs";
+import {map, takeUntil} from "rxjs/operators";
 import {Router} from "@angular/router";
 
 @Component({
@@ -12,14 +12,15 @@ import {Router} from "@angular/router";
     templateUrl: './ner-jobs.component.html',
     styleUrls: ['./ner-jobs.component.scss']
 })
-export class NerJobsComponent implements OnInit {
+export class NerJobsComponent implements OnInit, OnDestroy {
 
-    
+    private unsubscribe: Subject<void> = new Subject();
+
     pagedContent: Page<NerJobDto>;
 
     //Things related to JObs table
-    displayedColumns = ['dateCreated', 'name', 'delete'];
-    nerJobsDataSource: NerJobsDataSource;
+    displayedColumns = ['name', 'dateCreated', 'delete'];
+
 
     constructor(public auth: AuthService,
                 public nerJobsService: NerJobsService,
@@ -28,9 +29,17 @@ export class NerJobsComponent implements OnInit {
 
     ngOnInit() {
 
-        this.nerJobsService.getJobs(1).subscribe((page) => {
+        this.nerJobsService
+            .getJobs(1)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe((page) => {
             this.pagedContent = page;
         });
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     goToAddJob() {
