@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {NerJobDto} from "./ner-job.dto";
 
@@ -9,6 +9,9 @@ export class NerJobsService {
     constructor(private http: HttpClient) {
     }
 
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
 
     getJobs(page: number): Observable<Page<NerJobDto>> {
         return this.http.get<Page<NerJobDto>>('/ner/edit/list', {
@@ -23,10 +26,33 @@ export class NerJobsService {
             responseType: 'json'
         });
     }
+
+    saveJob(jobDto: NerJobDto):Observable<NerJobSaveStatus>{
+        return this.http.post<NerJobSaveStatus>('/ner/edit/save', jobDto, {
+            responseType: 'json',
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        });
+    }
+
+    deleteJob(jobId):Observable<void>{
+        return this.http.delete<void>('/ner/edit/delete', {
+            params: new HttpParams().set('id', jobId),
+            responseType: 'json',
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        });
+    }
 }
 
 
 export interface Page<T> {
     content: Array<T>;
     pagable: any
+}
+
+export class NerJobSaveStatus {
+    job: NerJobDto;
+
+    status: string;
+
+    errorCode: string;
 }

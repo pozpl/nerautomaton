@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NerJobsService} from "../ner-jobs.service";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
+import {NerJobDto} from "../ner-job.dto";
 
 @Component({
     selector: 'ner-job-edit',
@@ -13,6 +14,7 @@ export class NerJobEditComponent implements OnInit, OnDestroy {
 
     private unsubscribe: Subject<void> = new Subject();
     jobId: number;
+    jobDto: NerJobDto;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -29,13 +31,27 @@ export class NerJobEditComponent implements OnInit, OnDestroy {
                     this.nerJobService.getJob(this.jobId)
                         .pipe(takeUntil(this.unsubscribe))
                         .subscribe()
+                }else{
+                    this.jobDto = new NerJobDto();
                 }
+
             });
     }
 
     ngOnDestroy() {
         this.unsubscribe.next();
         this.unsubscribe.complete();
+    }
+
+
+    saveJob() {
+        this.nerJobService.saveJob(this.jobDto)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(savedJobStatus => {
+                if(savedJobStatus.status == 'OK'){
+                    this.jobDto = savedJobStatus.job;
+                }
+            });
     }
 
 }

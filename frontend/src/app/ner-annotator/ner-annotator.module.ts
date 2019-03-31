@@ -11,6 +11,7 @@ import {NerJobsComponent} from './ner-jobs/ner-jobs.component';
 import {NerJobsService} from "./ner-jobs/ner-jobs.service";
 import {NerJobEditComponent} from './ner-jobs/ner-job-edit/ner-job-edit.component';
 import {AppRoutingModule} from "../app-routing.module";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import {AppRoutingModule} from "../app-routing.module";
         CommonModule,
         MaterialModule,
         FlexLayoutModule,
-        AppRoutingModule
+        AppRoutingModule,
+        FormsModule
     ],
     providers: [
         TermsAnnotationsService,

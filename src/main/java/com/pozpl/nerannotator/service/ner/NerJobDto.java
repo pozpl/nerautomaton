@@ -1,12 +1,16 @@
 package com.pozpl.nerannotator.service.ner;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@Data
 @Builder(toBuilder = true)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class NerJobDto {
 
 	private Integer id;
@@ -14,5 +18,5 @@ public class NerJobDto {
 	private String name;
 
 	private Date created;
-
+	
 }

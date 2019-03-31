@@ -1,6 +1,7 @@
 package com.pozpl.nerannotator.service.ner;
 
 import com.pozpl.nerannotator.persistence.dao.ner.NerJobRepository;
+import com.pozpl.nerannotator.persistence.model.LanguageCodes;
 import com.pozpl.nerannotator.persistence.model.User;
 import com.pozpl.nerannotator.persistence.model.ner.NerJob;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
@@ -86,6 +87,7 @@ public class NerJobServiceImpl implements INerJobService {
 					nerJobOriginal = NerJob.builder()
 							.owner(user)
 							.created(Calendar.getInstance())
+							.languageCode(LanguageCodes.EN)
 							.build();
 				}
 
@@ -93,12 +95,14 @@ public class NerJobServiceImpl implements INerJobService {
 				nerJobOriginal = NerJob.builder()
 						.owner(user)
 						.created(Calendar.getInstance())
+						.languageCode(LanguageCodes.EN)
 						.build();
 			}
 
 			final NerJob nerJobToSave = nerJobOriginal.toBuilder()
 					.name(nerJobDto.getName())
 					.updated(Calendar.getInstance())
+					.languageCode(LanguageCodes.EN)//Only support EN by default
 					.build();
 
 			nerJobRepository.save(nerJobToSave);

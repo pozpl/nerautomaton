@@ -51,7 +51,7 @@ public class NerJobsController {
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
-	public NerJobSaveStatusDto save(NerJobDto nerJobDto, User user){
+	public NerJobSaveStatusDto save(@RequestBody NerJobDto nerJobDto, User user){
 		try{
 			return nerJobService.saveJob(nerJobDto, user);
 		}catch (NerServiceException e){
@@ -61,7 +61,7 @@ public class NerJobsController {
 
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	@ResponseStatus(code = HttpStatus.OK)
-	public void delete(Integer jobId, User user){
+	public void delete(@RequestParam(value = "id") Integer jobId, User user){
 		try{
 			nerJobService.deleteJob(user, jobId);
 		}catch (NerServiceException e){
