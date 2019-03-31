@@ -15,7 +15,8 @@ const routes: Routes = [
     {path: 'heroes', component: HeroesComponent},
     {path: 'ner/jobs', component: NerJobsComponent},
     {path: 'ner/jobs', component: NerJobsComponent},
-    {path: 'ner/job/edit/:id?', component: NerJobEditComponent},
+    {path: 'ner/job/edit/', component: NerJobEditComponent},
+    {path: 'ner/job/edit/:id', component: NerJobEditComponent},
     {path: 'detail/:id', component: HeroDetailComponent},
     {path: 'ner/text-item', component: TextItemComponent}
 ];
