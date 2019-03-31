@@ -3,14 +3,19 @@
         <h1>
             <span *ngIf="jobDto == null || jobDto.id == null">Create new Job</span>
         </h1>
-        <mat-card *ngIf="jobDto != null">
-            <mat-form-field>
-                <mat-label>Job Name</mat-label>
-                <input matInput placeholder="Job name" [(ngModel)]="jobDto.name" required>
-            </mat-form-field>
+        <mat-card *ngIf="jobDto != null" class="card">
+            <div class="job-form">
+                <mat-form-field class="input-full-width">
+                    <mat-label>Job Name</mat-label>
+                    <input matInput placeholder="Job name" [(ngModel)]="jobDto.name" required>
+                </mat-form-field>
+            </div>
             <mat-card-actions>
                 <button (click)="saveJob()" 
-                    mat-raised-button color="primary">Submit</button>
+                    mat-raised-button color="primary">
+                    <span *ngIf="! jobDto.id">Create Job</span>
+                    <span *ngIf="jobDto.id">Save name</span>
+                </button>
             </mat-card-actions>
 
         </mat-card>

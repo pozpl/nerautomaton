@@ -19,7 +19,7 @@
         <div class="container">
             <div fxLayout="row" fxLayoutAlign="center center" class="content">
                 <mat-card class="card">
-                    <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+                    <mat-card-title fxLayout.xs="column">
                         <h3>Recent Jobs</h3>
                     </mat-card-title>
                     <mat-card-content>
@@ -41,7 +41,7 @@
                                 <ng-container matColumnDef="delete">
                                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                                     <mat-cell *matCellDef="let element">
-                                        <a (click)="deleteJob(element.id)"
+                                        <a (click)="deleteJob(element.id)"  class="delete-icon"
                                            type="button">
                                             <mat-icon class="icon">delete</mat-icon>
                                         </a>

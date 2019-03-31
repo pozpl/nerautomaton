@@ -30,7 +30,9 @@ export class NerJobEditComponent implements OnInit, OnDestroy {
                 if (this.jobId != null) {
                     this.nerJobService.getJob(this.jobId)
                         .pipe(takeUntil(this.unsubscribe))
-                        .subscribe()
+                        .subscribe(jobDto => {
+                            this.jobDto = jobDto;
+                        })
                 }else{
                     this.jobDto = new NerJobDto();
                 }
@@ -49,7 +51,7 @@ export class NerJobEditComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(savedJobStatus => {
                 if(savedJobStatus.status == 'OK'){
-                    this.jobDto = savedJobStatus.job;
+                    this.jobDto = savedJobStatus.nerJobDto;
                 }
             });
     }

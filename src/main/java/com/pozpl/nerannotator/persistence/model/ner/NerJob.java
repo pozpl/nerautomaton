@@ -2,14 +2,18 @@ package com.pozpl.nerannotator.persistence.model.ner;
 
 import com.pozpl.nerannotator.persistence.model.LanguageCodes;
 import com.pozpl.nerannotator.persistence.model.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Calendar;
 
 @Data
 @Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "ner_jobs",
 		uniqueConstraints = { @UniqueConstraint(columnNames = { "owner_id", "name" }) })

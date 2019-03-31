@@ -55,9 +55,10 @@ public class NerJobServiceImpl implements INerJobService {
 	 * @throws NerServiceException
 	 */
 	@Override
-	public Page<NerJobDto> getJobsForOwner(User owner, Integer page) throws NerServiceException {
+	public Page<NerJobDto> getJobsForOwner(final User owner,final Integer page) throws NerServiceException {
 		try {
-			Page<NerJob> userJobs = nerJobRepository.getJobsForOwner(owner, PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "created")));
+			final Integer adjustedPage = page != null && page > 0 ? page -1 : 0;
+			Page<NerJob> userJobs = nerJobRepository.getJobsForOwner(owner, PageRequest.of(adjustedPage, 20, Sort.by(Sort.Direction.DESC, "created")));
 
 			return userJobs.map(nerJob -> toDto(nerJob));
 		} catch (Exception e) {
