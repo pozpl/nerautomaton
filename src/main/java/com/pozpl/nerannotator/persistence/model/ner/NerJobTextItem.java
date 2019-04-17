@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.persistence.model.ner;
 
-import lombok.Builder;
+import com.pozpl.nerannotator.persistence.model.job.LabelingTask;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +19,7 @@ public class NerJobTextItem {
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "job_id")
-	private NerJob job;
+	private LabelingTask job;
 
 	@Column(name = "text", nullable = false)
 	private String text;
@@ -45,7 +45,7 @@ public class NerJobTextItem {
 	public NerJobTextItem() {
 	}
 
-	public NerJobTextItem(NerJob job, String text, String md5Hash) {
+	public NerJobTextItem(LabelingTask job, String text, String md5Hash) {
 		this.job = job;
 		this.text = text;
 		this.md5Hash = md5Hash;
@@ -53,7 +53,7 @@ public class NerJobTextItem {
 		this.updated = this.created;
 	}
 
-	public NerJobTextItem(NerJob job, String text, String md5Hash, String tokens) {
+	public NerJobTextItem(LabelingTask job, String text, String md5Hash, String tokens) {
 		this.job = job;
 		this.text = text;
 		this.md5Hash = md5Hash;
@@ -62,7 +62,7 @@ public class NerJobTextItem {
 		this.updated = this.created;
 	}
 
-	public NerJobTextItem(NerJob job, String text, String md5Hash, String tokens, Calendar created, Calendar updated) {
+	public NerJobTextItem(LabelingTask job, String text, String md5Hash, String tokens, Calendar created, Calendar updated) {
 		this.job = job;
 		this.text = text;
 		this.md5Hash = md5Hash;
@@ -79,11 +79,11 @@ public class NerJobTextItem {
 		this.id = id;
 	}
 
-	public NerJob getJob() {
+	public LabelingTask getJob() {
 		return job;
 	}
 
-	public void setJob(NerJob job) {
+	public void setJob(LabelingTask job) {
 		this.job = job;
 	}
 

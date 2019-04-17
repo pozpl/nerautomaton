@@ -1,7 +1,6 @@
 package com.pozpl.nerannotator.service.ner;
 
 import com.pozpl.nerannotator.persistence.model.User;
-import com.pozpl.nerannotator.persistence.model.ner.NerJob;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
 import org.springframework.data.domain.Page;
 

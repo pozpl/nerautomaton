@@ -2,9 +2,10 @@ package com.pozpl.nerannotator.persistence.dao.ner;
 
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
 import com.pozpl.nerannotator.persistence.dao.UserRepository;
+import com.pozpl.nerannotator.persistence.dao.job.LabelingTaskRepository;
 import com.pozpl.nerannotator.persistence.model.LanguageCodes;
 import com.pozpl.nerannotator.persistence.model.User;
-import com.pozpl.nerannotator.persistence.model.ner.NerJob;
+import com.pozpl.nerannotator.persistence.model.job.LabelingTask;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,18 +31,18 @@ import static org.junit.Assert.assertNotNull;
 		classes = { NerAnnotatorApplicationTests.class },
 		loader = AnnotationConfigContextLoader.class)
 @Transactional
-public class NerJobRepositoryTest {
+public class LabelingTaskRepositoryTest {
 
 	@Autowired
 	public UserRepository userRepository;
 
 	@Autowired
-	public NerJobRepository nerJobRepository;
+	public LabelingTaskRepository labelingTaskRepository;
 
 	private User userOne;
 
-	private NerJob jobOne;
-	private NerJob jobTwo;
+	private LabelingTask jobOne;
+	private LabelingTask jobTwo;
 
 	@Before
 	public void setUp() throws Exception {
@@ -55,13 +56,13 @@ public class NerJobRepositoryTest {
 
 		Calendar now = Calendar.getInstance();
 
-		jobOne = NerJob.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
+		jobOne = LabelingTask.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
 				.updated(hourAgo).created( hourAgo).build();
-		jobTwo = NerJob.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
+		jobTwo = LabelingTask.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
 				.created(now).updated( now).build();
 
-		nerJobRepository.save(jobOne);
-		nerJobRepository.save(jobTwo);
+		labelingTaskRepository.save(jobOne);
+		labelingTaskRepository.save(jobTwo);
 	}
 
 
@@ -69,8 +70,8 @@ public class NerJobRepositoryTest {
 	@After
 	public void tearDown() throws Exception {
 
-		nerJobRepository.delete(jobOne);
-		nerJobRepository.delete(jobTwo);
+		labelingTaskRepository.delete(jobOne);
+		labelingTaskRepository.delete(jobTwo);
 
 		userRepository.delete(userOne);
 
@@ -79,14 +80,14 @@ public class NerJobRepositoryTest {
 
 	@Test
 	public void getJobs() throws Exception{
-		Page<NerJob> jobsPage = nerJobRepository.getJobsForOwner(userOne, PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created")));
+		Page<LabelingTask> jobsPage = labelingTaskRepository.getJobsForOwner(userOne, PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created")));
 
 
 		assertNotNull(jobsPage);
 		assertEquals(2, jobsPage.getNumberOfElements());
 		assertEquals(1, jobsPage.getTotalPages());
 		assertEquals(2, jobsPage.getTotalElements());
-		List<NerJob> jobs =  jobsPage.getContent();
+		List<LabelingTask> jobs =  jobsPage.getContent();
 		assertNotNull(jobs);
 		assertEquals(jobOne, jobs.get(0));
 	}

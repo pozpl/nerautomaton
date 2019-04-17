@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.persistence.dao.ner;
 
-import com.pozpl.nerannotator.persistence.model.ner.NerJob;
+import com.pozpl.nerannotator.persistence.model.job.LabelingTask;
 import com.pozpl.nerannotator.persistence.model.ner.NerJobTextItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Repository;
 public interface NerJobTextItemRepository extends PagingAndSortingRepository<NerJobTextItem, Long> {
 
 	@Query("SELECT jti FROM NerJobTextItem AS jti WHERE jti.job = :job")
-	Page<NerJobTextItem> getForJob(@Param("job")NerJob job, Pageable pageable);
+	Page<NerJobTextItem> getForJob(@Param("job") LabelingTask job, Pageable pageable);
 
 
 	@Query("SELECT jti FROM NerJobTextItem AS jti WHERE jti.job = :job AND jti.md5Hash = :md5hash ")
-	NerJobTextItem getForJobAndHash(@Param("job") NerJob job,
+	NerJobTextItem getForJobAndHash(@Param("job") LabelingTask job,
 									@Param("md5hash") String md5Hash);
 
 }

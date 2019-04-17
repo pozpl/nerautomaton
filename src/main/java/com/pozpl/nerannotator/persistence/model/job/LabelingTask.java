@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.persistence.model.ner;
+package com.pozpl.nerannotator.persistence.model.job;
 
 import com.pozpl.nerannotator.persistence.model.LanguageCodes;
 import com.pozpl.nerannotator.persistence.model.User;
@@ -17,7 +17,7 @@ import java.util.Calendar;
 @Entity
 @Table(name = "ner_jobs",
 		uniqueConstraints = { @UniqueConstraint(columnNames = { "owner_id", "name" }) })
-public class NerJob {
+public class LabelingTask {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

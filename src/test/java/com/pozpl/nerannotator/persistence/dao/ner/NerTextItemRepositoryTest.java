@@ -2,9 +2,10 @@ package com.pozpl.nerannotator.persistence.dao.ner;
 
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
 import com.pozpl.nerannotator.persistence.dao.UserRepository;
+import com.pozpl.nerannotator.persistence.dao.job.LabelingTaskRepository;
 import com.pozpl.nerannotator.persistence.model.LanguageCodes;
 import com.pozpl.nerannotator.persistence.model.User;
-import com.pozpl.nerannotator.persistence.model.ner.NerJob;
+import com.pozpl.nerannotator.persistence.model.job.LabelingTask;
 import com.pozpl.nerannotator.persistence.model.ner.NerJobTextItem;
 import org.junit.After;
 import org.junit.Before;
@@ -31,21 +32,21 @@ import static org.junit.Assert.*;
 		classes = { NerAnnotatorApplicationTests.class },
 		loader = AnnotationConfigContextLoader.class)
 @Transactional
-public class NerJobTextItemRepositoryTest {
+public class NerTextItemRepositoryTest {
 
 	@Autowired
 	public UserRepository userRepository;
 
 	@Autowired
-	public NerJobRepository nerJobRepository;
+	public LabelingTaskRepository labelingTaskRepository;
 
 	@Autowired
 	public NerJobTextItemRepository nerJobTextItemRepository;
 
 	private User userOne;
 
-	private NerJob jobOne;
-	private NerJob jobTwo;
+	private LabelingTask jobOne;
+	private LabelingTask jobTwo;
 
 	private NerJobTextItem jobOneTextOne;
 	private NerJobTextItem jobOneTextTwo;
@@ -64,13 +65,13 @@ public class NerJobTextItemRepositoryTest {
 
 		Calendar now = Calendar.getInstance();
 
-		jobOne = NerJob.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
+		jobOne = LabelingTask.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
 				.updated(hourAgo).created( hourAgo).build();
-		jobTwo = NerJob.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
+		jobTwo = LabelingTask.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
 				.created(now).updated( now).build();
 
-		nerJobRepository.save(jobOne);
-		nerJobRepository.save(jobTwo);
+		labelingTaskRepository.save(jobOne);
+		labelingTaskRepository.save(jobTwo);
 
 		jobOneTextOne = new NerJobTextItem(jobOne, "text_one", "hash_one");
 		jobOneTextTwo = new NerJobTextItem(jobOne, "text_two", "hash_two");
@@ -91,8 +92,8 @@ public class NerJobTextItemRepositoryTest {
 		nerJobTextItemRepository.delete(jobOneTextTwo);
 		nerJobTextItemRepository.delete(jobTwoTextOne);
 
-		nerJobRepository.delete(jobOne);
-		nerJobRepository.delete(jobTwo);
+		labelingTaskRepository.delete(jobOne);
+		labelingTaskRepository.delete(jobTwo);
 
 		userRepository.delete(userOne);
 	}
