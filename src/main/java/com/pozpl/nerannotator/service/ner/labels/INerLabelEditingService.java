@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.service.ner.labels;
 
-import com.pozpl.nerannotator.persistence.model.job.LabelingTask;
+import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
 
 import java.util.List;
@@ -10,34 +10,34 @@ public interface INerLabelEditingService {
 
 	/**
 	 * Get labels for job
-	 * @param labelingTask
+	 * @param labelingJob
 	 * @return
 	 */
-	List<NerLabelDto> listLabelsAvailableForTask(LabelingTask labelingTask) throws NerServiceException;
+	List<NerLabelDto> listLabelsAvailableForTask(LabelingJob labelingJob) throws NerServiceException;
 
 	/**
 	 * Get labeling Dto by Id and ensure that it belongs to task
 	 * @param id
 	 * @return
 	 */
-	Optional<NerLabelDto> getById(Integer id,
-								  LabelingTask labelingTask) throws NerServiceException;
+	Optional<NerLabelDto> getById(Long id,
+								  LabelingJob labelingJob) throws NerServiceException;
 
 
 
 	/**
 	 * Save Job
 	 * @param nerLabelDto
-	 * @param labelingTask
+	 * @param labelingJob
 	 * @return
 	 * @throws NerServiceException
 	 */
-	NerLabelDto saveLabel(NerLabelDto nerLabelDto, LabelingTask labelingTask) throws NerServiceException;
+	NerLabelEditStatusDto saveLabel(NerLabelDto nerLabelDto, LabelingJob labelingJob) throws NerServiceException;
 
 	/**
 	 * Delete labeling task by id
 	 *
 	 * @throws NerServiceException
 	 */
-	void deleteLabel(LabelingTask labelingTask, Integer labelingTaskId) throws NerServiceException;
+	void deleteLabel(LabelingJob labelingJob, Integer labelingTaskId) throws NerServiceException;
 }

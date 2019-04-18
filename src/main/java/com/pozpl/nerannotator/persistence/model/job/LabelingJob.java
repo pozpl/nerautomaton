@@ -17,7 +17,7 @@ import java.util.Calendar;
 @Entity
 @Table(name = "ner_jobs",
 		uniqueConstraints = { @UniqueConstraint(columnNames = { "owner_id", "name" }) })
-public class LabelingTask {
+public class LabelingJob {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

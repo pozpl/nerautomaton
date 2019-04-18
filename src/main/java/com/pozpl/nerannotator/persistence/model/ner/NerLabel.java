@@ -1,7 +1,7 @@
 package com.pozpl.nerannotator.persistence.model.ner;
 
 
-import com.pozpl.nerannotator.persistence.model.job.LabelingTask;
+import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +17,7 @@ import java.util.Calendar;
 @Entity
 @Table(name = "ner_job_available_entities",
 		uniqueConstraints = { @UniqueConstraint(columnNames = { "job_id", "name" }) })
-public class NerJobAvailableEntity {
+public class NerLabel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +26,7 @@ public class NerJobAvailableEntity {
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "job_id")
-	private LabelingTask job;
+	private LabelingJob job;
 
 	@Column(name = "name", nullable = false)
 	private String name;
