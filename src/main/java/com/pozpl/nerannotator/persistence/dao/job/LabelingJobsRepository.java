@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface LabelingTaskRepository extends PagingAndSortingRepository<LabelingJob, Long> {
+public interface LabelingJobsRepository extends PagingAndSortingRepository<LabelingJob, Long> {
 
 	@Query("SELECT j FROM LabelingJob AS j WHERE j.owner = :owner")
 	Page<LabelingJob> getJobsForOwner(@Param("owner") User owner, Pageable pageable);

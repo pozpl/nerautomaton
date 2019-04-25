@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.service.ner.labels;
 
-import com.pozpl.nerannotator.persistence.dao.job.LabelingTaskRepository;
+import com.pozpl.nerannotator.persistence.dao.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.persistence.dao.ner.NerLabelsRepository;
 import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
 import com.pozpl.nerannotator.persistence.model.ner.NerLabel;
@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
 @Transactional
 public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 
-	private LabelingTaskRepository labelingTaskRepository;
+	private LabelingJobsRepository labelingJobsRepository;
 
 	private NerLabelsRepository nerLabelsRepository;
 
 	@Autowired
-	public NerLabelEditingServiceImpl(LabelingTaskRepository labelingTaskRepository,
+	public NerLabelEditingServiceImpl(LabelingJobsRepository labelingJobsRepository,
 									  NerLabelsRepository nerLabelsRepository) {
-		this.labelingTaskRepository = labelingTaskRepository;
+		this.labelingJobsRepository = labelingJobsRepository;
 		this.nerLabelsRepository = nerLabelsRepository;
 	}
 
@@ -36,7 +36,7 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 	 * @return
 	 */
 	@Override
-	public List<NerLabelDto> listLabelsAvailableForTask(LabelingJob labelingJob) throws NerServiceException {
+	public List<NerLabelDto> listLabelsAvailableForTask(final LabelingJob labelingJob) throws NerServiceException {
 		try {
 			final List<NerLabel> availableEntities = this.nerLabelsRepository.getForJob(labelingJob);
 
@@ -55,10 +55,10 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 	 * @return
 	 */
 	@Override
-	public Optional<NerLabelDto> getById(Long id, LabelingJob labelingJob) throws NerServiceException {
+	public Optional<NerLabelDto> getById(final Integer id, final LabelingJob labelingJob) throws NerServiceException {
 
 		try {
-			final Optional<NerLabel> nerJobAvailableEntityOptional = this.nerLabelsRepository.findById(id);
+			final Optional<NerLabel> nerJobAvailableEntityOptional = this.nerLabelsRepository.findById(id.longValue());
 
 			return nerJobAvailableEntityOptional.flatMap(entityLabel -> {
 				if(! entityLabel.getJob().equals(labelingJob)){
@@ -80,7 +80,7 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 	 * @throws NerServiceException
 	 */
 	@Override
-	public NerLabelEditStatusDto saveLabel(NerLabelDto nerLabelDto, LabelingJob labelingJob) throws NerServiceException {
+	public NerLabelEditStatusDto saveLabel(final NerLabelDto nerLabelDto, final LabelingJob labelingJob) throws NerServiceException {
 		try {
 
 			final NerLabel.NerLabelBuilder labelBuilder;
@@ -147,7 +147,7 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 	 * @throws NerServiceException
 	 */
 	@Override
-	public void deleteLabel(LabelingJob labelingJob, Integer labelId) throws NerServiceException {
+	public void deleteLabel(final LabelingJob labelingJob, final Integer labelId) throws NerServiceException {
 		try{
 			final Optional<NerLabel> labelOpt = this.nerLabelsRepository.findById(labelId.longValue());
 

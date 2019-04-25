@@ -1,11 +1,13 @@
 package com.pozpl.nerannotator.service.ner;
 
+import com.pozpl.nerannotator.service.ner.labels.NerLabelDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Builder(toBuilder = true)
 @Data
@@ -18,5 +20,7 @@ public class NerJobDto {
 	private String name;
 
 	private Date created;
+
+	private List<NerLabelDto> labels;
 	
 }

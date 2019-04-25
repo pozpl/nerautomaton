@@ -1,10 +1,13 @@
 package com.pozpl.nerannotator.service.ner;
 
-import com.pozpl.nerannotator.persistence.dao.job.LabelingTaskRepository;
+import com.pozpl.nerannotator.persistence.dao.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.persistence.model.LanguageCodes;
 import com.pozpl.nerannotator.persistence.model.User;
 import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
+import com.pozpl.nerannotator.service.ner.labels.INerLabelEditingService;
+import com.pozpl.nerannotator.service.ner.labels.NerLabelDto;
+import cyclops.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,17 +16,22 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 public class NerJobServiceImpl implements INerJobService {
 
-	private final LabelingTaskRepository labelingTaskRepository;
+	private final LabelingJobsRepository labelingJobsRepository;
+
+	private INerLabelEditingService nerLabelEditingService;
 
 	@Autowired
-	public NerJobServiceImpl(final LabelingTaskRepository labelingTaskRepository) {
-		this.labelingTaskRepository = labelingTaskRepository;
+	public NerJobServiceImpl(final LabelingJobsRepository labelingJobsRepository,
+							 final INerLabelEditingService nerLabelEditingService) {
+		this.labelingJobsRepository = labelingJobsRepository;
+		this.nerLabelEditingService = nerLabelEditingService;
 	}
 
 	/**
@@ -37,9 +45,9 @@ public class NerJobServiceImpl implements INerJobService {
 	@Override
 	public Optional<NerJobDto> getJobById(Integer id, User user) throws NerServiceException {
 		try {
-			final Optional<LabelingJob> nerJobOpt = labelingTaskRepository.findByIdAndOwner(new Long(id), user);
+			final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(new Long(id), user);
 
-			return nerJobOpt.map(nerJob -> toDto(nerJob));
+			return nerJobOpt.flatMap(nerJob -> Try.withCatch(() -> toDto(nerJob), NerServiceException.class).toOptional());
 
 		} catch (Exception e) {
 			throw new NerServiceException(e);
@@ -58,9 +66,9 @@ public class NerJobServiceImpl implements INerJobService {
 	public Page<NerJobDto> getJobsForOwner(final User owner,final Integer page) throws NerServiceException {
 		try {
 			final Integer adjustedPage = page != null && page > 0 ? page -1 : 0;
-			Page<LabelingJob> userJobs = labelingTaskRepository.getJobsForOwner(owner, PageRequest.of(adjustedPage, 20, Sort.by(Sort.Direction.DESC, "created")));
+			Page<LabelingJob> userJobs = labelingJobsRepository.getJobsForOwner(owner, PageRequest.of(adjustedPage, 20, Sort.by(Sort.Direction.DESC, "created")));
 
-			return userJobs.map(nerJob -> toDto(nerJob));
+			return userJobs.map(nerJob -> Try.withCatch(() -> toDto(nerJob), NerServiceException.class)).map(nerJobTry -> nerJobTry.orElseGet(null));
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
@@ -80,7 +88,7 @@ public class NerJobServiceImpl implements INerJobService {
 			final LabelingJob labelingJobOriginal;
 
 			if (nerJobDto.getId() != null) { //Update case
-				final Optional<LabelingJob> nerJobOpt = labelingTaskRepository.findByIdAndOwner(new Long(nerJobDto.getId()), user);
+				final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(new Long(nerJobDto.getId()), user);
 
 				if (nerJobOpt.isPresent()) {
 					labelingJobOriginal = nerJobOpt.get();
@@ -106,7 +114,7 @@ public class NerJobServiceImpl implements INerJobService {
 					.languageCode(LanguageCodes.EN)//Only support EN by default
 					.build();
 
-			labelingTaskRepository.save(labelingJobToSave);
+			labelingJobsRepository.save(labelingJobToSave);
 
 			final NerJobSaveStatusDto nerJobSaveStatusDto = NerJobSaveStatusDto.builder()
 					.status(NerJobSaveStatusDto.SaveStatus.OK)
@@ -129,9 +137,9 @@ public class NerJobServiceImpl implements INerJobService {
 	@Override
 	public void deleteJob(User user, Integer jobId) throws NerServiceException {
 		try {
-			final Optional<LabelingJob> nerJobOpt = labelingTaskRepository.findByIdAndOwner(new Long(jobId), user);
+			final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(new Long(jobId), user);
 			if (nerJobOpt.isPresent()) {
-				labelingTaskRepository.delete(nerJobOpt.get());
+				labelingJobsRepository.delete(nerJobOpt.get());
 			}
 		} catch (Exception e) {
 			throw new NerServiceException(e);
@@ -140,11 +148,15 @@ public class NerJobServiceImpl implements INerJobService {
 	}
 
 
-	private NerJobDto toDto(final LabelingJob labelingJob) {
+	private NerJobDto toDto(final LabelingJob labelingJob) throws NerServiceException {
+
+		final List<NerLabelDto> nerLabelDtos = this.nerLabelEditingService.listLabelsAvailableForTask(labelingJob);
+
 		return NerJobDto.builder()
 				.id(labelingJob.getId().intValue())
 				.name(labelingJob.getName())
 				.created(labelingJob.getCreated().getTime())
+				.labels(nerLabelDtos)
 				.build();
 	}
 }

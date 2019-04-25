@@ -20,7 +20,7 @@ public interface INerLabelEditingService {
 	 * @param id
 	 * @return
 	 */
-	Optional<NerLabelDto> getById(Long id,
+	Optional<NerLabelDto> getById(Integer id,
 								  LabelingJob labelingJob) throws NerServiceException;
 
 
