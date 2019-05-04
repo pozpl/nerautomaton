@@ -35,6 +35,16 @@ public interface INerLabelEditingService {
 	NerLabelEditStatusDto saveLabel(NerLabelDto nerLabelDto, LabelingJob labelingJob) throws NerServiceException;
 
 	/**
+	 * Save all labels and delete not labels not present in the list
+	 * @param labelingJob
+	 * @param labelDtos
+	 * @return
+	 * @throws NerServiceException
+	 */
+	List<NerLabelDto> saveAllLabelsForJob(final LabelingJob labelingJob,
+										  final List<NerLabelDto> labelDtos) throws NerServiceException;
+
+	/**
 	 * Delete labeling task by id
 	 *
 	 * @throws NerServiceException

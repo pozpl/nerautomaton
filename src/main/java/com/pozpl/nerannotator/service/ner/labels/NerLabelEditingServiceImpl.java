@@ -1,31 +1,32 @@
 package com.pozpl.nerannotator.service.ner.labels;
 
-import com.pozpl.nerannotator.persistence.dao.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.persistence.dao.ner.NerLabelsRepository;
 import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
 import com.pozpl.nerannotator.persistence.model.ner.NerLabel;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
+import cyclops.control.Try;
+import cyclops.data.Vector;
+import org.hibernate.query.criteria.internal.expression.function.FunctionExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 
-	private LabelingJobsRepository labelingJobsRepository;
 
 	private NerLabelsRepository nerLabelsRepository;
 
 	@Autowired
-	public NerLabelEditingServiceImpl(LabelingJobsRepository labelingJobsRepository,
-									  NerLabelsRepository nerLabelsRepository) {
-		this.labelingJobsRepository = labelingJobsRepository;
+	public NerLabelEditingServiceImpl(NerLabelsRepository nerLabelsRepository) {
 		this.nerLabelsRepository = nerLabelsRepository;
 	}
 
@@ -40,9 +41,9 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 		try {
 			final List<NerLabel> availableEntities = this.nerLabelsRepository.getForJob(labelingJob);
 
-			return  availableEntities.stream().map(entityLabel -> toDto(entityLabel)).collect(Collectors.toList());
+			return availableEntities.stream().map(entityLabel -> toDto(entityLabel)).collect(Collectors.toList());
 
-		}catch (Exception e){
+		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
 	}
@@ -61,12 +62,12 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 			final Optional<NerLabel> nerJobAvailableEntityOptional = this.nerLabelsRepository.findById(id.longValue());
 
 			return nerJobAvailableEntityOptional.flatMap(entityLabel -> {
-				if(! entityLabel.getJob().equals(labelingJob)){
+				if (!entityLabel.getJob().equals(labelingJob)) {
 					return Optional.empty();
 				}
 				return Optional.ofNullable(toDto(entityLabel));
 			});
-		}catch (Exception e){
+		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
 	}
@@ -85,37 +86,35 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 
 			final NerLabel.NerLabelBuilder labelBuilder;
 
-			final Optional<NerLabel> labelFoundByNameOpt =  this.nerLabelsRepository.getByNameAndJob(nerLabelDto.getName(),
+			final Optional<NerLabel> labelFoundByNameOpt = this.nerLabelsRepository.getByNameAndJob(nerLabelDto.getName(),
 					labelingJob);
 
-			if(nerLabelDto.getId() != null){
+			if (nerLabelDto.getId() != null) {
 
 				final Optional<NerLabel> labelOpt = this.nerLabelsRepository.findById(nerLabelDto.getId().longValue());
 
-				if (! labelOpt.isPresent()){
+				if (!labelOpt.isPresent()) {
 					throw new NerServiceException(String.format("Can not find ner label by id=%d that belongs " +
 							"to task %d (%s) ", nerLabelDto.getId(), labelingJob.getId(), labelingJob.getName()));
 				}
 
 				final NerLabel label = labelOpt.get();
-				if(! label.getJob().equals(labelingJob)){
+				if (!label.getJob().equals(labelingJob)) {
 					throw new NerServiceException(String.format("Attempt to edit Ner label id=%d that belongs " +
-							"to task %d (%s)  from task %d (%s) session", nerLabelDto.getId(), label.getJob().getId(),
+									"to task %d (%s)  from task %d (%s) session", nerLabelDto.getId(), label.getJob().getId(),
 							label.getJob().getName(), labelingJob.getId(), labelingJob.getName()));
 				}
 
 
-
-
 				if (labelFoundByNameOpt.isPresent() &&
-				! labelFoundByNameOpt.get().getId().equals(label.getId())){
+						!labelFoundByNameOpt.get().getId().equals(label.getId())) {
 					return NerLabelEditStatusDto.builder().error(true).errorCode(NerLabelEditStatusDto.ErrorCode.DUPLICATE_NAME)
 							.build();
 				}
 
 				labelBuilder = label.toBuilder();
-			}else{
-				if (labelFoundByNameOpt.isPresent()){
+			} else {
+				if (labelFoundByNameOpt.isPresent()) {
 					return NerLabelEditStatusDto.builder().error(true).errorCode(NerLabelEditStatusDto.ErrorCode.DUPLICATE_NAME)
 							.build();
 				}
@@ -134,7 +133,53 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 					.error(false)
 					.nerLabelDto(toDto(nerLabel))
 					.build();
-		}catch (Exception e){
+		} catch (Exception e) {
+			throw new NerServiceException(e);
+		}
+	}
+
+	/**
+	 * Save all labels and delete not labels not present in the list
+	 * @param labelingJob
+	 * @param labelDtos
+	 * @return
+	 * @throws NerServiceException
+	 */
+	List<NerLabelDto> saveAllLabelsForJob(final LabelingJob labelingJob,
+										  final List<NerLabelDto> labelDtos) throws NerServiceException {
+		try {
+			final List<NerLabel> labels = this.nerLabelsRepository.getForJob(labelingJob);
+			//labels those are not in the provided list
+			final Vector<NerLabel> labelsToDelete = Vector.fromIterable(labels)
+					.filter(label -> !labelDtos.stream()
+							.anyMatch(labelDto -> label.getId().equals(labelDto.getId())));
+
+			labelsToDelete.map(labelToDelete -> {
+				this.nerLabelsRepository.delete(labelToDelete);
+				return labelToDelete;
+			});
+
+			final List<NerLabelDto> savedLabelsDtos = new ArrayList<>();
+			for (NerLabelDto labelDto : labelDtos) {
+				final NerLabelEditStatusDto saveStatus = this.saveLabel(labelDto, labelingJob);
+				if (!saveStatus.isError()) {
+					savedLabelsDtos.add(saveStatus.getNerLabelDto());
+				}
+			}
+
+//			Vector.fromIterable(labelDtos).stream().map(labelDto -> {
+//				return Try.withCatch(() -> this.saveLabel(labelDto, labelingJob).getNerLabelDto(), NerServiceException.class);
+//			}).reduce(Try.success(Vector.empty()), (Try<Vector<NerLabelDto>, NerServiceException> acc, Try<NerLabelDto, NerServiceException> el) -> {
+//				if(el.isSuccess()){
+//					return Try.success(acc.orElseGet(() -> Vector.empty()).append(el.orElseGet(null)));
+//				} else{
+//					return Try.failure(el.failureGet().orElse(null));
+//				}
+//			} );
+
+			return savedLabelsDtos;
+
+		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
 	}
@@ -148,16 +193,16 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 	 */
 	@Override
 	public void deleteLabel(final LabelingJob labelingJob, final Integer labelId) throws NerServiceException {
-		try{
+		try {
 			final Optional<NerLabel> labelOpt = this.nerLabelsRepository.findById(labelId.longValue());
 
-			if (! labelOpt.isPresent()){
+			if (!labelOpt.isPresent()) {
 				throw new NerServiceException(String.format("Can not find ner label by id=%d that belongs " +
 						"to task %d (%s) ", labelId, labelingJob.getId(), labelingJob.getName()));
 			}
 
 			final NerLabel label = labelOpt.get();
-			if(! label.getJob().equals(labelingJob)){
+			if (!label.getJob().equals(labelingJob)) {
 				throw new NerServiceException(String.format("Attempt to edit Ner label id=%d that belongs " +
 								"to task %d (%s)  from task %d (%s) session", labelId, label.getJob().getId(),
 						label.getJob().getName(), labelingJob.getId(), labelingJob.getName()));
@@ -165,18 +210,18 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 
 			this.nerLabelsRepository.delete(label);
 
-		}catch (Exception e){
+		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
 	}
 
 
-	private NerLabelDto toDto(final NerLabel nerJobAvailableEntity){
-		 return  NerLabelDto.builder()
-				 .id(nerJobAvailableEntity.getId() != null ? nerJobAvailableEntity.getId().intValue() : null)
-				 .name(nerJobAvailableEntity.getName())
-				 .description(nerJobAvailableEntity.getDescription())
-				 .build();
+	private NerLabelDto toDto(final NerLabel nerJobAvailableEntity) {
+		return NerLabelDto.builder()
+				.id(nerJobAvailableEntity.getId() != null ? nerJobAvailableEntity.getId().intValue() : null)
+				.name(nerJobAvailableEntity.getName())
+				.description(nerJobAvailableEntity.getDescription())
+				.build();
 
 	}
 }

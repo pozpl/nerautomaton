@@ -116,6 +116,9 @@ public class NerJobServiceImpl implements INerJobService {
 
 			labelingJobsRepository.save(labelingJobToSave);
 
+			this.nerLabelEditingService.saveAllLabelsForJob(labelingJobToSave, nerJobDto.getLabels());
+
+
 			final NerJobSaveStatusDto nerJobSaveStatusDto = NerJobSaveStatusDto.builder()
 					.status(NerJobSaveStatusDto.SaveStatus.OK)
 					.nerJobDto(toDto(labelingJobToSave))
