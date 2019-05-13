@@ -3,6 +3,9 @@
         <h1>
             <span *ngIf="jobDto == null || jobDto.id == null">Create new Job</span>
         </h1>
+        <div>
+            <a routerLink="/ner/jobs">Return to Jobs list</a>
+        </div>
         <mat-card *ngIf="jobDto != null" class="card">
             <div class="job-form">
                 <mat-form-field class="input-full-width">
@@ -10,14 +13,55 @@
                     <input matInput placeholder="Job name" [(ngModel)]="jobDto.name" required>
                 </mat-form-field>
             </div>
+
+            <div class="labels-list">
+                <div>
+                    <button (click)="addLabel()"
+                    mat-raised-button color="primary">Add label</button>
+                </div>
+
+                <mat-table *ngIf="jobDto.labels && jobDto.labels.length > 0"
+                           #table [dataSource]="jobLabelsDataSource">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <input matInput placeholder="Label*" [(ngModel)]="element.name" required>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <input matInput placeholder="Description (optional)" [(ngModel)]="element.description" required>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="delete">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <a (click)="deleteLabel(element)"  class="delete-icon"
+                               type="button">
+                                <mat-icon class="icon">delete</mat-icon>
+                            </a>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="nerJobLabelsDisplayColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: nerJobLabelsDisplayColumns;"></mat-row>
+
+                </mat-table>
+
+                
+            </div>
+
             <mat-card-actions>
                 <button (click)="saveJob()" 
                     mat-raised-button color="primary">
                     <span *ngIf="! jobDto.id">Create Job</span>
-                    <span *ngIf="jobDto.id">Save name</span>
+                    <span *ngIf="jobDto.id">Save job</span>
                 </button>
             </mat-card-actions>
 
         </mat-card>
+
     </div>
 </div>
