@@ -7,7 +7,7 @@ import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
 import com.pozpl.nerannotator.service.ner.labels.INerLabelEditingService;
 import com.pozpl.nerannotator.service.ner.labels.NerLabelDto;
-import cyclops.control.Try;
+import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,7 +47,14 @@ public class NerJobServiceImpl implements INerJobService {
 		try {
 			final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(new Long(id), user);
 
-			return nerJobOpt.flatMap(nerJob -> Try.withCatch(() -> toDto(nerJob), NerServiceException.class).toOptional());
+			return nerJobOpt.map(nerJob -> Try.of(() -> toDto(nerJob)))
+					.flatMap(tryDto -> {
+						if(tryDto.isFailure()){
+							return Optional.empty();
+						}else{
+							return Optional.ofNullable(tryDto.get());
+						}
+					});
 
 		} catch (Exception e) {
 			throw new NerServiceException(e);
@@ -68,7 +75,7 @@ public class NerJobServiceImpl implements INerJobService {
 			final Integer adjustedPage = page != null && page > 0 ? page -1 : 0;
 			Page<LabelingJob> userJobs = labelingJobsRepository.getJobsForOwner(owner, PageRequest.of(adjustedPage, 20, Sort.by(Sort.Direction.DESC, "created")));
 
-			return userJobs.map(nerJob -> Try.withCatch(() -> toDto(nerJob), NerServiceException.class)).map(nerJobTry -> nerJobTry.orElseGet(null));
+			return userJobs.map(nerJob -> Try.of(() -> toDto(nerJob))).map(nerJobTry -> nerJobTry.getOrElse(new NerJobDto()));
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
