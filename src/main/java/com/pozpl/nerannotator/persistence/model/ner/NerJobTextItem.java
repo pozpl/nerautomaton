@@ -13,7 +13,7 @@ import java.util.Calendar;
 		uniqueConstraints = { @UniqueConstraint(columnNames = { "job_id", "md5_hash" }) })
 public class NerJobTextItem {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 

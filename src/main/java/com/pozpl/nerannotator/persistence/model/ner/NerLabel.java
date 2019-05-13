@@ -20,7 +20,7 @@ import java.util.Calendar;
 public class NerLabel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 
