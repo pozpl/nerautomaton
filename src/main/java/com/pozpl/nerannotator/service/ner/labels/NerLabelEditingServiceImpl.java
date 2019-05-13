@@ -4,9 +4,6 @@ import com.pozpl.nerannotator.persistence.dao.ner.NerLabelsRepository;
 import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
 import com.pozpl.nerannotator.persistence.model.ner.NerLabel;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
-import cyclops.control.Try;
-import cyclops.data.Vector;
-import org.hibernate.query.criteria.internal.expression.function.FunctionExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -129,6 +125,8 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 					.updated(Calendar.getInstance())
 					.build();
 
+			this.nerLabelsRepository.save(nerLabel);
+
 			return NerLabelEditStatusDto.builder()
 					.error(false)
 					.nerLabelDto(toDto(nerLabel))
@@ -145,16 +143,18 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 	 * @return
 	 * @throws NerServiceException
 	 */
-	List<NerLabelDto> saveAllLabelsForJob(final LabelingJob labelingJob,
+	@Override
+	public List<NerLabelDto> saveAllLabelsForJob(final LabelingJob labelingJob,
 										  final List<NerLabelDto> labelDtos) throws NerServiceException {
 		try {
 			final List<NerLabel> labels = this.nerLabelsRepository.getForJob(labelingJob);
 			//labels those are not in the provided list
-			final Vector<NerLabel> labelsToDelete = Vector.fromIterable(labels)
+			final List<NerLabel> labelsToDelete = labels.stream()
 					.filter(label -> !labelDtos.stream()
-							.anyMatch(labelDto -> label.getId().equals(labelDto.getId())));
+							.anyMatch(labelDto -> label.getId().equals(labelDto.getId())))
+					.collect(Collectors.toList());
 
-			labelsToDelete.map(labelToDelete -> {
+			labelsToDelete.stream().map(labelToDelete -> {
 				this.nerLabelsRepository.delete(labelToDelete);
 				return labelToDelete;
 			});
@@ -170,6 +170,9 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 //			Vector.fromIterable(labelDtos).stream().map(labelDto -> {
 //				return Try.withCatch(() -> this.saveLabel(labelDto, labelingJob).getNerLabelDto(), NerServiceException.class);
 //			}).reduce(Try.success(Vector.empty()), (Try<Vector<NerLabelDto>, NerServiceException> acc, Try<NerLabelDto, NerServiceException> el) -> {
+////				//Either<NerServiceException, NerLabelDto> leEither  = el.toEither();
+//
+//
 //				if(el.isSuccess()){
 //					return Try.success(acc.orElseGet(() -> Vector.empty()).append(el.orElseGet(null)));
 //				} else{
