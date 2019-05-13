@@ -40,7 +40,11 @@ dependencies {
 //	implementation 'org.springframework.session:spring-session-jdbc'
 
 	compile "org.flywaydb:flyway-core:5.2.4"
-	compile group: 'com.oath.cyclops', name: 'cyclops', version: '10.3.0'
+
+	compile group: 'io.vavr', name: 'vavr', version: '0.10.0'
+	compile group: 'io.vavr', name: 'vavr-match', version: '0.10.0'
+	compile group: 'io.vavr', name: 'vavr-match-processor', version: '0.10.0'
+
 
 	implementation(project(':frontend'))
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
