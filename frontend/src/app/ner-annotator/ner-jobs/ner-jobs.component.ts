@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from "../../auth.service";
 import {NerJobsService, Page} from "./ner-jobs.service";
 import {NerJobDto} from "./ner-job.dto";
 import {DataSource} from "@angular/cdk/table";
 import {Observable, Subject} from "rxjs";
 import {map, takeUntil} from "rxjs/operators";
 import {Router} from "@angular/router";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
     selector: 'app-ner-jobs',

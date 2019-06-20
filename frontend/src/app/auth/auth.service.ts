@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {MatDialog} from "@angular/material";
-import {ErrorDialogComponent} from "./error-dialog/error-dialog.component";
+import {ErrorDialogComponent} from "../shared-components/error-dialog/error-dialog.component";
+
 
 @Injectable()
 export class AuthService {
