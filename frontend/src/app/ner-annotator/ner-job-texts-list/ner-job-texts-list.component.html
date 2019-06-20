@@ -1,0 +1,24 @@
+<mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+
+    <ng-container matColumnDef="seqNo">
+        <div *matHeaderCellDef>#</div>
+        <div *matCellDef="let lesson">{{lesson.seqNo}}</div>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+        <div *matHeaderCellDef>Description</div>
+        <div class="description-cell"
+             *matCellDef="let lesson">{{lesson.description}}</div>
+    </ng-container>
+
+    <ng-container matColumnDef="duration">
+        <div *matHeaderCellDef>Duration</div>
+        <div class="duration-cell"
+             *matCellDef="let lesson">{{lesson.duration}}</div>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+</mat-table>

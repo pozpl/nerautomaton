@@ -12,6 +12,7 @@ import {NerJobsService} from "./ner-jobs/ner-jobs.service";
 import {NerJobEditComponent} from './ner-jobs/ner-job-edit/ner-job-edit.component';
 import {AppRoutingModule} from "../app-routing.module";
 import {FormsModule} from "@angular/forms";
+import { NerJobTextsListComponent } from './ner-job-texts-list/ner-job-texts-list.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import {FormsModule} from "@angular/forms";
         TextSelectDirective,
         ResultsReviewComponent,
         NerJobsComponent,
-        NerJobEditComponent
+        NerJobEditComponent,
+        NerJobTextsListComponent
     ],
     imports: [
         CommonModule,
