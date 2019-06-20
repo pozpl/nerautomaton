@@ -50,6 +50,12 @@ export class NerJobsComponent implements OnInit, OnDestroy {
         this.router.navigate(["/ner/job/edit/", jobId])
     }
 
+    deleteJob(job: NerJobDto){
+        this.nerJobsService.deleteJob(job.id).subscribe(() =>{
+           console.log("Job deleted");
+        });
+    }
+
 }
 
 
