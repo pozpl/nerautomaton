@@ -1,20 +1,20 @@
-<mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+<mat-table class="lessons-table mat-elevation-z8" [dataSource]="pagedContent">
 
     <ng-container matColumnDef="seqNo">
         <div *matHeaderCellDef>#</div>
-        <div *matCellDef="let lesson">{{lesson.seqNo}}</div>
+        <div *matCellDef="let textDto">{{textDto.seqNo}}</div>
     </ng-container>
 
-    <ng-container matColumnDef="description">
-        <div *matHeaderCellDef>Description</div>
+    <ng-container matColumnDef="text">
+        <div *matHeaderCellDef>Text</div>
         <div class="description-cell"
-             *matCellDef="let lesson">{{lesson.description}}</div>
+             *matCellDef="let textDto">{{textDto.text}}</div>
     </ng-container>
 
-    <ng-container matColumnDef="duration">
-        <div *matHeaderCellDef>Duration</div>
+    <ng-container matColumnDef="delete">
+        <div *matHeaderCellDef>Delete</div>
         <div class="duration-cell"
-             *matCellDef="let lesson">{{lesson.duration}}</div>
+             *matCellDef="let textDto">deleteText(textDto)</div>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
