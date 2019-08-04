@@ -44,6 +44,10 @@ dependencies {
 	compile group: 'io.vavr', name: 'vavr', version: '0.10.0'
 	compile group: 'io.vavr', name: 'vavr-match', version: '0.10.0'
 	compile group: 'io.vavr', name: 'vavr-match-processor', version: '0.10.0'
+	compile group: 'commons-codec', name: 'commons-codec', version: '1.13'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+
+
 
 
 	implementation(project(':frontend'))
