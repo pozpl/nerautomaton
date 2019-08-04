@@ -1,6 +1,5 @@
 package com.pozpl.nerannotator.service.ner.labels;
 
-import com.pozpl.nerannotator.persistence.model.ner.NerLabel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

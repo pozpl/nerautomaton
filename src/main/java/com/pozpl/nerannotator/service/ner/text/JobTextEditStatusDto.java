@@ -16,4 +16,11 @@ public class JobTextEditStatusDto {
 
 	private boolean error;
 
+
+	private ErrorCode errorCode;
+
+
+	public enum ErrorCode{
+		EMPTY_TEXT,
+	}
 }

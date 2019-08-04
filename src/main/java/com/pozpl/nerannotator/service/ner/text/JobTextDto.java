@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JobTextDto {
 
-	Integer id;
+	private Integer id;
 
-	Integer jobId;
+	private Integer jobId;
 
-	String text;
+	private String text;
 }
