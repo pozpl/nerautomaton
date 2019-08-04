@@ -2,10 +2,11 @@ package com.pozpl.nerannotator.persistence.dao.ner;
 
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
 import com.pozpl.nerannotator.persistence.dao.UserRepository;
-import com.pozpl.nerannotator.persistence.dao.job.LabelingTaskRepository;
+import com.pozpl.nerannotator.persistence.dao.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.persistence.model.LanguageCodes;
 import com.pozpl.nerannotator.persistence.model.User;
-import com.pozpl.nerannotator.persistence.model.job.LabelingTask;
+import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,12 +38,12 @@ public class LabelingTaskRepositoryTest {
 	public UserRepository userRepository;
 
 	@Autowired
-	public LabelingTaskRepository labelingTaskRepository;
+	public LabelingJobsRepository labelingTaskRepository;
 
 	private User userOne;
 
-	private LabelingTask jobOne;
-	private LabelingTask jobTwo;
+	private LabelingJob jobOne;
+	private LabelingJob jobTwo;
 
 	@Before
 	public void setUp() throws Exception {
@@ -56,9 +57,9 @@ public class LabelingTaskRepositoryTest {
 
 		Calendar now = Calendar.getInstance();
 
-		jobOne = LabelingTask.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
+		jobOne = LabelingJob.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
 				.updated(hourAgo).created( hourAgo).build();
-		jobTwo = LabelingTask.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
+		jobTwo = LabelingJob.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
 				.created(now).updated( now).build();
 
 		labelingTaskRepository.save(jobOne);
@@ -80,14 +81,14 @@ public class LabelingTaskRepositoryTest {
 
 	@Test
 	public void getJobs() throws Exception{
-		Page<LabelingTask> jobsPage = labelingTaskRepository.getJobsForOwner(userOne, PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created")));
+		Page<LabelingJob> jobsPage = labelingTaskRepository.getJobsForOwner(userOne, PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created")));
 
 
 		assertNotNull(jobsPage);
 		assertEquals(2, jobsPage.getNumberOfElements());
 		assertEquals(1, jobsPage.getTotalPages());
 		assertEquals(2, jobsPage.getTotalElements());
-		List<LabelingTask> jobs =  jobsPage.getContent();
+		List<LabelingJob> jobs =  jobsPage.getContent();
 		assertNotNull(jobs);
 		assertEquals(jobOne, jobs.get(0));
 	}

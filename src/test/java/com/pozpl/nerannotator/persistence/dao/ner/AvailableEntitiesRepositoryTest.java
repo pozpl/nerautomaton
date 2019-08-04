@@ -2,20 +2,17 @@ package com.pozpl.nerannotator.persistence.dao.ner;
 
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
 import com.pozpl.nerannotator.persistence.dao.UserRepository;
-import com.pozpl.nerannotator.persistence.dao.job.LabelingTaskRepository;
+
+import com.pozpl.nerannotator.persistence.dao.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.persistence.model.LanguageCodes;
 import com.pozpl.nerannotator.persistence.model.User;
-import com.pozpl.nerannotator.persistence.model.job.LabelingTask;
-import com.pozpl.nerannotator.persistence.model.ner.NerJobAvailableEntity;
-import com.pozpl.nerannotator.persistence.model.ner.NerJobTextItem;
+import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
+import com.pozpl.nerannotator.persistence.model.ner.NerLabel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -38,20 +35,20 @@ public class AvailableEntitiesRepositoryTest {
 	public UserRepository userRepository;
 
 	@Autowired
-	public LabelingTaskRepository labelingTaskRepository;
+	public LabelingJobsRepository labelingTaskRepository;
 
 	@Autowired
-	public AvailableEntitiesRepository availableEntitiesRepository;
+	public NerLabelsRepository availableEntitiesRepository;
 
 	private User userOne;
 
-	private LabelingTask jobOne;
-	private LabelingTask jobTwo;
+	private LabelingJob jobOne;
+	private LabelingJob jobTwo;
 
-	private NerJobAvailableEntity jobOneEntityOne;
-	private NerJobAvailableEntity jobOneEntityTwo;
+	private NerLabel jobOneEntityOne;
+	private NerLabel jobOneEntityTwo;
 
-	private NerJobAvailableEntity jobTwoEntityOne;
+	private NerLabel jobTwoEntityOne;
 
 	@Before
 	public void setUp() throws Exception {
@@ -65,15 +62,15 @@ public class AvailableEntitiesRepositoryTest {
 
 		Calendar now = Calendar.getInstance();
 
-		jobOne = LabelingTask.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
+		jobOne = LabelingJob.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
 				.updated(hourAgo).created( hourAgo).build();
-		jobTwo = LabelingTask.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
+		jobTwo = LabelingJob.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
 				.created(now).updated( now).build();
 
 		labelingTaskRepository.save(jobOne);
 		labelingTaskRepository.save(jobTwo);
 
-		jobOneEntityOne = NerJobAvailableEntity.builder()
+		jobOneEntityOne = NerLabel.builder()
 				.job(jobOne)
 		.created(now)
 		.updated(now)
@@ -103,7 +100,7 @@ public class AvailableEntitiesRepositoryTest {
 
 	@Test
 	public void testGetForJob() throws Exception{
-		List<NerJobAvailableEntity> labels = availableEntitiesRepository.getForJob(jobOne);
+		List<NerLabel> labels = availableEntitiesRepository.getForJob(jobOne);
 
 		assertNotNull(labels);
 		assertEquals(2, labels.size());
