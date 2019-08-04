@@ -47,15 +47,18 @@ public class JobTextAccessServiceImpl implements IJobTextAccessService {
 			final Optional<LabelingJob> jobOpt = labelingJobsRepository.findByIdAndOwner(Long.valueOf(jobId), jobOwner);
 
 			if(jobOpt.isPresent()){
-				if(! jobOpt.get().getOwner().equals(jobOwner)){
+				final LabelingJob job = jobOpt.get();
+				if(! job.getOwner().equals(jobOwner)){
 					 throw new NerServiceException("Access violation for Ner Job " + jobId + " and user: " + jobOwner.getUsername());
 				}
 
-				Page<NerJobTextItem> textItems = this.nerJobTextItemRepository.getForJob(jobOpt.get(),
+				final Page<NerJobTextItem> textItems = this.nerJobTextItemRepository.getForJob(job,
 									PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "id")));
 				return textItems.map(textItem -> JobTextDto.builder()
 						.id(textItem.getId().intValue())
-						.text(textItem.getText()).build()
+						.text(textItem.getText())
+						.jobId(job.getId().intValue())
+						.build()
 				);
 			}
 

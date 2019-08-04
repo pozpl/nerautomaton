@@ -13,5 +13,7 @@ public class JobTextDto {
 
 	Integer id;
 
+	Integer jobId;
+
 	String text;
 }
