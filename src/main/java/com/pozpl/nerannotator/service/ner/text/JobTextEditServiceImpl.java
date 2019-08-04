@@ -6,7 +6,8 @@ import com.pozpl.nerannotator.persistence.model.User;
 import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
 import com.pozpl.nerannotator.persistence.model.ner.NerJobTextItem;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
-import com.pozpl.nerannotator.service.registration.IUserService;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -91,7 +92,7 @@ public class JobTextEditServiceImpl implements IJobTextEditService {
 						"from user %d session ", labelingJob.getOwner().getId(), user.getId()));
 			}
 
-			if(StringUtils.isBlank(jobTextDto.getText())){
+			if (StringUtils.isBlank(jobTextDto.getText())) {
 				return JobTextEditStatusDto
 						.builder()
 						.error(true)
@@ -119,9 +120,9 @@ public class JobTextEditServiceImpl implements IJobTextEditService {
 					throw new NerServiceException(String.format("Can not find Ner text for id %d for saving ", jobTextDto.getId()));
 				}
 			} else {
-			 	textItemBuilder = NerJobTextItem.builder()
-				.job(labelingJob)
-				.created(Calendar.getInstance());
+				textItemBuilder = NerJobTextItem.builder()
+						.job(labelingJob)
+						.created(Calendar.getInstance());
 			}
 
 			final NerJobTextItem textItem = textItemBuilder
@@ -129,7 +130,6 @@ public class JobTextEditServiceImpl implements IJobTextEditService {
 					.md5Hash(DigestUtils.md5DigestAsHex(jobTextDto.getText().getBytes()))
 					.updated(Calendar.getInstance())
 					.build();
-
 
 
 			return JobTextEditStatusDto.builder()
@@ -149,8 +149,29 @@ public class JobTextEditServiceImpl implements IJobTextEditService {
 	 * @throws NerServiceException
 	 */
 	@Override
-	public void deleteJobText(Integer jobTextId, User user) throws NerServiceException {
+	public void deleteJobText(final Integer jobTextId,
+							  final User user) throws NerServiceException {
+		try {
+			if (jobTextId == null) {
+				return;
+			}
 
+			final Optional<NerJobTextItem> jobTextOpt = this.nerJobTextItemRepository.findById(jobTextId.longValue());
+
+			Option.ofOptional(jobTextOpt).map(
+					jobTextItem -> Try.of(() -> {
+						final LabelingJob labelingJob = jobTextItem.getJob();
+						if (labelingJob.getOwner().getId() == user.getId()) {
+							this.nerJobTextItemRepository.delete(jobTextItem);
+						}
+
+						return true;
+					}));
+
+
+		} catch (Exception e) {
+			throw new NerServiceException(e);
+		}
 	}
 
 
