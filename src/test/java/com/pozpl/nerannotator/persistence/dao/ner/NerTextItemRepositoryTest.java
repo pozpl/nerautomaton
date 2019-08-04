@@ -2,10 +2,10 @@ package com.pozpl.nerannotator.persistence.dao.ner;
 
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
 import com.pozpl.nerannotator.persistence.dao.UserRepository;
-import com.pozpl.nerannotator.persistence.dao.job.LabelingTaskRepository;
+import com.pozpl.nerannotator.persistence.dao.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.persistence.model.LanguageCodes;
 import com.pozpl.nerannotator.persistence.model.User;
-import com.pozpl.nerannotator.persistence.model.job.LabelingTask;
+import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
 import com.pozpl.nerannotator.persistence.model.ner.NerJobTextItem;
 import org.junit.After;
 import org.junit.Before;
@@ -38,15 +38,15 @@ public class NerTextItemRepositoryTest {
 	public UserRepository userRepository;
 
 	@Autowired
-	public LabelingTaskRepository labelingTaskRepository;
+	public LabelingJobsRepository labelingTaskRepository;
 
 	@Autowired
 	public NerJobTextItemRepository nerJobTextItemRepository;
 
 	private User userOne;
 
-	private LabelingTask jobOne;
-	private LabelingTask jobTwo;
+	private LabelingJob jobOne;
+	private LabelingJob jobTwo;
 
 	private NerJobTextItem jobOneTextOne;
 	private NerJobTextItem jobOneTextTwo;
@@ -65,9 +65,9 @@ public class NerTextItemRepositoryTest {
 
 		Calendar now = Calendar.getInstance();
 
-		jobOne = LabelingTask.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
+		jobOne = LabelingJob.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
 				.updated(hourAgo).created( hourAgo).build();
-		jobTwo = LabelingTask.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
+		jobTwo = LabelingJob.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
 				.created(now).updated( now).build();
 
 		labelingTaskRepository.save(jobOne);

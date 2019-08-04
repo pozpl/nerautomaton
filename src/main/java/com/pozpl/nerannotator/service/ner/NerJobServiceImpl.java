@@ -75,7 +75,8 @@ public class NerJobServiceImpl implements INerJobService {
 			final Integer adjustedPage = page != null && page > 0 ? page -1 : 0;
 			Page<LabelingJob> userJobs = labelingJobsRepository.getJobsForOwner(owner, PageRequest.of(adjustedPage, 20, Sort.by(Sort.Direction.DESC, "created")));
 
-			return userJobs.map(nerJob -> Try.of(() -> toDto(nerJob))).map(nerJobTry -> nerJobTry.getOrElse(new NerJobDto()));
+			return userJobs.map(nerJob -> Try.of(() -> toDto(nerJob)))
+					.map(nerJobTry -> nerJobTry.getOrElse(new NerJobDto()));
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
