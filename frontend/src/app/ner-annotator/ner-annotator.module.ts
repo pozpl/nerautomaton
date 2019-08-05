@@ -13,6 +13,7 @@ import {NerJobEditComponent} from './ner-jobs/ner-job-edit/ner-job-edit.componen
 import {AppRoutingModule} from "../app-routing.module";
 import {FormsModule} from "@angular/forms";
 import { NerJobTextsListComponent } from './ner-job-texts-list/ner-job-texts-list.component';
+import { NerJobTextEditComponent } from '../ner-job-text-edit/ner-job-text-edit.component';
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { NerJobTextsListComponent } from './ner-job-texts-list/ner-job-texts-lis
         ResultsReviewComponent,
         NerJobsComponent,
         NerJobEditComponent,
-        NerJobTextsListComponent
+        NerJobTextsListComponent,
+        NerJobTextEditComponent
     ],
     imports: [
         CommonModule,
