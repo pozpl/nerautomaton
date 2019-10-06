@@ -50,17 +50,22 @@
 
                 </mat-table>
 
-                
+
             </div>
 
             <mat-card-actions>
-                <button (click)="saveJob()" 
+                <button (click)="saveJob()"
                     mat-raised-button color="primary">
                     <span *ngIf="! jobDto.id">Create Job</span>
                     <span *ngIf="jobDto.id">Save job</span>
                 </button>
             </mat-card-actions>
 
+        </mat-card>
+
+        <mat-card *ngIf="jobDto != null && jobDto.id" class="card">
+            <ner-job-texts-list [job]="jobDto">
+            </ner-job-texts-list>
         </mat-card>
 
     </div>

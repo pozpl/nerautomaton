@@ -1,6 +1,9 @@
 <ner-job-text-edit></ner-job-text-edit>
 
-<mat-table class="lessons-table mat-elevation-z8" [dataSource]="pagedContent">
+
+<mat-table *ngIf="(pagedContent$ | async) as pagedContent"
+           [dataSource]="pagedContent"
+           class="mat-elevation-z8 texts-table" >
 
     <ng-container matColumnDef="seqNo">
         <div *matHeaderCellDef>#</div>
@@ -16,7 +19,8 @@
     <ng-container matColumnDef="delete">
         <div *matHeaderCellDef>Delete</div>
         <div class="duration-cell"
-             *matCellDef="let textDto">deleteText(textDto)</div>
+             *matCellDef="let textDto">deleteText(textDto)
+        </div>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
