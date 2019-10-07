@@ -1,5 +1,5 @@
 export class NerJobTextDto {
-    id: number
-    text: string
-    jobId: number
+    id: number;
+    text: string;
+    jobId: number;
 }

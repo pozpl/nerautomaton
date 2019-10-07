@@ -11,7 +11,7 @@ import {NerJobsComponent} from './ner-jobs/ner-jobs.component';
 import {NerJobsService} from "./ner-jobs/ner-jobs.service";
 import {NerJobEditComponent} from './ner-jobs/ner-job-edit/ner-job-edit.component';
 import {AppRoutingModule} from "../app-routing.module";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { NerJobTextsListComponent } from './ner-job-texts-list/ner-job-texts-list.component';
 import {NerJobTextEditComponent, NerJobTextEditDialog} from './ner-job-text-edit/ner-job-text-edit.component';
 
@@ -31,7 +31,8 @@ import {NerJobTextEditComponent, NerJobTextEditDialog} from './ner-job-text-edit
         MaterialModule,
         FlexLayoutModule,
         AppRoutingModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [
         TermsAnnotationsService,

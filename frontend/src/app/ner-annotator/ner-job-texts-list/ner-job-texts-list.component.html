@@ -1,13 +1,13 @@
 <ner-job-text-edit></ner-job-text-edit>
 
 
-<mat-table *ngIf="(pagedContent$ | async) as pagedContent"
-           [dataSource]="pagedContent"
+<mat-table *ngIf="(pagedContent$ | async) as page"
+           [dataSource]="page.content"
            class="mat-elevation-z8 texts-table" >
 
     <ng-container matColumnDef="seqNo">
         <div *matHeaderCellDef>#</div>
-        <div *matCellDef="let textDto">{{textDto.seqNo}}</div>
+        <div *matCellDef="let textDto">{{textDto.id}}</div>
     </ng-container>
 
     <ng-container matColumnDef="text">
