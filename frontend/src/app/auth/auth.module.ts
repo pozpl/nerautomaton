@@ -9,6 +9,7 @@ import {AuthService} from "./auth.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {LoginComponent} from "./login/login.component";
 import {XhrInterceptor} from "./xhr-interceptor.interceptor";
+import {AuthInterceptor} from "./auth-interceptor";
 
 @NgModule({
     declarations: [
@@ -24,7 +25,9 @@ import {XhrInterceptor} from "./xhr-interceptor.interceptor";
         SharedComponentsModule
     ],
     providers: [
-        AuthService, { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true },
+        AuthService,
+        {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     ]
 })
 export class AuthModule {
