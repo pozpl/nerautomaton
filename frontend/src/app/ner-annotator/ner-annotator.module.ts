@@ -13,7 +13,8 @@ import {NerJobEditComponent} from './ner-jobs/ner-job-edit/ner-job-edit.componen
 import {AppRoutingModule} from "../app-routing.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { NerJobTextsListComponent } from './ner-job-texts-list/ner-job-texts-list.component';
-import {NerJobTextEditComponent, NerJobTextEditDialog} from './ner-job-text-edit/ner-job-text-edit.component';
+import {NerJobTextEditComponent} from './ner-job-text-edit/ner-job-text-edit.component';
+import {NerJobTextEditDialog} from "./ner-job-text-edit/ner-job-text-edit-dialog.component";
 
 @NgModule({
     declarations: [

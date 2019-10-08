@@ -2,6 +2,7 @@ import {Component, OnInit, Inject, Input, Output, EventEmitter} from '@angular/c
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {NerJobTextDto} from "../ner-job-texts-list/ner-job-text.dto";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {NerJobTextEditDialog} from "./ner-job-text-edit-dialog.component";
 
 @Component({
     selector: 'ner-job-text-edit',
@@ -47,35 +48,3 @@ export class NerJobTextEditComponent implements OnInit {
 }
 
 
-@Component({
-    selector: 'ner-job-edit-dialog',
-    templateUrl: 'ner-job-edit-dialog.component.html',
-    styleUrls: ['./ner-job-text-edit-dialog.component.scss']
-})
-export class NerJobTextEditDialog implements OnInit{
-
-    form: FormGroup;
-    text:string;
-
-
-    constructor(@Inject(MAT_DIALOG_DATA) public data: NerJobTextDto,
-                private dialogRef: MatDialogRef<NerJobTextEditDialog>,
-                private fb: FormBuilder) {
-        this.text = data.text;
-    }
-
-    save(){
-        this.dialogRef.close(this.form.value);
-    }
-
-    close(){
-        this.dialogRef.close();
-    }
-
-    ngOnInit(): void {
-
-        this.form = this.fb.group({
-            text: [this.text, []],
-        });
-    }
-}
