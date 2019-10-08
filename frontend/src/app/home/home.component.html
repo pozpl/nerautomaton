@@ -1,7 +1,7 @@
 <h1>Greeting</h1>
 <div *ngIf="authenticated()">
-  <p>The ID is {{greeting.id}}</p>
-  <p>The content is {{greeting.content}}</p>
+  <p>The ID is {{(user$ | async)?.id}}</p>
+  <p>The content is {{(user$ | async)?.name}}</p>
 </div>
 <div [hidden]="authenticated()">
   <p>Login to see your greeting</p>

@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthService} from "../auth/auth.service";
+import {Observable} from "rxjs";
+import {UserDto} from "../auth/user.dto.";
 
 @Component({
     templateUrl: './home.component.html'
@@ -8,7 +10,7 @@ import {AuthService} from "../auth/auth.service";
 export class HomeComponent implements OnInit {
 
     title = 'Demo';
-    greeting = null;
+    user$: Observable<UserDto> = null;
 
     constructor(private app: AuthService,
                 private http: HttpClient) {
@@ -19,7 +21,7 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.http.get('resource').subscribe(data => this.greeting = data);
+        this.user$ = this.app.isLoggedIn();
     }
 
 }
