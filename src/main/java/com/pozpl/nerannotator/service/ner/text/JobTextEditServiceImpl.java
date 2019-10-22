@@ -131,6 +131,7 @@ public class JobTextEditServiceImpl implements IJobTextEditService {
 					.updated(Calendar.getInstance())
 					.build();
 
+			nerJobTextItemRepository.save(textItem);
 
 			return JobTextEditStatusDto.builder()
 					.jobTextDto(toDto(textItem, labelingJob))
