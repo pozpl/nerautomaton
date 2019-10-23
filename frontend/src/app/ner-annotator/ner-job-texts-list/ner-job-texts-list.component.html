@@ -1,30 +1,38 @@
-<ner-job-text-edit></ner-job-text-edit>
+<ner-job-text-edit [job]="job"></ner-job-text-edit>
 
+<div class="text-table-container  mat-elevation-z8">
+    <mat-table [dataSource]="dataSource">
 
-<mat-table *ngIf="(pagedContent$ | async) as page"
-           [dataSource]="page.content"
-           class="mat-elevation-z8 texts-table" >
+        <ng-container matColumnDef="seqNo">
+            <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+            <mat-cell *matCellDef="let textDto">{{textDto.id}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="seqNo">
-        <div *matHeaderCellDef>#</div>
-        <div *matCellDef="let textDto">{{textDto.id}}</div>
-    </ng-container>
+        <ng-container matColumnDef="text">
+            <mat-header-cell *matHeaderCellDef>Text</mat-header-cell>
+            <mat-cell *matCellDef="let textDto">{{textDto.text}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="text">
-        <div *matHeaderCellDef>Text</div>
-        <div class="description-cell"
-             *matCellDef="let textDto">{{textDto.text}}</div>
-    </ng-container>
+        <ng-container matColumnDef="delete">
+            <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
+            <mat-cell *matCellDef="let textDto">
+                <a (click)="deleteText(textDto)"  class="delete-icon"
+                   type="button">
+                    <mat-icon class="icon">delete</mat-icon>
+                </a>
+            </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="delete">
-        <div *matHeaderCellDef>Delete</div>
-        <div class="duration-cell"
-             *matCellDef="let textDto">deleteText(textDto)
-        </div>
-    </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
 
-</mat-table>
+</div>
+
+<mat-paginator [pageSizeOptions]="[20]"
+               (page)="pageChanged($event)"
+               [length]="dataSource.numberDocuments"
+               showFirstLastButtons>
+</mat-paginator>

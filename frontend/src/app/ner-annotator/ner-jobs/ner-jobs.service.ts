@@ -46,7 +46,9 @@ export class NerJobsService {
 
 export interface Page<T> {
     content: Array<T>;
-    pagable: any
+    pagable: any;
+    totalElements: number;
+
 }
 
 export class NerJobSaveStatus {
