@@ -1,4 +1,6 @@
-<ner-job-text-edit [job]="job"></ner-job-text-edit>
+<ner-job-text-edit [job]="job"
+                   (savedText)="onNewTextAdded($event)">
+</ner-job-text-edit>
 
 <div class="text-table-container  mat-elevation-z8">
     <mat-table [dataSource]="dataSource">

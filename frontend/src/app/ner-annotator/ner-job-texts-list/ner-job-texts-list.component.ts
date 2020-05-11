@@ -1,12 +1,10 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {Page} from "../ner-jobs/ner-jobs.service";
 import {NerJobTextDto} from "./ner-job-text.dto";
 import {NerJobDto} from "../ner-jobs/ner-job.dto";
 import {NerJobTextAccessService} from "./ner-job-text-access.service";
-import {BehaviorSubject, Observable, of} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {MatTableDataSource} from "@angular/material/table";
-import {catchError, finalize, map} from "rxjs/operators";
+import {finalize} from "rxjs/operators";
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
 
 @Component({
@@ -25,16 +23,12 @@ export class NerJobTextsListComponent implements OnInit, OnChanges {
 
     displayedColumns = ["seqNo", "text", "delete"];
 
-    // pagedContent$: Observable<NerJobTextDto[]>;
-    // page: number = 1;
 
     constructor(private textAccessService: NerJobTextAccessService) {
         this.dataSource = new TextItemsDatasource(this.textAccessService);
     }
 
     ngOnInit() {
-        // this.dataSource = new TextItemsDatasource(this.textAccessService);
-        // this.dataSource.paginator = this.paginator;
     }
 
 
@@ -44,15 +38,16 @@ export class NerJobTextsListComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.job !== null) {
-            // this.pagedContent$ = this.textAccessService
-            //     .listText(this.job.id, this.page)
-            //     .pipe(map(page => page.content));
             this.dataSource.listText(this.job.id, 1);
         }
     }
 
     public pageChanged(event: PageEvent) {
         this.dataSource.listText(this.job.id, event.pageIndex);
+    }
+
+    onNewTextAdded(newTextItem: NerJobTextDto) {
+        this.dataSource.addToTheTop(newTextItem);
     }
 }
 
@@ -75,6 +70,12 @@ export class TextItemsDatasource implements DataSource<NerJobTextDto> {
     disconnect(collectionViewer: CollectionViewer): void {
         this.documentsSubject.complete();
         this.loadingSubject.complete();
+    }
+
+    addToTheTop(nerJobText: NerJobTextDto){
+        const existingList = this.documentsSubject.getValue();
+        existingList.unshift(nerJobText);
+        this.documentsSubject.next(existingList);
     }
 
     listText(jobId: number, page: number) {

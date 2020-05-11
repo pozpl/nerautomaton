@@ -17,7 +17,7 @@ export class NerJobTextEditComponent implements OnInit {
 
     @Input("textDto") textDto: NerJobTextDto;
     @Input("job") jobDto: NerJobDto;
-    @Output() savedText: EventEmitter<NerJobTextDto>;
+    @Output() savedText: EventEmitter<NerJobTextDto> = new EventEmitter<NerJobTextDto>();
 
     constructor(public dialog: MatDialog,
                 private textService: NerJobTextEditService) {
@@ -48,6 +48,7 @@ export class NerJobTextEditComponent implements OnInit {
                 textDto => {
                     if (textDto !== null) {
                         this.textDto = textDto.jobTextDto;
+                        this.savedText.emit(this.textDto);
                     }
                 },
                 cancel => console.log("closed with error")
