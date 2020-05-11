@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -40,12 +42,21 @@ public class NerJobTextItem {
 	private String tokens;
 
 
+	@CreationTimestamp
 	@Temporal(value = TemporalType.TIMESTAMP)
-	@Column(name = "created", nullable = false, updatable = false)
+	@Column(name = "created", insertable = false, updatable = false)
 	private Calendar created;
 
+	@UpdateTimestamp
 	@Temporal(value = TemporalType.TIMESTAMP)
-	@Column(name = "updated", nullable = false)
+	@Column(name = "updated", insertable = false, updatable = false)
 	private Calendar updated;
+
+	public static NerJobTextItem of(LabelingJob job, String text, String md5Hash){
+		return new NerJobTextItemBuilder()
+				.job(job)
+				.text(text)
+				.md5Hash(md5Hash).build()  ;
+	}
 	
 }

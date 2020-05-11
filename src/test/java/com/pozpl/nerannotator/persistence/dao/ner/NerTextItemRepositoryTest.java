@@ -73,12 +73,12 @@ public class NerTextItemRepositoryTest {
 		labelingTaskRepository.save(jobOne);
 		labelingTaskRepository.save(jobTwo);
 
-		jobOneTextOne = new NerJobTextItem(jobOne, "text_one", "hash_one");
-		jobOneTextTwo = new NerJobTextItem(jobOne, "text_two", "hash_two");
+		jobOneTextOne = NerJobTextItem.of(jobOne, "text_one", "hash_one");
+		jobOneTextTwo = NerJobTextItem.of(jobOne, "text_two", "hash_two");
 		jobOneTextTwo.setCreated(hourAgo);
 		jobOneTextTwo.setUpdated(hourAgo);
 
-		jobTwoTextOne = new NerJobTextItem(jobTwo, "text_one", "hash_one");//same text different job
+		jobTwoTextOne = NerJobTextItem.of(jobTwo, "text_one", "hash_one");//same text different job
 
 		nerJobTextItemRepository.save(jobOneTextOne);
 		nerJobTextItemRepository.save(jobOneTextTwo);
