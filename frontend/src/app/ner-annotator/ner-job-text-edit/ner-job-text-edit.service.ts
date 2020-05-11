@@ -2,6 +2,7 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {NerJobTextDto} from "../ner-job-texts-list/ner-job-text.dto";
 import {Injectable} from "@angular/core";
+import {NerJobTextSaveStatus} from "./ner-job-text-edit-status.dto";
 
 @Injectable()
 export class NerJobTextEditService {
@@ -36,11 +37,3 @@ export class NerJobTextEditService {
     }
 }
 
-
-export class NerJobTextSaveStatus {
-    nerJobDto: NerJobTextDto;
-
-    status: string;
-
-    errorCode: string;
-}
