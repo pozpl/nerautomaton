@@ -53,7 +53,7 @@ public class JobTextAccessServiceImpl implements IJobTextAccessService {
 				}
 
 				final Page<NerJobTextItem> textItems = this.nerJobTextItemRepository.getForJob(job,
-									PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "id")));
+									PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "id")));
 				return textItems.map(textItem -> JobTextDto.builder()
 						.id(textItem.getId().intValue())
 						.text(textItem.getText())
