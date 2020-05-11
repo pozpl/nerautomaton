@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.2.6.RELEASE'
+		springBootVersion = '2.2.7.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -12,8 +12,8 @@ buildscript {
 }
 
 plugins {
-	id "org.flywaydb.flyway" version "6.3.2"
-	id 'io.franzbecker.gradle-lombok' version '2.0'
+	id "org.flywaydb.flyway" version "6.4.1"
+	id "io.freefair.lombok" version "5.0.1"
 }
 
 apply plugin: 'java'
@@ -41,9 +41,10 @@ dependencies {
 
 	compile "org.flywaydb:flyway-core:6.3.2"
 
-	compile group: 'io.vavr', name: 'vavr', version: '0.10.0'
-	compile group: 'io.vavr', name: 'vavr-match', version: '0.10.0'
-	compile group: 'io.vavr', name: 'vavr-match-processor', version: '0.10.0'
+	compile group: 'io.vavr', name: 'vavr', version: '0.10.2'
+	compile group: 'io.vavr', name: 'vavr-match', version: '0.10.2'
+	compile group: 'io.vavr', name: 'vavr-match-processor', version: '0.10.2'
+
 	compile group: 'commons-codec', name: 'commons-codec', version: '1.13'
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
 
