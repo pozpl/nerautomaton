@@ -6,37 +6,28 @@ import {NerJobTextEditService} from "./ner-job-text-edit.service";
 import {flatMap} from "rxjs/operators";
 import {of} from "rxjs";
 import {NerJobDto} from "../ner-jobs/ner-job.dto";
+import {NerJobTextEditModalService} from "./ner-job-text-edit-modal.service";
 
 @Component({
     selector: 'ner-job-text-edit',
-    templateUrl: './ner-job-text-edit.component.html',
-    styleUrls: ['./ner-job-text-edit.component.scss'],
+    templateUrl: './ner-job-text-add.component.html',
+    styleUrls: ['./ner-job-text-add.component.scss'],
     providers: [NerJobTextEditService]
 })
-export class NerJobTextEditComponent implements OnInit {
+export class NerJobTextAddComponent implements OnInit {
 
-    @Input("textDto") textDto: NerJobTextDto;
     @Input("job") jobDto: NerJobDto;
     @Output() savedText: EventEmitter<NerJobTextDto> = new EventEmitter<NerJobTextDto>();
 
-    constructor(public dialog: MatDialog,
+    constructor(private nerJobTextEditModalService: NerJobTextEditModalService,
                 private textService: NerJobTextEditService) {
     }
 
-
-    editTextItem() {
-        this.editText(this.textDto);
+    ngOnInit() {
     }
 
-    editText(textDto: NerJobTextDto) {
-        let dialogRef = this.dialog.open(NerJobTextEditDialog, {
-            minHeight: 500,
-            minWidth: 500,
-
-            data: textDto
-        });
-
-        dialogRef.afterClosed().pipe(
+    createTextItem() {
+        this.nerJobTextEditModalService.openNewTextForJob(this.jobDto.id).pipe(
             flatMap(textDto => {
                 if (textDto !== null) {
                     return this.textService.save(textDto);
@@ -47,26 +38,12 @@ export class NerJobTextEditComponent implements OnInit {
             .subscribe(
                 textDto => {
                     if (textDto !== null) {
-                        this.textDto = textDto.jobTextDto;
-                        this.savedText.emit(this.textDto);
+                        this.savedText.emit(textDto);
                     }
                 },
                 cancel => console.log("closed with error")
             );
     }
-
-    createTextItem() {
-        if (this.jobDto !== null && this.jobDto.id) {
-            const textToAdd = new NerJobTextDto();
-            textToAdd.jobId = this.jobDto.id;
-            this.editText(textToAdd);
-        }
-    }
-
-
-    ngOnInit() {
-    }
-
 }
 
 

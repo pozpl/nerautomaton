@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NerJobTextEditComponent } from './ner-job-text-edit.component';
+import { NerJobTextAddComponent } from './ner-job-text-add.component';
 
 describe('NerJobTextEditComponent', () => {
-  let component: NerJobTextEditComponent;
-  let fixture: ComponentFixture<NerJobTextEditComponent>;
+  let component: NerJobTextAddComponent;
+  let fixture: ComponentFixture<NerJobTextAddComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NerJobTextEditComponent ]
+      declarations: [ NerJobTextAddComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NerJobTextEditComponent);
+    fixture = TestBed.createComponent(NerJobTextAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
