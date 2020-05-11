@@ -6,12 +6,16 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {finalize} from "rxjs/operators";
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
+import {NerJobTextEditService} from "../ner-job-text-edit/ner-job-text-edit.service";
 
 @Component({
     selector: 'ner-job-texts-list',
     templateUrl: './ner-job-texts-list.component.html',
     styleUrls: ['./ner-job-texts-list.component.scss'],
-    providers: [NerJobTextAccessService]
+    providers: [
+        NerJobTextAccessService,
+        NerJobTextEditService
+    ]
 })
 export class NerJobTextsListComponent implements OnInit, OnChanges {
 
@@ -24,7 +28,8 @@ export class NerJobTextsListComponent implements OnInit, OnChanges {
     displayedColumns = ["seqNo", "text", "delete"];
 
 
-    constructor(private textAccessService: NerJobTextAccessService) {
+    constructor(private textAccessService: NerJobTextAccessService,
+                private textEditService: NerJobTextEditService) {
         this.dataSource = new TextItemsDatasource(this.textAccessService);
     }
 
@@ -33,7 +38,8 @@ export class NerJobTextsListComponent implements OnInit, OnChanges {
 
 
     deleteText(textDto: NerJobTextDto) {
-
+        this.textEditService.delete(textDto.id)
+            .subscribe(() => this.dataSource.deleteFromList(textDto));
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -76,6 +82,12 @@ export class TextItemsDatasource implements DataSource<NerJobTextDto> {
         const existingList = this.documentsSubject.getValue();
         existingList.unshift(nerJobText);
         this.documentsSubject.next(existingList);
+    }
+
+    deleteFromList(nerJobTextDto: NerJobTextDto){
+        const existingList = this.documentsSubject.getValue();
+        const filteredList = existingList.filter(el => el.id != nerJobTextDto.id);
+        this.documentsSubject.next(filteredList);
     }
 
     listText(jobId: number, page: number) {
