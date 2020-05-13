@@ -49,7 +49,7 @@ public class NerJobTextItem {
 
 	@UpdateTimestamp
 	@Temporal(value = TemporalType.TIMESTAMP)
-	@Column(name = "updated", insertable = false, updatable = false)
+	@Column(name = "updated", nullable = false)
 	private Calendar updated;
 
 	public static NerJobTextItem of(LabelingJob job, String text, String md5Hash){
