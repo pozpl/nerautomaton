@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.service.ner.text;
+package com.pozpl.nerannotator.service.ner.jobmanagement.text;
 
 import com.pozpl.nerannotator.persistence.dao.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.persistence.dao.ner.NerJobTextItemRepository;
@@ -6,8 +6,6 @@ import com.pozpl.nerannotator.persistence.model.User;
 import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
 import com.pozpl.nerannotator.persistence.model.ner.NerJobTextItem;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
-import io.vavr.control.Option;
-import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

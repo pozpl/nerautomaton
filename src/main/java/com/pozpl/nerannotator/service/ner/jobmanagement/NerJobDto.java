@@ -1,6 +1,6 @@
-package com.pozpl.nerannotator.service.ner;
+package com.pozpl.nerannotator.service.ner.jobmanagement;
 
-import com.pozpl.nerannotator.service.ner.labels.NerLabelDto;
+import com.pozpl.nerannotator.service.ner.jobmanagement.labels.NerLabelDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

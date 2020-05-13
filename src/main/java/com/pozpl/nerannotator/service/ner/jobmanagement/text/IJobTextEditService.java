@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.service.ner.text;
+package com.pozpl.nerannotator.service.ner.jobmanagement.text;
 
 import com.pozpl.nerannotator.persistence.model.User;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;

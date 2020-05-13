@@ -1,26 +1,25 @@
-package com.pozpl.nerannotator.service.ner.text;
-
+package com.pozpl.nerannotator.service.ner.jobmanagement.labels;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Builder(toBuilder = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class JobTextEditStatusDto {
+public class NerLabelEditStatusDto {
 
-	private JobTextDto jobTextDto;
+	private NerLabelDto nerLabelDto;
 
 	private boolean error;
-
 
 	private ErrorCode errorCode;
 
 
 	public enum ErrorCode{
-		EMPTY_TEXT,
+		DUPLICATE_NAME,
 	}
 }

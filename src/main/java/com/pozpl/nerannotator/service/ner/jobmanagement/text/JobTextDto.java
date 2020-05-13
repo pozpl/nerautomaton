@@ -1,5 +1,4 @@
-package com.pozpl.nerannotator.service.ner.labels;
-
+package com.pozpl.nerannotator.service.ner.jobmanagement.text;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NerLabelDto {
+public class JobTextDto {
 
 	private Integer id;
 
-	private String name;
+	private Integer jobId;
 
-	private String description;
+	private String text;
 }

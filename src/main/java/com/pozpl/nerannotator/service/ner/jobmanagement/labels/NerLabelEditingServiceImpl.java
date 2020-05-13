@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.service.ner.labels;
+package com.pozpl.nerannotator.service.ner.jobmanagement.labels;
 
 import com.pozpl.nerannotator.persistence.dao.ner.NerLabelsRepository;
 import com.pozpl.nerannotator.persistence.model.job.LabelingJob;

@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.service.ner;
+package com.pozpl.nerannotator.service.ner.jobmanagement;
 
 import lombok.Builder;
 import lombok.Data;
