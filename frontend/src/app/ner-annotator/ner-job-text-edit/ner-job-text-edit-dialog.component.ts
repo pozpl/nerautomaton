@@ -32,9 +32,9 @@ export class NerJobTextEditDialog implements OnInit{
     ngOnInit(): void {
 
         this.form = this.createFormGroup();
-        // this.form = this.fb.group({
-        //     text: [this.text, []],
-        // });
+        this.form = this.fb.group({
+            text: [this.text, []],
+        });
     }
 
     createFormGroup() {

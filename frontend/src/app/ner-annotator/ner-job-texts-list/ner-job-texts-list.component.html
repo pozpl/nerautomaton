@@ -1,6 +1,6 @@
-<ner-job-text-edit [job]="job"
+<ner-job-text-add [job]="job"
                    (savedText)="onNewTextAdded($event)">
-</ner-job-text-edit>
+</ner-job-text-add>
 
 <div class="spinner-container" *ngIf="dataSource.loading$ | async">
     <mat-spinner></mat-spinner>
@@ -9,14 +9,29 @@
 <div class="text-table-container  mat-elevation-z8">
     <mat-table [dataSource]="dataSource">
 
-        <ng-container matColumnDef="seqNo">
-            <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
-            <mat-cell *matCellDef="let textDto">{{textDto.id}}</mat-cell>
+        <ng-container matColumnDef="edit">
+            <mat-header-cell *matHeaderCellDef
+                             fxFlex="1 1 6em"
+            >
+                Edit
+            </mat-header-cell>
+            <mat-cell *matCellDef="let textDto"
+                      fxFlex="1 1 6em"
+            >
+                <a (click)="editText(textDto)">
+                    <mat-icon>edit</mat-icon>
+                </a>
+            </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="text">
-            <mat-header-cell *matHeaderCellDef>Text</mat-header-cell>
-            <mat-cell *matCellDef="let textDto">
+            <mat-header-cell *matHeaderCellDef
+                             fxFlex="1 1 calc(80% - 6em)"
+            >
+                Text
+            </mat-header-cell>
+            <mat-cell *matCellDef="let textDto"
+                      fxFlex="1 1 calc(80% - 6em)">
                 <div class="ner-job-text-item">
                     {{textDto.text}}
                 </div>

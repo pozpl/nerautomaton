@@ -2,7 +2,7 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {NerJobTextDto} from "../ner-job-texts-list/ner-job-text.dto";
 import {Injectable} from "@angular/core";
-import {NerJobTextSaveStatus} from "./ner-job-text-edit-status.dto";
+import {NerJobTextEditStatusDto} from "./ner-job-text-edit-status.dto";
 
 @Injectable()
 export class NerJobTextEditService {
@@ -21,8 +21,8 @@ export class NerJobTextEditService {
      * save text
      * @param nerJobTextDto
      */
-    save(nerJobTextDto: NerJobTextDto):Observable<NerJobTextSaveStatus>{
-        return this.httpClient.post<NerJobTextSaveStatus>('/ner/text/edit/save', nerJobTextDto, {
+    save(nerJobTextDto: NerJobTextDto):Observable<NerJobTextEditStatusDto>{
+        return this.httpClient.post<NerJobTextEditStatusDto>('/ner/text/edit/save', nerJobTextDto, {
             responseType: 'json',
             headers: new HttpHeaders({ 'Content-Type': 'application/json' })
         });

@@ -1,9 +1,12 @@
 import {NerJobTextDto} from "../ner-job-texts-list/ner-job-text.dto";
 
-export class NerJobTextSaveStatus {
-    nerJobDto: NerJobTextDto;
+export class NerJobTextEditStatusDto {
+
+    jobTextDto: NerJobTextDto;
 
     status: string;
 
-    errorCode: string;
+    errorCode: NerJobTextSaveErrorType;
 }
+
+type NerJobTextSaveErrorType = 'EMPTY_TEXT'

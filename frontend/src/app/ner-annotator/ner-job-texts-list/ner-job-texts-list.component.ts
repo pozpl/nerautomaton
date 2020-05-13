@@ -2,11 +2,12 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@an
 import {NerJobTextDto} from "./ner-job-text.dto";
 import {NerJobDto} from "../ner-jobs/ner-job.dto";
 import {NerJobTextAccessService} from "./ner-job-text-access.service";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, of} from "rxjs";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {finalize} from "rxjs/operators";
+import {finalize, flatMap} from "rxjs/operators";
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
 import {NerJobTextEditService} from "../ner-job-text-edit/ner-job-text-edit.service";
+import {NerJobTextEditModalService} from "../ner-job-text-edit/ner-job-text-edit-modal.service";
 
 @Component({
     selector: 'ner-job-texts-list',
@@ -24,12 +25,14 @@ export class NerJobTextsListComponent implements OnInit, OnChanges {
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
     public dataSource: TextItemsDatasource;
+    private page = 1;
 
-    displayedColumns = ["seqNo", "text", "delete"];
+    displayedColumns = ["edit", "text", "delete"];
 
 
     constructor(private textAccessService: NerJobTextAccessService,
-                private textEditService: NerJobTextEditService) {
+                private textEditService: NerJobTextEditService,
+                private nerJobTextEditModalService: NerJobTextEditModalService) {
         this.dataSource = new TextItemsDatasource(this.textAccessService);
     }
 
@@ -44,12 +47,31 @@ export class NerJobTextsListComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.job !== null) {
-            this.dataSource.listText(this.job.id, 1);
+            this.dataSource.listText(this.job.id, this.page);
         }
     }
 
     public pageChanged(event: PageEvent) {
+        this.page = event.pageIndex;
         this.dataSource.listText(this.job.id, event.pageIndex);
+    }
+
+    editText(textDto: NerJobTextDto) {
+        this.nerJobTextEditModalService.openForEdit(textDto)
+            .pipe(flatMap(dto => {
+                    if (dto != null) {
+                        return this.textEditService.save(textDto);
+                    }
+                    return of(null);
+                }
+            ))
+            .subscribe(dto => {
+                    if (dto !== null) {
+                        this.dataSource.listText(this.job.id, this.page);
+                    }
+
+                }
+            );
     }
 
     onNewTextAdded(newTextItem: NerJobTextDto) {
@@ -78,13 +100,13 @@ export class TextItemsDatasource implements DataSource<NerJobTextDto> {
         this.loadingSubject.complete();
     }
 
-    addToTheTop(nerJobText: NerJobTextDto){
+    addToTheTop(nerJobText: NerJobTextDto) {
         const existingList = this.documentsSubject.getValue();
         existingList.unshift(nerJobText);
         this.documentsSubject.next(existingList);
     }
 
-    deleteFromList(nerJobTextDto: NerJobTextDto){
+    deleteFromList(nerJobTextDto: NerJobTextDto) {
         const existingList = this.documentsSubject.getValue();
         const filteredList = existingList.filter(el => el.id != nerJobTextDto.id);
         this.documentsSubject.next(filteredList);
@@ -94,7 +116,7 @@ export class TextItemsDatasource implements DataSource<NerJobTextDto> {
         this.loadingSubject.next(true);
         this.textAccessService.listText(jobId, page)
             .pipe(
-                 // catchError(() => of(new Array<NerJobTextDto>[])),
+                // catchError(() => of(new Array<NerJobTextDto>[])),
                 finalize(() => this.loadingSubject.next(false))
             ).subscribe(
             result => {
