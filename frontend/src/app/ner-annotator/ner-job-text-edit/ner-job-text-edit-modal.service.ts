@@ -13,8 +13,8 @@ export class NerJobTextEditModalService {
 
   openForEdit(nerJobTextDto: NerJobTextDto): Observable<NerJobTextDto> {
       let dialogRef = this.dialog.open(NerJobTextEditDialog, {
-          minHeight: 500,
-          minWidth: 500,
+          minWidth: 800,
+          hasBackdrop: false,
 
           data: nerJobTextDto
       });

@@ -3,8 +3,11 @@
     <form [formGroup]="form" class="text-editing-form">
         <mat-form-field class="full-width">
           <textarea matInput
+                    matTextareaAutosize
+                    matAutosizeMinRows=6
                     formControlName="text"
-                    placeholder="Some text here">
+                    placeholder="Put text here"
+          >
           </textarea>
         </mat-form-field>
     </form>
