@@ -45,7 +45,7 @@ public class NerJobServiceImpl implements INerJobService {
 	@Override
 	public Optional<NerJobDto> getJobById(Integer id, User user) throws NerServiceException {
 		try {
-			final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(new Long(id), user);
+			final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(Long.valueOf(id), user);
 
 			return nerJobOpt.map(nerJob -> Try.of(() -> toDto(nerJob)))
 					.flatMap(tryDto -> {
@@ -127,12 +127,10 @@ public class NerJobServiceImpl implements INerJobService {
 			this.nerLabelEditingService.saveAllLabelsForJob(labelingJobToSave, nerJobDto.getLabels());
 
 
-			final NerJobSaveStatusDto nerJobSaveStatusDto = NerJobSaveStatusDto.builder()
+			return  NerJobSaveStatusDto.builder()
 					.status(NerJobSaveStatusDto.SaveStatus.OK)
 					.nerJobDto(toDto(labelingJobToSave))
 					.build();
-
-			return nerJobSaveStatusDto;
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
@@ -148,7 +146,7 @@ public class NerJobServiceImpl implements INerJobService {
 	@Override
 	public void deleteJob(User user, Integer jobId) throws NerServiceException {
 		try {
-			final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(new Long(jobId), user);
+			final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(Long.valueOf(jobId), user);
 			if (nerJobOpt.isPresent()) {
 				labelingJobsRepository.delete(nerJobOpt.get());
 			}

@@ -37,7 +37,7 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 		try {
 			final List<NerLabel> availableEntities = this.nerLabelsRepository.getForJob(labelingJob);
 
-			return availableEntities.stream().map(entityLabel -> toDto(entityLabel)).collect(Collectors.toList());
+			return availableEntities.stream().map(this::toDto).collect(Collectors.toList());
 
 		} catch (Exception e) {
 			throw new NerServiceException(e);
@@ -154,10 +154,7 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 							.anyMatch(labelDto -> label.getId().equals(labelDto.getId())))
 					.collect(Collectors.toList());
 
-			labelsToDelete.stream().map(labelToDelete -> {
-				this.nerLabelsRepository.delete(labelToDelete);
-				return labelToDelete;
-			});
+			labelsToDelete.stream().forEach(labelToDelete -> this.nerLabelsRepository.delete(labelToDelete));
 
 			final List<NerLabelDto> savedLabelsDtos = new ArrayList<>();
 			for (NerLabelDto labelDto : labelDtos) {
@@ -166,19 +163,6 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 					savedLabelsDtos.add(saveStatus.getNerLabelDto());
 				}
 			}
-
-//			Vector.fromIterable(labelDtos).stream().map(labelDto -> {
-//				return Try.withCatch(() -> this.saveLabel(labelDto, labelingJob).getNerLabelDto(), NerServiceException.class);
-//			}).reduce(Try.success(Vector.empty()), (Try<Vector<NerLabelDto>, NerServiceException> acc, Try<NerLabelDto, NerServiceException> el) -> {
-////				//Either<NerServiceException, NerLabelDto> leEither  = el.toEither();
-//
-//
-//				if(el.isSuccess()){
-//					return Try.success(acc.orElseGet(() -> Vector.empty()).append(el.orElseGet(null)));
-//				} else{
-//					return Try.failure(el.failureGet().orElse(null));
-//				}
-//			} );
 
 			return savedLabelsDtos;
 

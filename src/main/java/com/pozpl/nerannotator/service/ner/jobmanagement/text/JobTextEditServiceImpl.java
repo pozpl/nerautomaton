@@ -48,7 +48,7 @@ public class JobTextEditServiceImpl implements IJobTextEditService {
 
 				final LabelingJob labelingJob = textItem.getJob();//TODO change to DAO method call
 
-				if (labelingJob.getOwner().getId() != user.getId()) {
+				if (! labelingJob.getOwner().getId().equals(user.getId())) {
 					throw new NerServiceException(String.format("Labeling job Text save: attempt to save text item for job belonging to user %d " +
 							"from user %d session ", labelingJob.getOwner().getId(), user.getId()));
 				}
@@ -87,7 +87,7 @@ public class JobTextEditServiceImpl implements IJobTextEditService {
 
 			final LabelingJob labelingJob = labelingJobOpt.get();
 
-			if (labelingJob.getOwner().getId() != user.getId()) {
+			if (! labelingJob.getOwner().getId().equals(user.getId())) {
 				throw new NerServiceException(String.format("Labeling job Text save: attempt to save text item for job belonging to user %d " +
 						"from user %d session ", labelingJob.getOwner().getId(), user.getId()));
 			}
@@ -109,7 +109,7 @@ public class JobTextEditServiceImpl implements IJobTextEditService {
 
 					final LabelingJob labelingJobFromText = textItem.getJob();//TODO change to DAO method call
 
-					if (labelingJob.getId() != labelingJobFromText.getId()) {
+					if (! labelingJob.getId().equals(labelingJobFromText.getId())) {
 						throw new NerServiceException(String.format("Labeling job Text save: attempt to save text belonging to labeling job  %d " +
 										"but with labeling job %d provided ", labelingJobFromText.getId(),
 								labelingJob.getId()));
@@ -162,7 +162,7 @@ public class JobTextEditServiceImpl implements IJobTextEditService {
 			Option.ofOptional(jobTextOpt).map(
 					jobTextItem -> Try.of(() -> {
 						final LabelingJob labelingJob = jobTextItem.getJob();
-						if (labelingJob.getOwner().getId() == user.getId()) {
+						if (labelingJob.getOwner().getId().equals(user.getId())) {
 							this.nerJobTextItemRepository.delete(jobTextItem);
 						}
 
