@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.persistence.model.ner;
 
-import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
+import com.pozpl.nerannotator.persistence.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ import java.util.Calendar;
 @Entity
 @Table(name = "ner_user_text_processing_result",
 		uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "text_id" }) })
-public class UserTextProcessingResult {
+public class UserNerTextProcessingResult {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class UserTextProcessingResult {
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	private LabelingJob user;
+	private User user;
 
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "text_id")
