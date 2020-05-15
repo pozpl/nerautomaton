@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 
 public interface INerAnnotationTextsAccessService {
 
-	NerAnnotationTextDto getNextUnprocessed(Integer jobId,
+	Page<NerAnnotationTextDto> getNextUnprocessed(Integer jobId,
 											User user) throws NerServiceException;
 
 	Page<NerAnnotationTextDto> getProcessed(Integer jobId,

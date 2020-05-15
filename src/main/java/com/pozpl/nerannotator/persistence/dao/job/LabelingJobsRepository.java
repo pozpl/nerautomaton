@@ -20,4 +20,9 @@ public interface LabelingJobsRepository extends PagingAndSortingRepository<Label
 
 	@Query("SELECT j FROM LabelingJob AS j WHERE j.owner = :owner AND j.id = :id")
 	Optional<LabelingJob> findByIdAndOwner(@Param("id") Long id, @Param("owner") User user);
+
+	@Query("SELECT u FROM LabelingJob  as j " +
+			"JOIN j.owner AS u " +
+			"WHERE j = :job ")
+	User getOwnerForJob(@Param("job") LabelingJob job);
 }
