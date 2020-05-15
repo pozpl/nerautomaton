@@ -37,7 +37,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation 'org.springframework.session:spring-session-jdbc'
 
 //	compile "org.flywaydb:flyway-core:6.3.2"
 
@@ -48,7 +47,7 @@ dependencies {
 	implementation group: 'commons-codec', name: 'commons-codec', version: '1.13'
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
 
-
+	implementation 'edu.stanford.nlp:stanford-corenlp:4.0.0'
 
 
 	implementation(project(':frontend'))
