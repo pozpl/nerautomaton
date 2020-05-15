@@ -37,8 +37,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-
-//	compile "org.flywaydb:flyway-core:6.3.2"
+	
 
 	implementation group: 'io.vavr', name: 'vavr', version: '0.10.2'
 	implementation group: 'io.vavr', name: 'vavr-match', version: '0.10.2'
