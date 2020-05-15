@@ -10,6 +10,10 @@ public class NerServiceException extends Exception {
 		super(e);
 	}
 
+	public NerServiceException(Throwable e){
+		super(e);
+	}
+
 	public NerServiceException(String msg) {
 		super(msg);
 		this.externalMsg = msg;
