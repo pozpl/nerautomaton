@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.service.ner.text;
 
-import com.pozpl.nerannotator.service.ner.annotation.NerLabelPosition;
+import com.pozpl.nerannotator.service.ner.annotation.BLIUOScheme;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,7 @@ public class TaggedTermDto {
 
 	private String token;
 	private String label;
-	private NerLabelPosition position;
+	private BLIUOScheme position;
 	private SpecialTextMark specialTextMark;
 
 }

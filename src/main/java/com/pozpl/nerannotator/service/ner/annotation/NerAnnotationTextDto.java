@@ -15,4 +15,5 @@ import java.util.List;
 public class NerAnnotationTextDto {
 	private Integer id;
 	private List<TaggedTermDto> tokens;
+	private String text;
 }
