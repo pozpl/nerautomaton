@@ -8,6 +8,7 @@ import com.pozpl.nerannotator.persistence.model.ner.NerJobTextItem;
 import com.pozpl.nerannotator.persistence.model.ner.UserNerTextProcessingResult;
 import com.pozpl.nerannotator.service.exceptions.NerServiceException;
 import com.pozpl.nerannotator.service.ner.rights.IUserJobTasksRightsService;
+import com.pozpl.nerannotator.service.ner.text.INerAnnotatedTextParsingService;
 import com.pozpl.nerannotator.service.ner.text.IRawTextPreprocessorForNer;
 import com.pozpl.nerannotator.service.ner.text.TaggedTermDto;
 import com.pozpl.nerannotator.service.util.PageDto;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,16 +32,19 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 	private final LabelingJobsRepository labelingJobsRepository;
 	private final IUserJobTasksRightsService userJobTasksRightsService;
 	private final IRawTextPreprocessorForNer textPreprocessorForNer;
+	private final INerAnnotatedTextParsingService nerAnnotatedTextParsingService;
 
 	@Autowired
 	public NerAnnotationTextsAccessServiceImpl(UserTextProcessingResultRepository processingResultRepository,
 											   LabelingJobsRepository labelingJobsRepository,
 											   IUserJobTasksRightsService userJobTasksRightsService,
-											   IRawTextPreprocessorForNer textPreprocessorForNer) {
+											   IRawTextPreprocessorForNer textPreprocessorForNer,
+											   INerAnnotatedTextParsingService nerAnnotatedTextParsingService) {
 		this.processingResultRepository = processingResultRepository;
 		this.labelingJobsRepository = labelingJobsRepository;
 		this.userJobTasksRightsService = userJobTasksRightsService;
 		this.textPreprocessorForNer = textPreprocessorForNer;
+		this.nerAnnotatedTextParsingService = nerAnnotatedTextParsingService;
 	}
 
 	@Override
@@ -98,15 +103,26 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 			final Page<UserNerTextProcessingResult> processedTexts = processingResultRepository.getForUserAndJob(user, job,
 					PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "created")));
 
+			final List<NerAnnotationTextDto> annotationTextDtos = new ArrayList<>();
 			for (UserNerTextProcessingResult processedText : processedTexts) {
-				
+				annotationTextDtos.add(this.toDto(processedText));
 			}
 
 
-			return PageDto.empty();
+			return new PageDto(page, processedTexts.getSize(), 20, annotationTextDtos);
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
+	}
+
+
+	private NerAnnotationTextDto toDto(UserNerTextProcessingResult userResult) throws NerServiceException {
+		final NerJobTextItem textItem = userResult.getTextItem();
+		return NerAnnotationTextDto.builder()
+				.tokens(this.nerAnnotatedTextParsingService.parse(userResult.getAnnotatedText()))
+				.text(textItem.getText())
+				.id(textItem.getId().intValue())
+				.build();
 	}
 
 
