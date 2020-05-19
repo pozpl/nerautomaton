@@ -1,5 +1,8 @@
 package com.pozpl.nerannotator.service.ner.text;
 
+import com.pozpl.nerannotator.ner.annotation.textprocess.RawTextPreprocessorForNerImpl;
+import com.pozpl.nerannotator.ner.annotation.textprocess.SpecialTextMark;
+import com.pozpl.nerannotator.ner.annotation.textprocess.TaggedTermDto;
 import org.junit.Before;
 import org.junit.Test;
 

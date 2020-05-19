@@ -1,11 +1,11 @@
 package com.pozpl.nerannotator.persistence.dao.ner;
 
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
-import com.pozpl.nerannotator.persistence.dao.UserRepository;
-import com.pozpl.nerannotator.persistence.dao.job.LabelingJobsRepository;
-import com.pozpl.nerannotator.persistence.model.LanguageCodes;
-import com.pozpl.nerannotator.persistence.model.User;
-import com.pozpl.nerannotator.persistence.model.job.LabelingJob;
+import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
+import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
+import com.pozpl.nerannotator.ner.dao.model.LanguageCodes;
+import com.pozpl.nerannotator.auth.dao.model.User;
+import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 
 import org.junit.After;
 import org.junit.Before;

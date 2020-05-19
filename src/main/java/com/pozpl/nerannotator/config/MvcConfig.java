@@ -1,8 +1,8 @@
 package com.pozpl.nerannotator.config;
 
 
-import com.pozpl.nerannotator.controllers.resolver.LoggedInUserResolver;
-import com.pozpl.nerannotator.persistence.dao.UserRepository;
+import com.pozpl.nerannotator.shared.resolvers.LoggedInUserResolver;
+import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
