@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.persistence.model;
+package com.pozpl.nerannotator.auth.dao.model;
 
 import lombok.Data;
 

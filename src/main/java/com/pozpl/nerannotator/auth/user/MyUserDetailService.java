@@ -1,10 +1,10 @@
-package com.pozpl.nerannotator.service;
+package com.pozpl.nerannotator.auth.user;
 
-import com.pozpl.nerannotator.persistence.dao.RoleRepository;
-import com.pozpl.nerannotator.persistence.dao.UserRepository;
-import com.pozpl.nerannotator.persistence.model.Privilege;
-import com.pozpl.nerannotator.persistence.model.Role;
-import com.pozpl.nerannotator.persistence.model.User;
+import com.pozpl.nerannotator.auth.dao.repo.RoleRepository;
+import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
+import com.pozpl.nerannotator.auth.dao.model.Privilege;
+import com.pozpl.nerannotator.auth.dao.model.Role;
+import com.pozpl.nerannotator.auth.dao.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
