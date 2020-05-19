@@ -25,7 +25,7 @@ public class NerTextEditController {
 		this.jobTextEditService = jobTextEditService;
 	}
 
-	@RequestMapping(value = "/get", method = RequestMethod.GET)
+	@GetMapping(value = "/get")
 	@ResponseBody
 	public JobTextDto get(@RequestParam("id") final Integer id, final User user) {
 
@@ -37,7 +37,7 @@ public class NerTextEditController {
 	}
 
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@PostMapping(value = "/save")
 	@ResponseBody
 	public JobTextEditStatusDto save(@RequestBody final JobTextDto jobTextDto, final User user){
 		try{
@@ -47,7 +47,7 @@ public class NerTextEditController {
 		}
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/delete")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void delete(@RequestParam(value = "id") final Integer jobTextId, final User user){
 		try{

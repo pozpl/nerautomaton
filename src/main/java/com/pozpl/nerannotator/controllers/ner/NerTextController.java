@@ -8,10 +8,7 @@ import com.pozpl.nerannotator.service.ner.jobmanagement.text.JobTextDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/ner/text")
@@ -32,7 +29,7 @@ public class NerTextController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@GetMapping(value = "/list")
 	@ResponseBody
 	public Page<JobTextDto> list(@RequestParam("page") final Integer page,
 								 @RequestParam("jobId") final Integer jobId,

@@ -26,21 +26,21 @@ public class NerJobsController {
 		this.nerJobService = nerJobService;
 	}
 
-	@RequestMapping(value = "/get", method = RequestMethod.GET)
+	@GetMapping(value = "/get")
 	@ResponseBody
-	public NerJobDto get(@RequestParam("id") Integer id, User user) {
+	public NerJobDto get(@RequestParam("id")final Integer id, final User user) {
 
 		try {
-			return nerJobService.getJobById(id, user).get();
+			return nerJobService.getJobById(id, user).orElse(NerJobDto.builder().build());
 		} catch (NerServiceException e) {
 			throw new NerWebException(e);
 		}
 	}
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@GetMapping(value = "/list")
 	@ResponseBody
-	public Page<NerJobDto> list(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page
-								, User user) {
+	public Page<NerJobDto> list(@RequestParam(value = "page", required = false, defaultValue = "1") final Integer page
+								,final User user) {
 
 		try {
 			return nerJobService.getJobsForOwner(user, page);
@@ -49,7 +49,7 @@ public class NerJobsController {
 		}
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@PostMapping(value = "/save")
 	@ResponseBody
 	public NerJobSaveStatusDto save(@RequestBody NerJobDto nerJobDto, User user){
 		try{
@@ -59,9 +59,10 @@ public class NerJobsController {
 		}
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/delete")
 	@ResponseStatus(code = HttpStatus.OK)
-	public void delete(@RequestParam(value = "id") Integer jobId, User user){
+	public void delete(@RequestParam(value = "id") final Integer jobId,
+					   final User user){
 		try{
 			nerJobService.deleteJob(user, jobId);
 		}catch (NerServiceException e){
