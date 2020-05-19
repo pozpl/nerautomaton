@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 public interface UserTextProcessingResultRepository extends PagingAndSortingRepository<UserNerTextProcessingResult, Long> {
 
 	@Query("SELECT tpr FROM UserNerTextProcessingResult AS tpr " +
-			"JOIN NerJobTextItem as ti ON ti = tpr.textItem " +
+			"JOIN FETCH NerJobTextItem as ti ON ti = tpr.textItem " +
 			"WHERE tpr.user = :user AND ti.job = :job ")
 	Page<UserNerTextProcessingResult> getForUserAndJob(@Param("user") User user,
 													   @Param("job") LabelingJob job,
