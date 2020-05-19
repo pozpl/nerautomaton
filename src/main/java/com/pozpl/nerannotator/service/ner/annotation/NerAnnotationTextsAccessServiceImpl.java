@@ -73,7 +73,7 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 						.id(nerText.getId().intValue())
 						.tokens(taggedTermDtos)
 						.build();
-			})).getContent()).getOrElseThrow(e -> new NerServiceException(e))
+			})).getContent()).getOrElseThrow(NerServiceException::new)
 					.toList().asJava();
 
 			return new PageDto<>(1, unprocessedTextItems.getNumberOfElements(), 20, annTextDtos);
@@ -109,7 +109,7 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 			}
 
 
-			return new PageDto(page, processedTexts.getSize(), 20, annotationTextDtos);
+			return new PageDto<>(page, processedTexts.getSize(), 20, annotationTextDtos);
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
