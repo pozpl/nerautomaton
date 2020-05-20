@@ -11,6 +11,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserTextProcessingResultRepository extends PagingAndSortingRepository<UserNerTextProcessingResult, Long> {
 
@@ -27,4 +29,10 @@ public interface UserTextProcessingResultRepository extends PagingAndSortingRepo
 	Page<NerJobTextItem> getUnprocessed(@Param("user") User user,
 										@Param("job") LabelingJob job,
 										Pageable pageable);
+
+	@Query("SELECT tpr FROM UserNerTextProcessingResult AS tpr " +
+			"JOIN FETCH NerJobTextItem as ti ON ti = tpr.textItem " +
+			"WHERE tpr.user = :user AND ti = :textItem ")
+	Optional<UserNerTextProcessingResult> getForUserAndTextItem(@Param("user") User user,
+																@Param("textItem") NerJobTextItem textItem);
 }

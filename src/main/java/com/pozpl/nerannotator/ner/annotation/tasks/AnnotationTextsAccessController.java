@@ -22,8 +22,8 @@ public class AnnotationTextsAccessController {
 	}
 
 	@GetMapping("/get/unprocessed")
-	public PageDto<NerAnnotationTextDto> getUnprocessed(@RequestParam(name = "jobId") final Integer jobId,
-														 final User user) {
+	public PageDto<NerTextAnnotationDto> getUnprocessed(@RequestParam(name = "jobId") final Integer jobId,
+														final User user) {
 		try{
 			return this.textsAccessService.getNextUnprocessed(jobId, user);
 		} catch (NerServiceException e){
@@ -32,7 +32,7 @@ public class AnnotationTextsAccessController {
 	}
 
 	@GetMapping("/list/processed")
-	public PageDto<NerAnnotationTextDto> listProcessed(@RequestParam(name = "jobId") final Integer jobId,
+	public PageDto<NerTextAnnotationDto> listProcessed(@RequestParam(name = "jobId") final Integer jobId,
 													   @RequestParam(name = "page", required = false, defaultValue = "1") final Integer page,
 													   final User user){
 		try{

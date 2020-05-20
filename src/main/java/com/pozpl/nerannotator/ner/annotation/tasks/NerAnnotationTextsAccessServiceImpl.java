@@ -48,7 +48,7 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 	}
 
 	@Override
-	public PageDto<NerAnnotationTextDto> getNextUnprocessed(final Integer jobId,
+	public PageDto<NerTextAnnotationDto> getNextUnprocessed(final Integer jobId,
 															final User user) throws NerServiceException {
 		try {
 			final Optional<LabelingJob> labelingJobOpt = this.labelingJobsRepository.findById(Long.valueOf(jobId));
@@ -67,9 +67,9 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 			final Page<NerJobTextItem> unprocessedTextItems = processingResultRepository.getUnprocessed(user, job,
 					PageRequest.of(1, 20, Sort.by(Sort.Direction.DESC, "created")));
 
-			final List<NerAnnotationTextDto> annTextDtos = Try.sequence(unprocessedTextItems.map(nerText -> Try.of(() -> {
+			final List<NerTextAnnotationDto> annTextDtos = Try.sequence(unprocessedTextItems.map(nerText -> Try.of(() -> {
 				final List<TaggedTermDto> taggedTermDtos = this.textPreprocessorForNer.process(nerText.getText());
-				return NerAnnotationTextDto.builder()
+				return NerTextAnnotationDto.builder()
 						.id(nerText.getId().intValue())
 						.tokens(taggedTermDtos)
 						.build();
@@ -83,7 +83,7 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 	}
 
 	@Override
-	public PageDto<NerAnnotationTextDto> getProcessed(final Integer jobId,
+	public PageDto<NerTextAnnotationDto> getProcessed(final Integer jobId,
 													  final User user,
 													  final Integer page) throws NerServiceException {
 		try {
@@ -103,7 +103,7 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 			final Page<UserNerTextProcessingResult> processedTexts = processingResultRepository.getForUserAndJob(user, job,
 					PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "created")));
 
-			final List<NerAnnotationTextDto> annotationTextDtos = new ArrayList<>();
+			final List<NerTextAnnotationDto> annotationTextDtos = new ArrayList<>();
 			for (UserNerTextProcessingResult processedText : processedTexts) {
 				annotationTextDtos.add(this.toDto(processedText));
 			}
@@ -116,9 +116,9 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 	}
 
 
-	private NerAnnotationTextDto toDto(UserNerTextProcessingResult userResult) throws NerServiceException {
+	private NerTextAnnotationDto toDto(UserNerTextProcessingResult userResult) throws NerServiceException {
 		final NerJobTextItem textItem = userResult.getTextItem();
-		return NerAnnotationTextDto.builder()
+		return NerTextAnnotationDto.builder()
 				.tokens(this.nerAnnotatedTextParsingService.parse(userResult.getAnnotatedText()))
 				.text(textItem.getText())
 				.id(textItem.getId().intValue())

@@ -26,6 +26,7 @@ import javax.transaction.Transactional;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -130,5 +131,16 @@ public class UserTextProcessingResultRepositoryTest {
 		final List<NerJobTextItem> content = unprocessed.getContent();
 		assertNotNull(content);
 		assertEquals(jobOneTextTwo, content.get(0));
+	}
+
+	@Test
+	public void getForUserAndTextItem() {
+		final Optional<UserNerTextProcessingResult> foundResult = userTextProcessingResultRepository.getForUserAndTextItem(userOne, jobOneTextOne);
+		assertNotNull(foundResult);
+		assertTrue(foundResult.isPresent());
+		assertEquals(jobOneTextOneProcessed, foundResult.get());
+
+		final Optional<UserNerTextProcessingResult> notFound = userTextProcessingResultRepository.getForUserAndTextItem(userOne, jobOneTextTwo);
+		assertFalse(notFound.isPresent());
 	}
 }

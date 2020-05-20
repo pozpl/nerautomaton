@@ -20,4 +20,9 @@ public interface NerJobTextItemRepository extends PagingAndSortingRepository<Ner
 	NerJobTextItem getForJobAndHash(@Param("job") LabelingJob job,
 									@Param("md5hash") String md5Hash);
 
+	@Query("SELECT j FROM NerJobTextItem AS jti " +
+			"JOIN jti.job AS j " +
+			"WHERE jti = :textItem ")
+	LabelingJob getJobForItem(@Param("textItem") NerJobTextItem textItem);
+
 }
