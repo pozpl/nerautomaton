@@ -8,5 +8,5 @@ public interface INerAnnotatedTextParsingService {
 
 	List<TaggedTermDto> parse(String text) throws NerServiceException;
 
-	String serialise(List<TaggedTermDto> taggedTermDtos) throws NerServiceException;
+	String serialise(List<TaggedTermDto> taggedTermDtos, List<String> availableLabels ) throws NerServiceException;
 }

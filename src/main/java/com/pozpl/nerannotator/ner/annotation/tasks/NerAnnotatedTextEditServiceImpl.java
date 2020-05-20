@@ -5,15 +5,19 @@ import com.pozpl.nerannotator.ner.annotation.rights.IUserJobTasksRightsService;
 import com.pozpl.nerannotator.ner.annotation.textprocess.INerAnnotatedTextParsingService;
 import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 import com.pozpl.nerannotator.ner.dao.model.text.NerJobTextItem;
+import com.pozpl.nerannotator.ner.dao.model.text.NerLabel;
 import com.pozpl.nerannotator.ner.dao.model.text.UserNerTextProcessingResult;
-import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.ner.dao.repo.text.NerJobTextItemRepository;
+import com.pozpl.nerannotator.ner.dao.repo.text.NerLabelsRepository;
 import com.pozpl.nerannotator.ner.dao.repo.text.UserTextProcessingResultRepository;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -21,20 +25,21 @@ public class NerAnnotatedTextEditServiceImpl implements INerAnnotatedTextEditSer
 
 	private final UserTextProcessingResultRepository processingResultRepository;
 	private final NerJobTextItemRepository nerJobTextItemRepository;
-	private final LabelingJobsRepository labelingJobsRepository;
 	private final IUserJobTasksRightsService userJobTasksRightsService;
 	private final INerAnnotatedTextParsingService nerAnnotatedTextParsingService;
+	private final NerLabelsRepository nerLabelsRepository;
 
+	@Autowired
 	public NerAnnotatedTextEditServiceImpl(UserTextProcessingResultRepository processingResultRepository,
 										   NerJobTextItemRepository nerJobTextItemRepository,
-										   LabelingJobsRepository labelingJobsRepository,
 										   IUserJobTasksRightsService userJobTasksRightsService,
-										   INerAnnotatedTextParsingService nerAnnotatedTextParsingService) {
+										   INerAnnotatedTextParsingService nerAnnotatedTextParsingService,
+										   NerLabelsRepository nerLabelsRepository) {
 		this.processingResultRepository = processingResultRepository;
 		this.nerJobTextItemRepository = nerJobTextItemRepository;
-		this.labelingJobsRepository = labelingJobsRepository;
 		this.userJobTasksRightsService = userJobTasksRightsService;
 		this.nerAnnotatedTextParsingService = nerAnnotatedTextParsingService;
+		this.nerLabelsRepository = nerLabelsRepository;
 	}
 
 	@Override
@@ -59,7 +64,9 @@ public class NerAnnotatedTextEditServiceImpl implements INerAnnotatedTextEditSer
 			return NerTextAnnotationEditResultDto.error("empty result");
 		}
 
-		final String serialisedTokens = nerAnnotatedTextParsingService.serialise(annotationTextDto.getTokens());
+		final List<NerLabel> availableLabels =  nerLabelsRepository.getForJob(job);
+		final List<String> labels = availableLabels.stream().map(NerLabel::getName).collect(Collectors.toList());
+		final String serialisedTokens = nerAnnotatedTextParsingService.serialise(annotationTextDto.getTokens(), labels);
 
 		final Optional<UserNerTextProcessingResult> existingResultOpt = processingResultRepository.getForUserAndTextItem(user, textItem);
 		final UserNerTextProcessingResult resultToSave;

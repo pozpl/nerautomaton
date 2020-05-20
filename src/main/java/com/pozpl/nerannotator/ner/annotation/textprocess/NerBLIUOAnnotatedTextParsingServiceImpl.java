@@ -4,10 +4,7 @@ import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class NerBLIUOAnnotatedTextParsingServiceImpl implements INerAnnotatedTextParsingService {
@@ -53,10 +50,14 @@ public class NerBLIUOAnnotatedTextParsingServiceImpl implements INerAnnotatedTex
 	}
 
 	@Override
-	public String serialise(List<TaggedTermDto> taggedTermDtos) throws NerServiceException {
+	public String serialise(final List<TaggedTermDto> taggedTermDtos,
+							final List<String> availableLabels) throws NerServiceException {
+
+		final Set<String> labelsSet = new HashSet<>();
+		labelsSet.addAll(availableLabels);
 
 		return io.vavr.collection.List.ofAll(taggedTermDtos)
-				.map(this::getSerialiseLabeledTerm)
+				.map(term -> this.getSerialiseLabeledTerm(term, labelsSet))
 				.foldLeft("", (acc, s2) -> {
 					if (!acc.equals("")) {
 						return acc + "\n" + s2;
@@ -67,7 +68,10 @@ public class NerBLIUOAnnotatedTextParsingServiceImpl implements INerAnnotatedTex
 		
 	}
 
-	private String getSerialiseLabeledTerm(TaggedTermDto taggedTerm) {
+	private String getSerialiseLabeledTerm(TaggedTermDto taggedTerm, final Set<String> availableLabels) {
+		if(availableLabels.contains(taggedTerm.getLabel()) ){
+			return taggedTerm.getToken() + "\t" + BLIUOScheme.OUT.name();
+		}
 		return taggedTerm.getToken() + "\t" + taggedTerm.getPosition() + "\t" + taggedTerm.getLabel();
 	}
 
