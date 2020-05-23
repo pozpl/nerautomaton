@@ -1,5 +1,6 @@
 export interface Page<T> {
-    content: Array<T>;
-    pagable: any;
-    totalElements: number;
+    content: Array<T> | null;
+    curPage: number;
+    size: number;
+    totalPage: number;
 }

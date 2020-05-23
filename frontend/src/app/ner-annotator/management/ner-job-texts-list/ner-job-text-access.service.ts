@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {NerJobTextDto} from "./ner-job-text.dto";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Page} from "../../shared-components/page";
+import {Page} from "../../../shared-components/page";
 
 
 @Injectable()
