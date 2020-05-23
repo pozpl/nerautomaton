@@ -2,6 +2,7 @@ package com.pozpl.nerannotator.ner.management.job;
 
 import com.pozpl.nerannotator.auth.dao.model.User;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
+import com.pozpl.nerannotator.shared.pagination.PageDto;
 import org.springframework.data.domain.Page;
 
 import java.util.Optional;
@@ -24,7 +25,7 @@ public interface INerJobService {
 	 * @return
 	 * @throws NerServiceException
 	 */
-	Page<NerJobDto> getJobsForOwner(User owner, Integer page) throws NerServiceException;
+	PageDto<NerJobDto> getJobsForOwner(User owner, Integer page) throws NerServiceException;
 
 	/**
 	 * Save Job

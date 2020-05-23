@@ -1,14 +1,11 @@
 package com.pozpl.nerannotator.ner.management.job;
 
 
-import com.pozpl.nerannotator.shared.exceptions.NerWebException;
 import com.pozpl.nerannotator.auth.dao.model.User;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
-import com.pozpl.nerannotator.ner.management.job.INerJobService;
-import com.pozpl.nerannotator.ner.management.job.NerJobDto;
-import com.pozpl.nerannotator.ner.management.job.NerJobSaveStatusDto;
+import com.pozpl.nerannotator.shared.exceptions.NerWebException;
+import com.pozpl.nerannotator.shared.pagination.PageDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -39,8 +36,8 @@ public class NerJobsController {
 
 	@GetMapping(value = "/list")
 	@ResponseBody
-	public Page<NerJobDto> list(@RequestParam(value = "page", required = false, defaultValue = "1") final Integer page
-								,final User user) {
+	public PageDto<NerJobDto> list(@RequestParam(value = "page", required = false, defaultValue = "1") final Integer page
+								, final User user) {
 
 		try {
 			return nerJobService.getJobsForOwner(user, page);

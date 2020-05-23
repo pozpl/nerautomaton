@@ -7,6 +7,7 @@ import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import com.pozpl.nerannotator.ner.management.labels.INerLabelEditingService;
 import com.pozpl.nerannotator.ner.management.labels.NerLabelDto;
+import com.pozpl.nerannotator.shared.pagination.PageDto;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -70,13 +72,17 @@ public class NerJobServiceImpl implements INerJobService {
 	 * @throws NerServiceException
 	 */
 	@Override
-	public Page<NerJobDto> getJobsForOwner(final User owner,final Integer page) throws NerServiceException {
+	public PageDto<NerJobDto> getJobsForOwner(final User owner, final Integer page) throws NerServiceException {
 		try {
 			final Integer adjustedPage = page != null && page > 0 ? page -1 : 0;
 			Page<LabelingJob> userJobs = labelingJobsRepository.getJobsForOwner(owner, PageRequest.of(adjustedPage, 20, Sort.by(Sort.Direction.DESC, "created")));
 
-			return userJobs.map(nerJob -> Try.of(() -> toDto(nerJob)))
-					.map(nerJobTry -> nerJobTry.getOrElse(new NerJobDto()));
+			final List<NerJobDto> jobs = userJobs.getContent().stream()
+					.map(nerJob -> Try.of(() -> toDto(nerJob)))
+					.map(nerJobTry -> nerJobTry.getOrElse(new NerJobDto()))
+					.collect(Collectors.toList());
+
+			return new PageDto<>(page, userJobs.getSize(), 20, jobs);
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}
@@ -96,7 +102,7 @@ public class NerJobServiceImpl implements INerJobService {
 			final LabelingJob labelingJobOriginal;
 
 			if (nerJobDto.getId() != null) { //Update case
-				final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(new Long(nerJobDto.getId()), user);
+				final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(Long.valueOf(nerJobDto.getId()), user);
 
 				if (nerJobOpt.isPresent()) {
 					labelingJobOriginal = nerJobOpt.get();
