@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.ner.annotation.tasks;
+package com.pozpl.nerannotator.ner.annotation.edit;
 
 import com.pozpl.nerannotator.auth.dao.model.User;
 import com.pozpl.nerannotator.ner.annotation.rights.IUserJobTasksRightsService;

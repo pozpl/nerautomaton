@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.ner.annotation.tasks;
+package com.pozpl.nerannotator.ner.annotation.edit;
 
 public class NerTextAnnotationEditResultDto {
 

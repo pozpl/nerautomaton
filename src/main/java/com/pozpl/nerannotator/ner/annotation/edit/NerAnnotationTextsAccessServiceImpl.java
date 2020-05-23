@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.ner.annotation.tasks;
+package com.pozpl.nerannotator.ner.annotation.edit;
 
 import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.ner.dao.repo.text.UserTextProcessingResultRepository;
