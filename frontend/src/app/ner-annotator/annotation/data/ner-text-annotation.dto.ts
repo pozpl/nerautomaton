@@ -1,6 +1,6 @@
 import {TaggedTermDto} from "./tagged-term.dto";
 
-export interface NetTextAnnotationDto {
+export interface NerTextAnnotationDto {
 
     id:number;
     tokens: TaggedTermDto[];
