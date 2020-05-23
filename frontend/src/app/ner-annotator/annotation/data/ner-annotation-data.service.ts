@@ -21,13 +21,18 @@ export class NerAnnotationDataService {
     /**
      * Get unprocessed tasks
      */
-    getUnprocessed(): Observable<NerTextAnnotationDto[]>{
-        return this.httpClient.get<NerTextAnnotationDto[]>(NerAnnotationDataService.GET_UNPROCESSED);
+    getUnprocessed(jobId: number): Observable<NerTextAnnotationDto[]>{
+        return this.httpClient.get<NerTextAnnotationDto[]>(NerAnnotationDataService.GET_UNPROCESSED, {
+            params: {
+                jobId: jobId.toString()
+            }
+        });
     }
 
-    getProcessed(page: number): Observable<Page<NerTextAnnotationDto>> {
+    getProcessed(jobId: number, page: number): Observable<Page<NerTextAnnotationDto>> {
         return this.httpClient.get<Page<NerTextAnnotationDto>>(NerAnnotationDataService.GET_PROCESSED, {
             params: {
+                jobId: jobId.toString(),
                 page: page.toString()
             }
         });
