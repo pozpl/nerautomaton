@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {NerJobDto} from "./ner-job.dto";
-import {Page} from "../../shared-components/page";
 import {NerJobSaveStatus} from "./ner-job-save-status.dto";
+import {Page} from "../../../shared-components/page";
 
 @Injectable()
 export class NerJobsService {

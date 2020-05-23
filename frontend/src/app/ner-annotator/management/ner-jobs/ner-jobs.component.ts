@@ -5,8 +5,8 @@ import {DataSource} from "@angular/cdk/table";
 import {Observable, Subject} from "rxjs";
 import {map, takeUntil} from "rxjs/operators";
 import {Router} from "@angular/router";
-import {AuthService} from "../../auth/auth.service";
-import {Page} from "../../shared-components/page";
+import {Page} from "../../../shared-components/page";
+import {AuthService} from "../../../auth/auth.service";
 
 @Component({
     selector: 'app-ner-jobs',

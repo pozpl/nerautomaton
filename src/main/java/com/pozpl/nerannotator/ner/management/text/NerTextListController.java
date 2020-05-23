@@ -1,14 +1,15 @@
 package com.pozpl.nerannotator.ner.management.text;
 
-import com.pozpl.nerannotator.shared.exceptions.NerWebException;
 import com.pozpl.nerannotator.auth.dao.model.User;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
-import com.pozpl.nerannotator.ner.management.text.IJobTextAccessService;
-import com.pozpl.nerannotator.ner.management.text.JobTextDto;
+import com.pozpl.nerannotator.shared.exceptions.NerWebException;
+import com.pozpl.nerannotator.shared.pagination.PageDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/ner/text")
@@ -31,9 +32,9 @@ public class NerTextListController {
 	 */
 	@GetMapping(value = "/list")
 	@ResponseBody
-	public Page<JobTextDto> list(@RequestParam("page") final Integer page,
-								 @RequestParam("jobId") final Integer jobId,
-								 final User user) {
+	public PageDto<JobTextDto> list(@RequestParam("page") final Integer page,
+									@RequestParam("jobId") final Integer jobId,
+									final User user) {
 		try {
 			return jobTextAccessService.getTextForJob(jobId, page, user);
 		} catch (NerServiceException e) {
