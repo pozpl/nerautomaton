@@ -5,6 +5,7 @@ import {LoginComponent} from "./auth/login/login.component";
 import {NerJobsComponent} from "./ner-annotator/management/ner-jobs/ner-jobs.component";
 import {NerJobEditComponent} from "./ner-annotator/management/ner-jobs/ner-job-edit/ner-job-edit.component";
 import {TextItemComponent} from "./ner-annotator/annotation/text-item/text-item.component";
+import {TasksListComponent} from "./ner-annotator/annotation/tasks-list/tasks-list.component";
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
     {path: 'ner/jobs', component: NerJobsComponent},
     {path: 'ner/job/edit/', component: NerJobEditComponent},
     {path: 'ner/job/edit/:id', component: NerJobEditComponent},
+    {path: 'ner/user/tasks', component: TasksListComponent},
     {path: 'ner/text-item', component: TextItemComponent}
 ];
 

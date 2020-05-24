@@ -14,7 +14,7 @@ export class UserNerTasksService {
     constructor(private httpClient: HttpClient) {
     }
 
-    getTask(page: number | undefined): Observable<Page<UserNerTaskDescriptionDto>> {
+    getTasks(page: number | undefined | null): Observable<Page<UserNerTaskDescriptionDto>> {
         const pageAdj = (page || 1).toString();
         return this.httpClient.get<Page<UserNerTaskDescriptionDto>>(UserNerTasksService.GET_TASKS_URL, {
             params: {
