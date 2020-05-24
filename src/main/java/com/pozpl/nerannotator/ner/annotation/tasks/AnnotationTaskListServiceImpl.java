@@ -3,6 +3,7 @@ package com.pozpl.nerannotator.ner.annotation.tasks;
 import com.pozpl.nerannotator.auth.dao.model.User;
 import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
+import com.pozpl.nerannotator.ner.dao.repo.text.UserTextProcessingResultRepository;
 import com.pozpl.nerannotator.ner.management.job.NerJobDto;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import com.pozpl.nerannotator.shared.pagination.PageDto;
@@ -22,10 +23,13 @@ import java.util.stream.Collectors;
 public class AnnotationTaskListServiceImpl implements IAnnotationTaskListService {
 
 	private final LabelingJobsRepository labelingJobsRepository;
+	private final UserTextProcessingResultRepository userTextProcessingResultRepository;
 
 	@Autowired
-	public AnnotationTaskListServiceImpl(LabelingJobsRepository labelingJobsRepository) {
+	public AnnotationTaskListServiceImpl(LabelingJobsRepository labelingJobsRepository,
+										 UserTextProcessingResultRepository userTextProcessingResultRepository) {
 		this.labelingJobsRepository = labelingJobsRepository;
+		this.userTextProcessingResultRepository = userTextProcessingResultRepository;
 	}
 
 	/**
@@ -37,14 +41,14 @@ public class AnnotationTaskListServiceImpl implements IAnnotationTaskListService
 	 * @throws NerServiceException
 	 */
 	@Override
-	public PageDto<NerJobDto> listAvailableJobs(User user, Integer page) throws NerServiceException {
+	public PageDto<UserNerTaskDescriptionDto> listAvailableJobs(User user, Integer page) throws NerServiceException {
 		try {
 			final Integer adjustedPage = page != null && page > 0 ? page -1 : 0;
 			Page<LabelingJob> userJobs = labelingJobsRepository.getJobsForOwner(user, PageRequest.of(adjustedPage, 20, Sort.by(Sort.Direction.DESC, "created")));
 
-			final List<NerJobDto> jobs = userJobs.getContent().stream()
-					.map(nerJob -> Try.of(() -> toDto(nerJob)))
-					.map(nerJobTry -> nerJobTry.getOrElse(new NerJobDto()))
+			final List<UserNerTaskDescriptionDto> jobs = userJobs.getContent().stream()
+					.map(nerJob -> Try.of(() -> toDto(nerJob, user)))
+					.map(nerJobTry -> nerJobTry.getOrElse(new UserNerTaskDescriptionDto(new NerJobDto(), 0, 0)))
 					.collect(Collectors.toList());
 
 			return new PageDto<>(page, userJobs.getSize(), 20, jobs);
@@ -54,12 +58,17 @@ public class AnnotationTaskListServiceImpl implements IAnnotationTaskListService
 	}
 
 
-	private NerJobDto toDto(final LabelingJob labelingJob) {
+	private UserNerTaskDescriptionDto toDto(final LabelingJob labelingJob, User user) {
 
-		return NerJobDto.builder()
+		final Integer countProcessed = this.userTextProcessingResultRepository.countProcessed(user, labelingJob);
+		final Integer countUnprocessed = this.userTextProcessingResultRepository.countProcessed(user, labelingJob);
+
+		final NerJobDto jobDto = NerJobDto.builder()
 				.id(labelingJob.getId().intValue())
 				.name(labelingJob.getName())
 				.created(labelingJob.getCreated().getTime())
 				.build();
+
+		return new UserNerTaskDescriptionDto(jobDto, countProcessed, countUnprocessed);
 	}
 }
