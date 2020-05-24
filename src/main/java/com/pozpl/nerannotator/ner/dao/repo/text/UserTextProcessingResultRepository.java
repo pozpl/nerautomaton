@@ -35,4 +35,16 @@ public interface UserTextProcessingResultRepository extends PagingAndSortingRepo
 			"WHERE tpr.user = :user AND ti = :textItem ")
 	Optional<UserNerTextProcessingResult> getForUserAndTextItem(@Param("user") User user,
 																@Param("textItem") NerJobTextItem textItem);
+
+	@Query("SELECT COUNT(ti) FROM NerJobTextItem as ti " +
+			"LEFT JOIN UserNerTextProcessingResult as tpr ON ti = tpr.textItem AND tpr.user = :user " +
+			"WHERE tpr IS NULL AND ti.job = :job ")
+	Integer countUnprocessed(@Param("user") User user,
+							 @Param("job") LabelingJob job);
+
+	@Query("SELECT COUNT(tpr) FROM UserNerTextProcessingResult AS tpr " +
+			"JOIN FETCH NerJobTextItem as ti ON ti = tpr.textItem " +
+			"WHERE tpr.user = :user AND ti.job = :job ")
+	Integer countProcessed(@Param("user") User user,
+						   @Param("job") LabelingJob job);
 }
