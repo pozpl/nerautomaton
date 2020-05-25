@@ -24,6 +24,7 @@ export class TasksListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.dataSource.list(1);
     }
 
     public pageChanged(event: PageEvent) {

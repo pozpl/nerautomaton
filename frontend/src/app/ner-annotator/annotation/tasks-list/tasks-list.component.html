@@ -1,58 +1,72 @@
-<div class="spinner-container" *ngIf="dataSource.loading$ | async">
-    <mat-spinner></mat-spinner>
+<div fxLayout="row" fxLayoutAlign="center center" class="content">
+
+
+    <mat-card class="card">
+        <mat-card-title fxLayout.xs="column">
+            <h3>Tasks</h3>
+        </mat-card-title>
+        <mat-card-content>
+            <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+                <mat-spinner></mat-spinner>
+            </div>
+
+            <div class="text-table-container  mat-elevation-z8">
+                <mat-table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef
+                                         fxFlex="1 1 calc(100% - 24em)"
+                        >
+                            Task
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let taskDescription"
+                                  fxFlex="1 1 calc(80% - 24em)"
+                        >
+                            {{taskDescription.job.name}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="review" class="text-center">
+                        <mat-header-cell *matHeaderCellDef
+                                         fxFlex="1 1 12em"
+                        >
+                            Review
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let taskDescription"
+                                  fxFlex="1 1 12em">
+                            <button  mat-raised-button>
+                                <mat-icon>list</mat-icon>
+                                Review ({{taskDescription.processed}})
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="continue">
+                        <mat-header-cell *matHeaderCellDef  fxFlex="1 1 12em">Continue</mat-header-cell>
+                        <mat-cell *matCellDef="let taskDescription"  fxFlex="1 1 12em">
+                            <button mat-raised-button color="primary">
+                                <mat-icon class="icon">forward</mat-icon>
+                                Continue ({{taskDescription.unprocessed}})
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+                </mat-table>
+
+            </div>
+
+            <mat-paginator [pageSizeOptions]="[20]"
+                           (page)="pageChanged($event)"
+                           [length]="dataSource.numberDocuments"
+                           showFirstLastButtons>
+            </mat-paginator>
+
+        </mat-card-content>
+    </mat-card>
+
+
 </div>
-
-<div class="text-table-container  mat-elevation-z8">
-    <mat-table [dataSource]="dataSource">
-
-        <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef
-                             fxFlex="1 1 calc(80% - 6em)"
-            >
-                Edit
-            </mat-header-cell>
-            <mat-cell *matCellDef="let taskDescription"
-                      fxFlex="1 1 6em"
-            >
-                {{taskDescription.name}}
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="text">
-            <mat-header-cell *matHeaderCellDef
-                             fxFlex="1 1 6em"
-            >
-                Review
-            </mat-header-cell>
-            <mat-cell *matCellDef="let taskDescription"
-                      fxFlex="1 1 6em">
-                <a type="button" >
-                    review
-                </a>
-            </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="continue">
-            <mat-header-cell *matHeaderCellDef>Continue</mat-header-cell>
-            <mat-cell *matCellDef="let taskDescription">
-                <a  class="delete-icon"
-                   type="button">
-                    <mat-icon class="icon"></mat-icon>
-                    Continue
-                </a>
-            </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-
-    </mat-table>
-
-</div>
-
-<mat-paginator [pageSizeOptions]="[20]"
-               (page)="pageChanged($event)"
-               [length]="dataSource.numberDocuments"
-               showFirstLastButtons>
-</mat-paginator>
