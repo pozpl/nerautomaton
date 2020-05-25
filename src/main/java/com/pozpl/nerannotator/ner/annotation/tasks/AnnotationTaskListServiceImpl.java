@@ -61,7 +61,7 @@ public class AnnotationTaskListServiceImpl implements IAnnotationTaskListService
 	private UserNerTaskDescriptionDto toDto(final LabelingJob labelingJob, User user) {
 
 		final Integer countProcessed = this.userTextProcessingResultRepository.countProcessed(user, labelingJob);
-		final Integer countUnprocessed = this.userTextProcessingResultRepository.countProcessed(user, labelingJob);
+		final Integer countUnprocessed = this.userTextProcessingResultRepository.countUnprocessed(user, labelingJob);
 
 		final NerJobDto jobDto = NerJobDto.builder()
 				.id(labelingJob.getId().intValue())
