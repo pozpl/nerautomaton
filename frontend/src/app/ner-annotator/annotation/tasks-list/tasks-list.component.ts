@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Subject} from "rxjs";
 import {UserNerTasksDataSource} from "./user-ner-tasks-data.source";
 import {UserNerTasksService} from "./user-ner-tasks.service";
 import {PageEvent} from "@angular/material/paginator";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-tasks-list',
@@ -11,14 +11,13 @@ import {PageEvent} from "@angular/material/paginator";
 })
 export class TasksListComponent implements OnInit {
 
-    private unsubscribe: Subject<void>;
-
     private dataSource: UserNerTasksDataSource;
     private page = 1;
 
     displayedColumns = ["name", "review", "continue"];
 
-    constructor(userNerTasksService: UserNerTasksService) {
+    constructor(private userNerTasksService: UserNerTasksService,
+                private router: Router) {
         this.dataSource = new UserNerTasksDataSource(userNerTasksService);
 
     }
@@ -32,6 +31,12 @@ export class TasksListComponent implements OnInit {
         this.dataSource.list(event.pageIndex);
     }
 
+    public reviewTask(jobId: number){
+         // this.router.navigate([])
+    }
 
+    public continueTask(jobId: number){
+        //
+    }
 
 }

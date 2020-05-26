@@ -5,7 +5,7 @@ import {UserNerTaskDescriptionDto} from "./user-ner-task-description.dto";
 import {UserNerTasksService} from "./user-ner-tasks.service";
 import {CollectionViewer} from "@angular/cdk/collections";
 
-export class UserNerTasksDataSource extends DataSource<any> {
+export class UserNerTasksDataSource extends DataSource<UserNerTaskDescriptionDto> {
 
 
     constructor(private dataService: UserNerTasksService) {
