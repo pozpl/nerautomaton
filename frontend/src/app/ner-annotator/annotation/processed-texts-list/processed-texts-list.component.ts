@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProcessedTextsDatasource} from "./processed-texts-datasource";
 import {NerAnnotationDataService} from "../data/ner-annotation-data.service";
 import {ActivatedRoute, Router} from '@angular/router';
@@ -11,7 +11,7 @@ import {PageEvent} from "@angular/material/paginator";
     templateUrl: './processed-texts-list.component.html',
     styleUrls: ['./processed-texts-list.component.scss']
 })
-export class ProcessedTextsListComponent implements OnInit {
+export class ProcessedTextsListComponent implements OnInit, OnDestroy {
 
     private unsubscribe: Subject<void> = new Subject<void>();
 
@@ -37,6 +37,11 @@ export class ProcessedTextsListComponent implements OnInit {
                 this.dataSource.list(this.jobId, this.page);
             });
 
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     public pageChanged(event: PageEvent) {
