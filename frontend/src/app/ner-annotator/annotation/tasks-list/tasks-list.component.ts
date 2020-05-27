@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 })
 export class TasksListComponent implements OnInit {
 
-    private dataSource: UserNerTasksDataSource;
+    public dataSource: UserNerTasksDataSource;
     private page = 1;
 
     displayedColumns = ["name", "review", "continue"];
@@ -32,7 +32,7 @@ export class TasksListComponent implements OnInit {
     }
 
     public reviewTask(jobId: number){
-         // this.router.navigate([])
+         this.router.navigate([])
     }
 
     public continueTask(jobId: number){

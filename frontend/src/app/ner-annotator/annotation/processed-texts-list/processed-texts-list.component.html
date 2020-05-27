@@ -1,1 +1,62 @@
-<p>processed-texts-list works!</p>
+<div fxLayout="row" fxLayoutAlign="center center" class="content">
+
+
+    <mat-card class="card">
+        <mat-card-title fxLayout.xs="column">
+            <h3>Tasks</h3>
+        </mat-card-title>
+        <mat-card-content>
+            <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+                <mat-spinner></mat-spinner>
+            </div>
+
+            <div class="text-table-container  mat-elevation-z8">
+                <mat-table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef
+                                         fxFlex="1 1 calc(100% - 24em)"
+                        >
+                            Text
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let textItem"
+                                  fxFlex="1 1 calc(80% - 12em)"
+                        >
+                            {{textItem.text}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="review" class="text-center">
+                        <mat-header-cell *matHeaderCellDef
+                                         fxFlex="1 1 12em"
+                        >
+                            Review
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let taskDescription"
+                                  fxFlex="1 1 12em">
+                            <button  mat-raised-button>
+                                <mat-icon>list</mat-icon>
+                                Review ({{taskDescription.processed}})
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+                </mat-table>
+
+            </div>
+
+            <mat-paginator [pageSizeOptions]="[20]"
+                           (page)="pageChanged($event)"
+                           [length]="dataSource.numberDocuments"
+                           showFirstLastButtons>
+            </mat-paginator>
+
+        </mat-card-content>
+    </mat-card>
+
+
+</div>

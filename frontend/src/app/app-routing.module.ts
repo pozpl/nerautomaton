@@ -6,6 +6,7 @@ import {NerJobsComponent} from "./ner-annotator/management/ner-jobs/ner-jobs.com
 import {NerJobEditComponent} from "./ner-annotator/management/ner-jobs/ner-job-edit/ner-job-edit.component";
 import {TextItemComponent} from "./ner-annotator/annotation/text-item/text-item.component";
 import {TasksListComponent} from "./ner-annotator/annotation/tasks-list/tasks-list.component";
+import {ProcessedTextsListComponent} from "./ner-annotator/annotation/processed-texts-list/processed-texts-list.component";
 
 
 const routes: Routes = [
@@ -17,6 +18,8 @@ const routes: Routes = [
     {path: 'ner/job/edit/', component: NerJobEditComponent},
     {path: 'ner/job/edit/:id', component: NerJobEditComponent},
     {path: 'ner/user/tasks', component: TasksListComponent},
+    {path: 'ner/job/annotate/process/:jobId', component: ProcessedTextsListComponent},
+    {path: 'ner/job/annotate/review/:id', component: TasksListComponent},
     {path: 'ner/text-item', component: TextItemComponent}
 ];
 

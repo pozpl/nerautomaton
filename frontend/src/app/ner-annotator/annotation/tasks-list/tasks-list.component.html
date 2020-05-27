@@ -34,7 +34,9 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let taskDescription"
                                   fxFlex="1 1 12em">
-                            <button  mat-raised-button>
+                            <button (click)="reviewTask(taskDescription.job.id)"
+                                    [disabled]="taskDescription.processed === 0"
+                                    mat-raised-button>
                                 <mat-icon>list</mat-icon>
                                 Review ({{taskDescription.processed}})
                             </button>
