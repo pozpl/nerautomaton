@@ -1,9 +1,10 @@
-import {Component, HostListener, Injectable, OnInit} from '@angular/core';
+import {Component, EventEmitter, HostListener, Injectable, Input, OnInit, Output} from '@angular/core';
 import {TextItemDto} from "./text-item-dto";
 import {ResultsDataService} from "./results-data.service";
 import {AnnotatedResult} from "./annotated-result";
 import {TextSelectEvent} from "./text-select.directive";
 import {TermsAnnotationsService} from "./terms-annotations.service";
+import {NerTextAnnotationDto} from "../data/ner-text-annotation.dto";
 
 interface SelectionRectangle {
     left: number;
@@ -20,6 +21,10 @@ interface SelectionRectangle {
 })
 export class TextItemComponent implements OnInit {
 
+
+    @Input() nerTextAnnotationDto: NerTextAnnotationDto;
+
+    @Output() finishedAnnotation = new EventEmitter<NerTextAnnotationDto>();
 
     itemDto: TextItemDto;
 
@@ -186,7 +191,7 @@ export class TextItemComponent implements OnInit {
     submitAndGoToNewTask(){
 
     }
-    
+
 
     private createTextFromTokens(tokensSequence: String) {
         this.tokens = tokensSequence.split(">>");
