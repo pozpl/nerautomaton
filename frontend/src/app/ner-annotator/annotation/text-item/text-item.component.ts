@@ -1,10 +1,12 @@
-import {Component, EventEmitter, HostListener, Injectable, Input, OnInit, Output} from '@angular/core';
-import {TextItemDto} from "./text-item-dto";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ResultsDataService} from "./results-data.service";
 import {AnnotatedResult} from "./annotated-result";
 import {TextSelectEvent} from "./text-select.directive";
 import {TermsAnnotationsService} from "./terms-annotations.service";
 import {NerTextAnnotationDto} from "../data/ner-text-annotation.dto";
+import {LabelDto} from "../../management/ner-jobs/label.dto";
+import {TaggedTermDto} from "../data/tagged-term.dto";
+
 
 interface SelectionRectangle {
     left: number;
@@ -23,16 +25,17 @@ export class TextItemComponent implements OnInit {
 
 
     @Input() nerTextAnnotationDto: NerTextAnnotationDto;
+    @Input() labels: LabelDto[];
 
     @Output() finishedAnnotation = new EventEmitter<NerTextAnnotationDto>();
 
-    itemDto: TextItemDto;
+    // itemDto: TextItemDto;
 
-    tokens: string[];
+    // tokens: string[];
 
     annotationCandidateBeginIndex: number;
     annotationCandidate: AnnotationCandidate;
-    selectedAnnotation: string;
+    selectedAnnotation: LabelDto;
 
     public hostRectangle: SelectionRectangle | null;
     private selectedText: string;
@@ -52,13 +55,13 @@ export class TextItemComponent implements OnInit {
 
 
     ngOnInit() {
-        this.itemDto = new TextItemDto("text>>term1>>term2>>term3>>term4", [
-            "annotation1", "annotation2", "annotation3", "annotation4"
-        ]);
+        // this.itemDto = new TextItemDto("text>>term1>>term2>>term3>>term4", [
+        //     "annotation1", "annotation2", "annotation3", "annotation4"
+        // ]);
+        //
+        // this.createTextFromTokens(this.itemDto.text);
 
-        this.createTextFromTokens(this.itemDto.text);
-
-        this.annotationsMap = this.assignColoursIdxesToAnnotations(this.itemDto.annotations)
+        this.annotationsMap = this.assignColoursIdxesToAnnotations(this.labels)
 
         this.onResultsChange();
     }
@@ -66,7 +69,7 @@ export class TextItemComponent implements OnInit {
     onResultsChange() {
         this.resultsDataService.getResults().subscribe(value => {
             this.tokensAnnotations = this.termsAnnotationsService.getHighlitning(
-                this.tokens,
+                this.nerTextAnnotationDto.tokens,
                 value);
         });
     }
@@ -88,7 +91,7 @@ export class TextItemComponent implements OnInit {
             beginIdx = index;
             endIdx = this.annotationCandidateBeginIndex
         }
-        let annotationCandidateTerms = this.tokens.filter((token: String, tokIndex: Number, array) => {
+        let annotationCandidateTerms = this.nerTextAnnotationDto.tokens.filter((token: TaggedTermDto, tokIndex: Number, array) => {
             return (tokIndex >= beginIdx) && (tokIndex <= endIdx);
         });
 
@@ -156,7 +159,7 @@ export class TextItemComponent implements OnInit {
     }
 
 
-    selectAnnotation(annotation: string) {
+    selectAnnotation(annotation: LabelDto) {
         if (this.annotationCandidate != null) {
             this.selectedAnnotation = annotation;
         }
@@ -164,7 +167,7 @@ export class TextItemComponent implements OnInit {
     }
 
     /**
-     * Approve annotation candidate thus edding it into the list of annotations for given text
+     * Approve annotation candidate thus adding it into the list of annotations for given text
      */
     approveAnnotation() {
         this.resultsDataService.addResult(
@@ -183,7 +186,7 @@ export class TextItemComponent implements OnInit {
         this.hideSelection()
     }
 
-    selectAndApprove(annotation: string) {
+    selectAndApprove(annotation: LabelDto) {
         this.selectAnnotation(annotation);
         this.approveAnnotation();
     }
@@ -193,10 +196,10 @@ export class TextItemComponent implements OnInit {
     }
 
 
-    private createTextFromTokens(tokensSequence: String) {
-        this.tokens = tokensSequence.split(">>");
-        this.tokensAnnotations = this.tokens.map(value => null);
-    }
+    // private createTextFromTokens(tokensSequence: String) {
+    //     this.tokens = tokensSequence.split(">>");
+    //     this.tokensAnnotations = this.tokens.map(value => null);
+    // }
 
     private checkThatRegionsCanBeAnnotated(begin: number,
                                            end: number): boolean {
@@ -205,10 +208,10 @@ export class TextItemComponent implements OnInit {
         });
     }
 
-    private assignColoursIdxesToAnnotations(annotaitons: string[]): Map<string, number>{
+    private assignColoursIdxesToAnnotations(labelDtos: LabelDto[]): Map<string, number>{
         let annotationsMap: Map<string, number> = new Map();
-        annotaitons.forEach((annotation, index) => {
-            annotationsMap.set(annotation, index + 1);
+        labelDtos.forEach((annotation, index) => {
+            annotationsMap.set(annotation.name, index + 1);
         });
 
         return annotationsMap;
@@ -217,19 +220,19 @@ export class TextItemComponent implements OnInit {
 }
 
 class AnnotationCandidate {
-    private readonly _terms: string[];
+    private readonly _terms: TaggedTermDto[];
     private readonly _begin: number;
     private readonly _end: number;
 
 
-    constructor(terms: string[], begin: number, end: number) {
+    constructor(terms: TaggedTermDto[], begin: number, end: number) {
         this._terms = terms;
         this._begin = begin;
         this._end = end;
     }
 
 
-    get terms(): string[] {
+    get terms(): TaggedTermDto[] {
         return this._terms;
     }
 

@@ -18,6 +18,7 @@ import {TermsAnnotationsService} from "./annotation/text-item/terms-annotations.
 import {NerJobsService} from "./management/ner-jobs/ner-jobs.service";
 import { TasksListComponent } from './annotation/tasks-list/tasks-list.component';
 import { ProcessedTextsListComponent } from './annotation/processed-texts-list/processed-texts-list.component';
+import { NerAnnotationPageComponent } from './annotation/ner-annotation-page/ner-annotation-page.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import { ProcessedTextsListComponent } from './annotation/processed-texts-list/p
         NerJobTextAddComponent,
         NerJobTextEditDialog,
         TasksListComponent,
-        ProcessedTextsListComponent
+        ProcessedTextsListComponent,
+        NerAnnotationPageComponent
     ],
     imports: [
         CommonModule,

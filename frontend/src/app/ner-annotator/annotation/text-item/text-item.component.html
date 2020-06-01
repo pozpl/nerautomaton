@@ -11,11 +11,19 @@
                             <div (textSelect)="renderRectangles( $event )"
                                  class="mat-elevation-z3 container">
                                 <div class="text-working-area">
-                                     <span *ngFor="let term of tokens;  let idx = index"
-                                           [attr.index]="idx"
+                                     <span *ngFor="let termDto of nerTextAnnotationDto.tokens;  let idx = index"
                                            style="display: inline-block; padding-right: 1ch;"
-                                           [ngClass]="tokensAnnotations[idx]!= null && annotationsMap.get(tokensAnnotations[idx]) != null ? 'annotation-' +annotationsMap.get(tokensAnnotations[idx]) + '-applied'  : ''"
-                                     >{{term}}</span>
+                                           [ngClass]="termDto.label && annotationsMap.has(termDto.label) != null ? 'annotation-' +annotationsMap.get(termDto.label) + '-applied'  : ''"
+                                     >
+                                         <span *ngIf="termDto.specialTextMark && termDto.specialTextMark === 'SENTENCE_END' ">
+                                             <br>
+                                         </span>
+                                         <span *ngIf="! termDto.specialTextMark"
+                                               [attr.index]="idx">
+                                            {{termDto.token}}
+                                         </span>
+
+                                     </span>
                                 </div>
 
                                 <!--
@@ -42,12 +50,12 @@
 											  we then have to consume the click-intent by way of the (mouseup)
 											  event.
 										  -->
-                                            <div *ngFor="let annotation of itemDto.annotations" class="box">
+                                            <div *ngFor="let label of labels" class="box">
                                                 <a (mousedown)="$event.preventDefault()"
-                                                   (mouseup)="$event.stopPropagation(); selectAndApprove(annotation);"
+                                                   (mouseup)="$event.stopPropagation(); selectAndApprove(label);"
                                                    class="mat-flat-button indicator__cta-link_annotation"
                                                 >
-                                                    {{annotation}}
+                                                    {{label.name}}
                                                 </a>
                                             </div>
 
@@ -82,7 +90,7 @@
 
 
         <div fxFlex="1 1 auto" class="annotations-area">
-            <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px" >
+            <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px">
 
                 <mat-card fxFlex="1 1 auto">
                     <mat-card-header>
@@ -91,11 +99,11 @@
                     <mat-card-content>
 
                         <mat-chip-list>
-                            <mat-chip *ngFor="let annotation of itemDto.annotations"
-                                      [ngClass]="annotationsMap.get(annotation) != null
+                            <mat-chip *ngFor="let annotation of labels"
+                                      [ngClass]="annotationsMap.has(annotation)
                                       ? 'annotation-' +annotationsMap.get(annotation) + '-marker'  : ''"
                             >
-                                {{annotation}}
+                                {{annotation.name}}
                             </mat-chip>
                         </mat-chip-list>
 
@@ -110,7 +118,7 @@
                     <mat-card-content>
 
                         <span *ngFor="let term of annotationCandidate.terms ;  let idx = index">
-                          {{term}}
+                          {{term.token}}
                         </span>
 
                     </mat-card-content>
