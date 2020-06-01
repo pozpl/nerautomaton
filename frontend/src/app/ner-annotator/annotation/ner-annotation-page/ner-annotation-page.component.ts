@@ -46,6 +46,7 @@ export class NerAnnotationPageComponent implements OnInit, OnDestroy {
                 this.labels = itemsAndLabels.labels;
                 if (this.unprocessedTexts.length > 0){
                     this.activeText = this.unprocessedTexts.shift();
+                    console.log(this.activeText);
                 }
             });
 
