@@ -65,7 +65,7 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 			}
 
 			final Page<NerJobTextItem> unprocessedTextItems = processingResultRepository.getUnprocessed(user, job,
-					PageRequest.of(1, 20, Sort.by(Sort.Direction.DESC, "created")));
+					PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "created")));
 
 			final List<NerTextAnnotationDto> annTextDtos = Try.sequence(unprocessedTextItems.map(nerText -> Try.of(() -> {
 				final List<TaggedTermDto> taggedTermDtos = this.textPreprocessorForNer.process(nerText.getText());
@@ -101,7 +101,7 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 			}
 
 			final Page<UserNerTextProcessingResult> processedTexts = processingResultRepository.getForUserAndJob(user, job,
-					PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "created")));
+					PageRequest.of(page - 1, 20, Sort.by(Sort.Direction.DESC, "created")));
 
 			final List<NerTextAnnotationDto> annotationTextDtos = new ArrayList<>();
 			for (UserNerTextProcessingResult processedText : processedTexts) {
