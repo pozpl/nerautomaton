@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NerAnnotationDataService} from "../data/ner-annotation-data.service";
 import {NerTextAnnotationDto} from "../data/ner-text-annotation.dto";
 import {ActivatedRoute} from "@angular/router";
-import {flatMap, map, takeUntil} from "rxjs/operators";
+import {flatMap, takeUntil} from "rxjs/operators";
 import {forkJoin, Subject} from "rxjs";
 import {NerLabelsAccessService} from "../data/ner-labels-access.service";
 import {LabelDto} from "../../management/ner-jobs/label.dto";
@@ -58,5 +58,17 @@ export class NerAnnotationPageComponent implements OnInit, OnDestroy {
             .subscribe(textItems => {
                this.unprocessedTexts = textItems
             });
+    }
+
+    processFinishedAnnotation(processedText: NerTextAnnotationDto){
+        if(this.unprocessedTexts.length > 0){
+
+        }else{
+            this.annotationDataService.getUnprocessed(this.jobId)
+                .pipe(takeUntil(this.unsubscribe))
+                .subscribe(unprocessedTexts => {
+                    this.unprocessedTexts = unprocessedTexts;
+                });
+        }
     }
 }

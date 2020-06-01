@@ -1,1 +1,6 @@
-<p>ner-annotation-page works!</p>
+<app-text-item [nerTextAnnotationDto]="activeText"
+               [labels]="labels"
+               (finishedAnnotation)="processFinishedAnnotation($event)"
+>
+
+</app-text-item>
