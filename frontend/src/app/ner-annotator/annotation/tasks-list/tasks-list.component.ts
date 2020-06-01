@@ -32,11 +32,11 @@ export class TasksListComponent implements OnInit {
     }
 
     public reviewTask(jobId: number){
-         this.router.navigate(['ner/job/annotate/process/', jobId])
+         this.router.navigate(['ner/job/annotate/process/', jobId]);
     }
 
     public continueTask(jobId: number){
-        //
+        this.router.navigate(['ner/job/unprocessed/', jobId]);
     }
 
 }

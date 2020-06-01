@@ -46,7 +46,9 @@
                     <ng-container matColumnDef="continue">
                         <mat-header-cell *matHeaderCellDef  fxFlex="1 1 12em">Continue</mat-header-cell>
                         <mat-cell *matCellDef="let taskDescription"  fxFlex="1 1 12em">
-                            <button mat-raised-button color="primary">
+                            <button (click)="continueTask(taskDescription.job.id)"
+                                    [disabled]="taskDescription.unpocessed === 0"
+                                mat-raised-button color="primary">
                                 <mat-icon class="icon">forward</mat-icon>
                                 Continue ({{taskDescription.unprocessed}})
                             </button>
