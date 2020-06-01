@@ -3,9 +3,10 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NerJobsService} from "../ner-jobs.service";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
-import {LabelDto, NerJobDto} from "../ner-job.dto";
+import {NerJobDto} from "../ner-job.dto";
 import {DataSource} from "@angular/cdk/table";
 import {CollectionViewer} from "@angular/cdk/collections";
+import {LabelDto} from "../label.dto";
 
 @Component({
     selector: 'ner-job-edit',

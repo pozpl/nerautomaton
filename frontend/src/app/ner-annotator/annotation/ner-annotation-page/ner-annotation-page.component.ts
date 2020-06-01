@@ -5,7 +5,8 @@ import {ActivatedRoute} from "@angular/router";
 import {flatMap, map, takeUntil} from "rxjs/operators";
 import {forkJoin, Subject} from "rxjs";
 import {NerLabelsAccessService} from "../data/ner-labels-access.service";
-import {LabelDto} from "../../management/ner-jobs/ner-job.dto";
+import {LabelDto} from "../../management/ner-jobs/label.dto";
+
 
 @Component({
     selector: 'app-ner-annotation-page',
@@ -18,7 +19,7 @@ export class NerAnnotationPageComponent implements OnInit, OnDestroy {
 
     private unprocessedTexts: NerTextAnnotationDto[];
     private jobId?: number;
-    private labels: LabelDto;
+    private labels: LabelDto[];
 
     public activeText: NerTextAnnotationDto;
 
