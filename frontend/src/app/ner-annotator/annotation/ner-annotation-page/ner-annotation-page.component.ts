@@ -21,7 +21,7 @@ export class NerAnnotationPageComponent implements OnInit, OnDestroy {
     private jobId?: number;
     private labels: LabelDto[];
 
-    public activeText: NerTextAnnotationDto;
+    public activeText?: NerTextAnnotationDto;
 
     constructor(private annotationDataService: NerAnnotationDataService,
                 private nerLabelsAccessService: NerLabelsAccessService,
@@ -44,6 +44,9 @@ export class NerAnnotationPageComponent implements OnInit, OnDestroy {
             .subscribe(itemsAndLabels => {
                 this.unprocessedTexts = itemsAndLabels.itemsToProcess;
                 this.labels = itemsAndLabels.labels;
+                if (this.unprocessedTexts.length > 0){
+                    this.activeText = this.unprocessedTexts.shift();
+                }
             });
 
     }
@@ -62,12 +65,17 @@ export class NerAnnotationPageComponent implements OnInit, OnDestroy {
 
     processFinishedAnnotation(processedText: NerTextAnnotationDto){
         if(this.unprocessedTexts.length > 0){
-
+            if (this.unprocessedTexts.length > 0){
+                this.activeText = this.unprocessedTexts.shift();
+            }
         }else{
             this.annotationDataService.getUnprocessed(this.jobId)
                 .pipe(takeUntil(this.unsubscribe))
                 .subscribe(unprocessedTexts => {
                     this.unprocessedTexts = unprocessedTexts;
+                    if (this.unprocessedTexts.length > 0){
+                        this.activeText = this.unprocessedTexts.shift();
+                    }
                 });
         }
     }

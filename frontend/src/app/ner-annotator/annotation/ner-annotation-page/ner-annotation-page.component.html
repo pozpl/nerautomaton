@@ -1,4 +1,5 @@
-<app-text-item [nerTextAnnotationDto]="activeText"
+<app-text-item *ngIf="labels && labels.length > 0 && activeText"
+               [nerTextAnnotationDto]="activeText"
                [labels]="labels"
                (finishedAnnotation)="processFinishedAnnotation($event)"
 >
