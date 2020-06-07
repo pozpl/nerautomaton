@@ -13,12 +13,12 @@
                                 <div class="text-working-area">
                                      <span *ngFor="let termDto of nerTextAnnotationDto.tokens;  let idx = index"
                                            style="display: inline-block; padding-right: 1ch;"
-                                           [ngClass]="termDto.label && annotationsMap.has(termDto.label) != null ? 'annotation-' +annotationsMap.get(termDto.label) + '-applied'  : ''"
                                      >
                                          <span *ngIf="termDto.specialTextMark && termDto.specialTextMark === 'SENTENCE_END' ">
                                              <br>
                                          </span>
                                          <span *ngIf="! termDto.specialTextMark"
+                                               [ngClass]="termDto.label && annotationsMap.has(termDto.label) != null ? 'annotation-' +annotationsMap.get(termDto.label) + '-applied'  : ''"
                                                [attr.index]="idx">
                                             {{termDto.token}}
                                          </span>
@@ -100,8 +100,8 @@
 
                         <mat-chip-list>
                             <mat-chip *ngFor="let annotation of labels"
-                                      [ngClass]="annotationsMap.has(annotation)
-                                      ? 'annotation-' +annotationsMap.get(annotation) + '-marker'  : ''"
+                                      [ngClass]="annotationsMap.has(annotation.name)
+                                      ? 'annotation-' +annotationsMap.get(annotation.name) + '-marker'  : ''"
                             >
                                 {{annotation.name}}
                             </mat-chip>

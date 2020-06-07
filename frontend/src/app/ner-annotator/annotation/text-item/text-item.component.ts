@@ -6,6 +6,8 @@ import {TermsAnnotationsService} from "./terms-annotations.service";
 import {NerTextAnnotationDto} from "../data/ner-text-annotation.dto";
 import {LabelDto} from "../../management/ner-jobs/label.dto";
 import {TaggedTermDto} from "../data/tagged-term.dto";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 
 interface SelectionRectangle {
@@ -19,10 +21,11 @@ interface SelectionRectangle {
     selector: 'app-text-item',
     templateUrl: './text-item.component.html',
     styleUrls: ['./text-item.component.scss'],
-    providers: [ResultsDataService,TermsAnnotationsService]
+    providers: [ResultsDataService, TermsAnnotationsService]
 })
 export class TextItemComponent implements OnInit {
 
+    private unsubscribe: Subject<void> = new Subject<void>();
 
     @Input() nerTextAnnotationDto: NerTextAnnotationDto;
     @Input() labels: LabelDto[];
@@ -55,23 +58,19 @@ export class TextItemComponent implements OnInit {
 
 
     ngOnInit() {
-        // this.itemDto = new TextItemDto("text>>term1>>term2>>term3>>term4", [
-        //     "annotation1", "annotation2", "annotation3", "annotation4"
-        // ]);
-        //
-        // this.createTextFromTokens(this.itemDto.text);
-
         this.annotationsMap = this.assignColoursIdxesToAnnotations(this.labels)
 
         this.onResultsChange();
     }
 
     onResultsChange() {
-        this.resultsDataService.getResults().subscribe(value => {
-            this.tokensAnnotations = this.termsAnnotationsService.getHighlitning(
-                this.nerTextAnnotationDto.tokens,
-                value);
-        });
+        this.resultsDataService.getResults()
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(value => {
+                this.nerTextAnnotationDto.tokens = this.termsAnnotationsService.getHighlitning(
+                    this.nerTextAnnotationDto.tokens,
+                    value);
+            });
     }
 
     selectStart(index: number) {
@@ -80,7 +79,7 @@ export class TextItemComponent implements OnInit {
         this.selectedAnnotation = null;
     }
 
-    selectEnd(index: Number) {
+    selectEnd(index: number) {
 
         let beginIdx;
         let endIdx;
@@ -122,10 +121,10 @@ export class TextItemComponent implements OnInit {
                     endSel = event.startElIdx;
                 }
 
-                if(this.checkThatRegionsCanBeAnnotated(startSel, endSel)) {
+                if (this.checkThatRegionsCanBeAnnotated(startSel, endSel)) {
                     this.selectStart(startSel);
                     this.selectEnd(endSel);
-                }else{
+                } else {
                     this.showOverlappingRegionsMessage = true;
                 }
 
@@ -179,7 +178,6 @@ export class TextItemComponent implements OnInit {
             )
         );
 
-        // this.resultsDataSource = new ResultsDataSource(this.resultsDataService);
         this.annotationCandidate = null;
         this.selectedAnnotation = null;
 
@@ -191,24 +189,19 @@ export class TextItemComponent implements OnInit {
         this.approveAnnotation();
     }
 
-    submitAndGoToNewTask(){
+    submitAndGoToNewTask() {
 
     }
 
-
-    // private createTextFromTokens(tokensSequence: String) {
-    //     this.tokens = tokensSequence.split(">>");
-    //     this.tokensAnnotations = this.tokens.map(value => null);
-    // }
 
     private checkThatRegionsCanBeAnnotated(begin: number,
                                            end: number): boolean {
-        return this.tokensAnnotations.slice(begin, end).every(termAnnotation => {
-            return termAnnotation == null;
+        return this.nerTextAnnotationDto.tokens.slice(begin, end).every(token => {
+            return token.label === null; //termAnnotation == null;
         });
     }
 
-    private assignColoursIdxesToAnnotations(labelDtos: LabelDto[]): Map<string, number>{
+    private assignColoursIdxesToAnnotations(labelDtos: LabelDto[]): Map<string, number> {
         let annotationsMap: Map<string, number> = new Map();
         labelDtos.forEach((annotation, index) => {
             annotationsMap.set(annotation.name, index + 1);

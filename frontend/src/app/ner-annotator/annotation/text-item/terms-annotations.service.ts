@@ -10,19 +10,15 @@ export class TermsAnnotationsService {
     }
 
 
-    getHighlitning(terms: TaggedTermDto[], annotationResults: AnnotatedResult[]): string[] {
-        let annotations: string[] = terms.map(value => {
-            return null;
-        });
+    getHighlitning(terms: TaggedTermDto[], annotationResults: AnnotatedResult[]): TaggedTermDto[] {
 
-
-        for (const annotation of annotationResults) {
-            for (let idx: number = annotation.begin; idx <= annotation.end; idx++) {
-                annotations[idx] = annotation.annotation.name;
+        for (const annotationResult of annotationResults) {
+            for (let termIdx: number = annotationResult.begin; termIdx <= annotationResult.end; termIdx++) {
+                terms[termIdx].label = annotationResult.annotation.name;
             }
         }
 
-        return annotations;
+        return terms;
 
     }
 
