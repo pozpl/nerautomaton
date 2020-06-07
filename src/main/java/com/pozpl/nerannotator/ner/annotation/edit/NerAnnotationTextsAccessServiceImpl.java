@@ -21,8 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -48,35 +50,38 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 	}
 
 	@Override
-	public PageDto<NerTextAnnotationDto> getNextUnprocessed(final Integer jobId,
-															final User user) throws NerServiceException {
+	public List<NerTextAnnotationDto> getNextUnprocessed(final Integer jobId,
+														 final User user) throws NerServiceException {
 		try {
 			final Optional<LabelingJob> labelingJobOpt = this.labelingJobsRepository.findById(Long.valueOf(jobId));
 
 			if (!labelingJobOpt.isPresent()) {
-				return PageDto.empty();
+				return Collections.emptyList();
 			}
 
 			final LabelingJob job = labelingJobOpt.get();
 			final boolean canUserAccessTheJob = this.userJobTasksRightsService.doesUserHaveAccessToJobTasks(user, job);
 
 			if (!canUserAccessTheJob) {
-				return PageDto.empty();
+				return Collections.emptyList();
 			}
 
-			final Page<NerJobTextItem> unprocessedTextItems = processingResultRepository.getUnprocessed(user, job,
+			final List<NerJobTextItem> unprocessedTextItems = processingResultRepository.getUnprocessed(user, job,
 					PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "created")));
 
-			final List<NerTextAnnotationDto> annTextDtos = Try.sequence(unprocessedTextItems.map(nerText -> Try.of(() -> {
-				final List<TaggedTermDto> taggedTermDtos = this.textPreprocessorForNer.process(nerText.getText());
-				return NerTextAnnotationDto.builder()
-						.id(nerText.getId().intValue())
-						.tokens(taggedTermDtos)
-						.build();
-			})).getContent()).getOrElseThrow(NerServiceException::new)
+			final List<NerTextAnnotationDto> annTextDtos = Try.sequence(unprocessedTextItems.stream()
+					.map(nerText -> Try.of(() -> {
+						final List<TaggedTermDto> taggedTermDtos = this.textPreprocessorForNer.process(nerText.getText());
+						return NerTextAnnotationDto.builder()
+								.id(nerText.getId().intValue())
+								.tokens(taggedTermDtos)
+								.build();
+					}))
+					.collect(Collectors.toList()))
+					.getOrElseThrow(NerServiceException::new)
 					.toList().asJava();
 
-			return new PageDto<>(1, unprocessedTextItems.getNumberOfElements(), 20, annTextDtos);
+			return annTextDtos;
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}

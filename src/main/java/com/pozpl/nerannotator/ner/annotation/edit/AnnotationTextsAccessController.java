@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/ner/annotation/text/tasks")
 public class AnnotationTextsAccessController {
@@ -22,8 +24,8 @@ public class AnnotationTextsAccessController {
 	}
 
 	@GetMapping("/get/unprocessed")
-	public PageDto<NerTextAnnotationDto> getUnprocessed(@RequestParam(name = "jobId") final Integer jobId,
-														final User user) {
+	public List<NerTextAnnotationDto> getUnprocessed(@RequestParam(name = "jobId") final Integer jobId,
+													 final User user) {
 		try{
 			return this.textsAccessService.getNextUnprocessed(jobId, user);
 		} catch (NerServiceException e){
