@@ -15,6 +15,10 @@ export class ResultsDataService {
         return this.results;
     }
 
+    initResults(annotatedResults: AnnotatedResult[]){
+        this.results.next(annotatedResults);
+    }
+
     addResult(data: AnnotatedResult) {
         let currentResult: AnnotatedResult[] = this.results.getValue();
         currentResult.push(data);

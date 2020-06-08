@@ -32,10 +32,6 @@ export class TextItemComponent implements OnInit {
 
     @Output() finishedAnnotation = new EventEmitter<NerTextAnnotationDto>();
 
-    // itemDto: TextItemDto;
-
-    // tokens: string[];
-
     annotationCandidateBeginIndex: number;
     annotationCandidate: AnnotationCandidate;
     selectedAnnotation: LabelDto;
@@ -43,7 +39,6 @@ export class TextItemComponent implements OnInit {
     public hostRectangle: SelectionRectangle | null;
     private selectedText: string;
 
-    tokensAnnotations: string[];
     showOverlappingRegionsMessage: boolean = false;
 
     annotationsMap: Map<string, number>;
@@ -53,13 +48,12 @@ export class TextItemComponent implements OnInit {
 
         this.hostRectangle = null;
         this.selectedText = "";
-        this.tokensAnnotations = [];
     }
 
 
     ngOnInit() {
-        this.annotationsMap = this.assignColoursIdxesToAnnotations(this.labels)
-
+        this.annotationsMap = this.assignColoursIdxesToAnnotations(this.labels);
+        this.resultsDataService.initResults(this.termsAnnotationsService.getAnnotationResultsFromTerms(this.nerTextAnnotationDto.tokens));
         this.onResultsChange();
     }
 
@@ -67,7 +61,7 @@ export class TextItemComponent implements OnInit {
         this.resultsDataService.getResults()
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(value => {
-                this.nerTextAnnotationDto.tokens = this.termsAnnotationsService.getHighlitning(
+                this.nerTextAnnotationDto.tokens = this.termsAnnotationsService.assignAnnotationResultsToTerms(
                     this.nerTextAnnotationDto.tokens,
                     value);
             });
@@ -172,7 +166,7 @@ export class TextItemComponent implements OnInit {
         this.resultsDataService.addResult(
             new AnnotatedResult(
                 this.annotationCandidate.terms,
-                this.selectedAnnotation,
+                this.selectedAnnotation.name,
                 this.annotationCandidate.begin,
                 this.annotationCandidate.end
             )
