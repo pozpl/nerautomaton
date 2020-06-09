@@ -186,7 +186,7 @@ export class TextItemComponent implements OnInit {
     }
 
     submitAndGoToNewTask() {
-
+        this.finishedAnnotation.emit(this.nerTextAnnotationDto);
     }
 
 
