@@ -161,7 +161,10 @@ $green-palette-list: create-palette(green);
 @each $current-color in $green-palette-list {
     $i: index($green-palette-list, $current-color);
     .annotation-#{$i}-applied{
-        background-color: $current-color;
+        #background-color: $current-color;
+        border-color: $current-color;
+        border-style: solid;
+        border-width: 2px;
     }
 
     .annotation-#{$i}-marker{
