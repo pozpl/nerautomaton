@@ -163,17 +163,19 @@ export class TextItemComponent implements OnInit {
      * Approve annotation candidate thus adding it into the list of annotations for given text
      */
     approveAnnotation() {
-        this.resultsDataService.addResult(
-            new AnnotatedResult(
-                this.annotationCandidate.terms,
-                this.selectedAnnotation.name,
-                this.annotationCandidate.begin,
-                this.annotationCandidate.end
-            )
-        );
+        if(this.annotationCandidate) {
+            this.resultsDataService.addResult(
+                new AnnotatedResult(
+                    this.annotationCandidate.terms,
+                    this.selectedAnnotation.name,
+                    this.annotationCandidate.begin,
+                    this.annotationCandidate.end
+                )
+            );
 
-        this.annotationCandidate = null;
-        this.selectedAnnotation = null;
+            this.annotationCandidate = null;
+            this.selectedAnnotation = null;
+        }
 
         this.hideSelection()
     }
