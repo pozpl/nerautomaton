@@ -217,7 +217,7 @@ export class TextSelectDirective implements OnInit, OnDestroy {
         // We only want to emit events for selections that are fully contained within the
         // host element. If the selection bleeds out-of or in-to the host, then we'll
         // just ignore it since we don't control the outer portions.
-        if (this.elementRef.nativeElement.contains(rangeContainer)) {
+        if (this.isRangeFullyContained(range)) {
 
             let startContainer: Node = range.startContainer;
             let startElement: HTMLElement = startContainer.nodeType === Node.TEXT_NODE ? startContainer.parentElement : <HTMLElement>startContainer;
