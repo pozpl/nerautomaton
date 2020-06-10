@@ -19,7 +19,7 @@ const routes: Routes = [
     {path: 'ner/job/edit/', component: NerJobEditComponent},
     {path: 'ner/job/edit/:id', component: NerJobEditComponent},
     {path: 'ner/user/tasks', component: TasksListComponent},
-    {path: 'ner/job/annotate/process/:jobId', component: ProcessedTextsListComponent},
+    {path: 'ner/job/annotate/processed/:jobId', component: ProcessedTextsListComponent},
     {path: 'ner/job/annotate/review/:id', component: TasksListComponent},
     {path: 'ner/job/unprocessed/:jobId', component: NerAnnotationPageComponent},
 

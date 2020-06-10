@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NerAnnotationDataService} from "../data/ner-annotation-data.service";
 import {NerTextAnnotationDto} from "../data/ner-text-annotation.dto";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {flatMap, takeUntil} from "rxjs/operators";
 import {forkJoin, Subject} from "rxjs";
 import {NerLabelsAccessService} from "../data/ner-labels-access.service";
@@ -25,7 +25,8 @@ export class NerAnnotationPageComponent implements OnInit, OnDestroy {
 
     constructor(private annotationDataService: NerAnnotationDataService,
                 private nerLabelsAccessService: NerLabelsAccessService,
-                private activeRoute: ActivatedRoute) {
+                private activeRoute: ActivatedRoute,
+                private router: Router) {
     }
 
     ngOnInit() {
@@ -78,9 +79,19 @@ export class NerAnnotationPageComponent implements OnInit, OnDestroy {
                     this.unprocessedTexts = unprocessedTexts;
                     if (this.unprocessedTexts.length > 0) {
                         this.activeText = this.unprocessedTexts.shift();
+                    }else{
+                        this.activeText = null;
                     }
                 });
         }
+    }
+
+    private goToTaskList(){
+        this.router.navigate(['ner/user/tasks'])
+    }
+
+    private reviewProcessedTexts(){
+        this.router.navigate(['ner/job/annotate/processed/', this.jobId])
     }
 
 }

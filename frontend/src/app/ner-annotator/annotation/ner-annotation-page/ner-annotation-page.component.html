@@ -5,3 +5,26 @@
 >
 
 </app-text-item>
+
+<div *ngIf="! activeText"
+     fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px"
+     class="annotation-page-all-done"
+>
+    <div>
+        <div>
+            All items processed
+        </div>
+        <div class="action-buttons">
+            <button
+                (click)="goToTaskList()"
+                class="return-to-jobs"
+            >Return to jobs list</button>
+            <button
+                (click)="reviewProcessedTexts()"
+                mat-rised-button>
+                Review
+            </button>
+        </div>
+    </div>
+
+</div>
