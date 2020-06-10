@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ResultsDataService} from "./results-data.service";
 import {AnnotatedResult} from "./annotated-result";
 import {TextSelectEvent} from "./text-select.directive";
@@ -8,14 +8,11 @@ import {LabelDto} from "../../management/ner-jobs/label.dto";
 import {TaggedTermDto} from "../data/tagged-term.dto";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
+import {SelectionRectangle} from "./selection-rectangle";
+import {AnnotationCandidate} from "./annotation-candidate";
 
 
-interface SelectionRectangle {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-}
+
 
 @Component({
     selector: 'app-text-item',
@@ -23,7 +20,7 @@ interface SelectionRectangle {
     styleUrls: ['./text-item.component.scss'],
     providers: [ResultsDataService, TermsAnnotationsService]
 })
-export class TextItemComponent implements OnInit {
+export class TextItemComponent implements OnInit, OnChanges {
 
     private unsubscribe: Subject<void> = new Subject<void>();
 
@@ -57,7 +54,16 @@ export class TextItemComponent implements OnInit {
         this.onResultsChange();
     }
 
-    onResultsChange() {
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.nerTextAnnotationDto){
+            this.unsubscribe.next();//unsubscribe all previous subscriptions we are processing new item
+            this.resultsDataService.initResults(this.termsAnnotationsService.getAnnotationResultsFromTerms(this.nerTextAnnotationDto.tokens));
+            this.onResultsChange();
+        }
+    }
+
+
+    private onResultsChange() {
         this.resultsDataService.getResults()
             .pipe(takeUntil(this.unsubscribe))
             .subscribe(value => {
@@ -67,13 +73,13 @@ export class TextItemComponent implements OnInit {
             });
     }
 
-    selectStart(index: number) {
+    private selectStart(index: number) {
         this.annotationCandidateBeginIndex = index;
         this.annotationCandidate = null;
         this.selectedAnnotation = null;
     }
 
-    selectEnd(index: number) {
+    private selectEnd(index: number) {
 
         let beginIdx;
         let endIdx;
@@ -101,10 +107,10 @@ export class TextItemComponent implements OnInit {
         // exist. Or, if a selection is being removed, the rectangles will be null.
         if (event.hostRectangle) {
 
-            this.hostRectangle = event.hostRectangle;
-            this.selectedText = event.text;
-
             if (event.startElIdx >= 0 && event.endElIdx >= 0) {
+                this.hostRectangle = event.hostRectangle;
+                this.selectedText = event.text;
+
                 let startSel: number;
                 let endSel: number;
                 if (event.startElIdx < event.endElIdx) {
@@ -205,34 +211,8 @@ export class TextItemComponent implements OnInit {
 
         return annotationsMap;
     }
-
 }
 
-class AnnotationCandidate {
-    private readonly _terms: TaggedTermDto[];
-    private readonly _begin: number;
-    private readonly _end: number;
-
-
-    constructor(terms: TaggedTermDto[], begin: number, end: number) {
-        this._terms = terms;
-        this._begin = begin;
-        this._end = end;
-    }
-
-
-    get terms(): TaggedTermDto[] {
-        return this._terms;
-    }
-
-    get begin(): number {
-        return this._begin;
-    }
-
-    get end(): number {
-        return this._end;
-    }
-}
 
 
 

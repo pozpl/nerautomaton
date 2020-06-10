@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {AnnotatedResult} from "./annotated-result";
 
 export class ResultsDataSource extends DataSource<any> {
+
     constructor(private dataService: ResultsDataService) {
         super();
     }
