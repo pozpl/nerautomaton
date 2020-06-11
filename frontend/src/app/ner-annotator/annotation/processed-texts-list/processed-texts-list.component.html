@@ -3,7 +3,11 @@
 
     <mat-card class="card">
         <mat-card-title fxLayout.xs="column">
-            <h3>Tasks</h3>
+            <h3>Precessed texts for task:
+                <span *ngIf="job$ | async as job">
+                    {{job.name}}
+                </span>
+            </h3>
         </mat-card-title>
         <mat-card-content>
             <div class="spinner-container" *ngIf="dataSource.loading$ | async">

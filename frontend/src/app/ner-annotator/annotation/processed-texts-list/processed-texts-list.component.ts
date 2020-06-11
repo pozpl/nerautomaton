@@ -2,9 +2,11 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProcessedTextsDatasource} from "./processed-texts-datasource";
 import {NerAnnotationDataService} from "../data/ner-annotation-data.service";
 import {ActivatedRoute, Router} from '@angular/router';
-import {Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {PageEvent} from "@angular/material/paginator";
+import {NerJobsService} from "../../management/ner-jobs/ner-jobs.service";
+import {NerJobDto} from "../../management/ner-jobs/ner-job.dto";
 
 @Component({
     selector: 'app-processed-texts-list',
@@ -18,12 +20,14 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
     public dataSource: ProcessedTextsDatasource;
     public page = 1;
     private jobId: number | undefined;
+    public job$?: Observable<NerJobDto>;
 
     displayedColumns = ["text", "review"];
 
     constructor(private nerAnnotationDataService: NerAnnotationDataService,
                 private router: Router,
-                private activeRoute: ActivatedRoute) {
+                private activeRoute: ActivatedRoute,
+                private nerJobsService: NerJobsService) {
         this.dataSource = new ProcessedTextsDatasource(nerAnnotationDataService);
     }
 
@@ -35,6 +39,7 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
                 this.jobId = params['jobId'];
 
                 this.dataSource.list(this.jobId, this.page);
+                this.job$ = this.nerJobsService.getJob(this.jobId);
             });
 
     }
