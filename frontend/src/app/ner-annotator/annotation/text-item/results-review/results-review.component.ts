@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ResultsDataSource} from "../text-item/results-data-source";
-import {ResultsDataService} from "../text-item/results-data.service";
+import {ResultsDataSource} from "../results-data-source";
+import {ResultsDataService} from "../results-data.service";
+
 
 @Component({
     selector: 'item-results-review',
@@ -25,7 +26,7 @@ export class ResultsReviewComponent implements OnInit {
     //         this.resultsDataSource = new ResultsDataSource(this.resultsDataService);
     //     });
     // }
-    
+
     deleteResult(beginIdx, endIdx) {
         this.resultsDataService.deleteResult(beginIdx, endIdx);
         this.resultsDataSource = new ResultsDataSource(this.resultsDataService);

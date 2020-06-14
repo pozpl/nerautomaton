@@ -17,10 +17,6 @@
         <mat-icon class="icon">code</mat-icon>
         <span class="label">Tasks</span>
       </a>
-      <a mat-list-item routerLinkActive="active" routerLink="/ner/text-item">
-        <mat-icon class="icon">code</mat-icon>
-        <span class="label">Annotator</span>
-      </a>
       <a mat-list-item type="button" *ngIf="auth.authenticated" (click)="logout()">
         <mat-icon class="icon">input</mat-icon>
         <span class="label">LogOut</span>
@@ -63,12 +59,6 @@
             <a routerLinkActive="active" routerLink="/ner/user/tasks">
               <mat-icon class="icon">code</mat-icon>
               <span class="label">Tasks</span>
-            </a>
-          </li>
-            <li>
-            <a routerLinkActive="active" routerLink="/ner/text-item">
-              <mat-icon class="icon">code</mat-icon>
-              <span class="label">Annotator</span>
             </a>
           </li>
           <li>

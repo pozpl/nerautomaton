@@ -28,6 +28,7 @@ export class TextItemComponent implements OnInit, OnChanges {
     @Input() labels: LabelDto[];
 
     @Output() finishedAnnotation = new EventEmitter<NerTextAnnotationDto>();
+    @Output() onReturn = new EventEmitter<boolean>();
 
     annotationCandidateBeginIndex: number;
     annotationCandidate: AnnotationCandidate;
@@ -193,6 +194,10 @@ export class TextItemComponent implements OnInit, OnChanges {
 
     submitAndGoToNewTask() {
         this.finishedAnnotation.emit(this.nerTextAnnotationDto);
+    }
+
+    submitReturnToPreviousView() {
+        this.onReturn.emit(true);
     }
 
 
