@@ -74,6 +74,7 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 						final List<TaggedTermDto> taggedTermDtos = this.textPreprocessorForNer.process(nerText.getText());
 						return NerTextAnnotationDto.builder()
 								.id(nerText.getId().intValue())
+								.text(nerText.getText())
 								.tokens(taggedTermDtos)
 								.build();
 					}))
