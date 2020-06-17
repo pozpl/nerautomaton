@@ -1,64 +1,85 @@
-
-
-<app-text-item *ngIf="labels && labels.length > 0 && activeText"
-               [nerTextAnnotationDto]="activeText"
-               [labels]="labels"
-               (finishedAnnotation)="processFinishedAnnotation($event)"
->
-
-</app-text-item>
-
-<div *ngIf="dataLoading"
-     fxLayout="row"
-     fxLayoutAlign="center"
-     fxFlex="1 1 100%"
->
-    <mat-spinner></mat-spinner>
-</div>
-
-<div *ngIf="! dataLoading">
-    <div *ngIf="! labels || labels.length === 0"
-         fxLayout="column"
-         fxLayoutAlign="center"
-         fxLayoutGap="3em"
-         class="annotation-page-all-done"
+<div fxLayout="column">
+    <div fxFlex="1 1 100%"
+         fxLayoutAlign="left"
+         fxLayout="row"
+         class="unprocessed-ner-annotations-return-nav"
     >
-
-        <div>
-            No labels configured for a task
-        </div>
-        <div class="action-buttons">
-            <button mat-raised-button (click)="goToTaskList()">Return to jobs list</button>
-        </div>
-    </div>
-
-    <div *ngIf="! activeText"
-         fxLayout="column" fxLayoutAlign="center" fxLayoutGap="3em"
-         class="annotation-page-all-done"
-    >
-
-        <div>
-            All items processed
-        </div>
-        <div class="action-buttons"
-             fxLayout="row" fxLayoutAlign="center" fxLayoutGap="2em"
+        <button
+            (click)="goToTaskList()"
+            class="return-to-jobs"
+            mat-raised-button
         >
-            <button
-                (click)="goToTaskList()"
-                class="return-to-jobs"
-                mat-raised-button
+            Return to jobs list
+        </button>
+    </div>
+
+    <div
+        fxFlex="1 1 100%"
+        fxLayoutAlign="left"
+        fxLayout="row"
+    >
+        <app-text-item *ngIf="labels && labels.length > 0 && activeText"
+                       [nerTextAnnotationDto]="activeText"
+                       [labels]="labels"
+                       (finishedAnnotation)="processFinishedAnnotation($event)"
+        >
+
+        </app-text-item>
+    </div>
+
+
+    <div *ngIf="dataLoading"
+         fxLayout="row"
+         fxLayoutAlign="center"
+         fxFlex="1 1 100%"
+    >
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div *ngIf="! dataLoading">
+        <div *ngIf="! labels || labels.length === 0"
+             fxLayout="column"
+             fxLayoutAlign="center"
+             fxLayoutGap="3em"
+             class="annotation-page-all-done"
+        >
+
+            <div>
+                No labels configured for a task
+            </div>
+            <div class="action-buttons">
+                <button mat-raised-button (click)="goToTaskList()">Return to jobs list</button>
+            </div>
+        </div>
+
+        <div *ngIf="! activeText"
+             fxLayout="column" fxLayoutAlign="center" fxLayoutGap="3em"
+             class="annotation-page-all-done"
+        >
+
+            <div>
+                All items processed
+            </div>
+            <div class="action-buttons"
+                 fxLayout="row" fxLayoutAlign="center" fxLayoutGap="2em"
             >
-                Return to jobs list
-            </button>
-            <button
-                mat-raised-button
-                (click)="reviewProcessedTexts()"
-            >
-                Review
-            </button>
+                <button
+                    (click)="goToTaskList()"
+                    class="return-to-jobs"
+                    mat-raised-button
+                >
+                    Return to jobs list
+                </button>
+                <button
+                    mat-raised-button
+                    (click)="reviewProcessedTexts()"
+                >
+                    Review
+                </button>
+            </div>
+
         </div>
 
     </div>
-
 </div>
 
