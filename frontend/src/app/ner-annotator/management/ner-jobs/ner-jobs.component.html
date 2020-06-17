@@ -39,12 +39,13 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="delete">
-                                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
                                     <mat-cell *matCellDef="let element">
-                                        <a (click)="deleteJob(element)"  class="delete-icon"
-                                           type="button">
-                                            <mat-icon class="icon">delete</mat-icon>
-                                        </a>
+                                        <button (click)="deleteJob(element)"
+                                            mat-icon-button
+                                        >
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
                                     </mat-cell>
                                 </ng-container>
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
