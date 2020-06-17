@@ -7,19 +7,19 @@ import {forkJoin, Subject} from "rxjs";
 import {NerLabelsAccessService} from "../data/ner-labels-access.service";
 import {LabelDto} from "../../management/ner-jobs/label.dto";
 
-
 @Component({
-    selector: 'app-ner-annotation-page',
-    templateUrl: './ner-annotation-page.component.html',
-    styleUrls: ['./ner-annotation-page.component.scss']
+    selector: 'unprocessed-annotation-page',
+    templateUrl: './unprocessed-annotation-page.component.html',
+    styleUrls: ['./unprocessed-annotation-page.component.scss']
 })
-export class NerAnnotationPageComponent implements OnInit, OnDestroy {
+export class UnprocessedAnnotationPageComponent implements OnInit, OnDestroy {
 
     private unsubscribe: Subject<void> = new Subject<void>();
 
     private unprocessedTexts: NerTextAnnotationDto[];
     private jobId?: number;
     private labels: LabelDto[];
+    private dataLoading = false;
 
     public activeText?: NerTextAnnotationDto;
 
@@ -30,6 +30,7 @@ export class NerAnnotationPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.dataLoading = true;
         this.activeRoute
             .params
             .pipe(
@@ -48,6 +49,7 @@ export class NerAnnotationPageComponent implements OnInit, OnDestroy {
                 if (this.unprocessedTexts.length > 0) {
                     this.activeText = this.unprocessedTexts.shift();
                 }
+                this.dataLoading = false;
             });
 
     }

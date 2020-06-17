@@ -1,12 +1,11 @@
 .annotation-page-all-done{
     margin-top: 8em;
     text-align: center;
-
     .action-buttons {
         margin-top: 2em;
-
-        .return-to-jobs{
-            margin-right: 1em;
-        }
+        justify-content: space-between;
+        //.return-to-jobs{
+        //    margin-right: 1em;
+        //}
     }
 }
