@@ -38,7 +38,8 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let textItem"
                                   fxFlex="1 1 12em">
-                            <button  mat-raised-button>
+                            <button (click)="reviewTextAnnotation(textItem)"
+                                mat-raised-button>
                                 <mat-icon>list</mat-icon>
                                 Review
                             </button>
