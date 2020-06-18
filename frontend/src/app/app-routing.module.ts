@@ -8,6 +8,7 @@ import {TextItemComponent} from "./ner-annotator/annotation/text-item/text-item.
 import {TasksListComponent} from "./ner-annotator/annotation/tasks-list/tasks-list.component";
 import {ProcessedTextsListComponent} from "./ner-annotator/annotation/processed-texts-list/processed-texts-list.component";
 import {UnprocessedAnnotationPageComponent} from "./ner-annotator/annotation/unprocessed-annotation-page/unprocessed-annotation-page.component";
+import {ReviewAnnotationPageComponent} from "./ner-annotator/annotation/review-annotation-page/review-annotation-page.component";
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
     {path: 'ner/job/annotate/processed/:jobId', component: ProcessedTextsListComponent},
     {path: 'ner/job/annotate/review/:id', component: TasksListComponent},
     {path: 'ner/job/unprocessed/:jobId', component: UnprocessedAnnotationPageComponent},
+    {path: 'ner/review/processed/text', component: ReviewAnnotationPageComponent},
 
     {path: 'ner/text-item', component: TextItemComponent}
 ];
