@@ -13,19 +13,14 @@
         </a>
     </div>
 
-    <div
-        fxFlex="1 1 100%"
-        fxLayoutAlign="left"
-        fxLayout="row"
-    >
-        <app-text-item *ngIf="labels && labels.length > 0 && activeText"
-                       [nerTextAnnotationDto]="activeText"
-                       [labels]="labels"
-                       (finishedAnnotation)="processFinishedAnnotation($event)"
-        >
 
-        </app-text-item>
-    </div>
+    <app-text-item *ngIf="labels && labels.length > 0 && activeText"
+                   [nerTextAnnotationDto]="activeText"
+                   [labels]="labels"
+                   (finishedAnnotation)="processFinishedAnnotation($event)"
+    >
+
+    </app-text-item>
 
 
     <div *ngIf="dataLoading"
