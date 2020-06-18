@@ -1,0 +1,6 @@
+<app-text-item *ngIf="labels && labels.length > 0 && annotatedText"
+               [nerTextAnnotationDto]="annotatedText"
+               [labels]="labels"
+               (finishedAnnotation)="processFinishedAnnotation($event)"
+>
+</app-text-item>
