@@ -11,19 +11,19 @@
                             <div (textSelect)="renderRectangles( $event )"
                                  class="mat-elevation-z3 container">
                                 <div class="text-working-area">
-                                     <span *ngFor="let termDto of nerTextAnnotationDto.tokens;  let idx = index"
-                                           style="display: inline-block; padding-right: 1ch;"
-                                     >
-                                         <span *ngIf="termDto.specialTextMark && termDto.specialTextMark === 'SENTENCE_END' ">
+                                     <ng-container *ngFor="let termDto of nerTextAnnotationDto.tokens;  let idx = index">
+                                         <ng-container *ngIf="termDto.specialTextMark && termDto.specialTextMark === 'SENTENCE_END' ">
                                              <br>
-                                         </span>
+                                         </ng-container>
                                          <span *ngIf="! termDto.specialTextMark"
                                                [ngClass]="termDto.label && annotationsMap.has(termDto.label) != null ? 'annotation-' +annotationsMap.get(termDto.label) + '-applied'  : ''"
-                                               [attr.index]="idx">
+                                               [attr.index]="idx"
+                                               style="display: inline-block; padding-right: 1ch;"
+                                         >
                                             {{termDto.token}}
                                          </span>
 
-                                     </span>
+                                     </ng-container>
                                 </div>
 
                                 <!--
