@@ -79,7 +79,8 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
     public reviewTextAnnotation(annotatedText: NerTextAnnotationDto) {
         this.router.navigateByUrl('/ner/review/processed/text', {
             state: {
-                annotatedText: annotatedText
+                annotatedText: annotatedText,
+                labels: this.labels
             }
         })
     }

@@ -19,6 +19,7 @@ import { TasksListComponent } from './annotation/tasks-list/tasks-list.component
 import { ProcessedTextsListComponent } from './annotation/processed-texts-list/processed-texts-list.component';
 import { UnprocessedAnnotationPageComponent } from './annotation/unprocessed-annotation-page/unprocessed-annotation-page.component';
 import {ResultsReviewComponent} from "./annotation/text-item/results-review/results-review.component";
+import { ReviewAnnotationPageComponent } from './annotation/review-annotation-page/review-annotation-page.component';
 
 @NgModule({
     declarations: [
@@ -32,7 +33,8 @@ import {ResultsReviewComponent} from "./annotation/text-item/results-review/resu
         NerJobTextEditDialog,
         TasksListComponent,
         ProcessedTextsListComponent,
-        UnprocessedAnnotationPageComponent
+        UnprocessedAnnotationPageComponent,
+        ReviewAnnotationPageComponent
     ],
     imports: [
         CommonModule,
