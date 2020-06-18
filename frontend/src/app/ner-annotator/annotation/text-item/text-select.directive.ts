@@ -211,25 +211,33 @@ export class TextSelectDirective implements OnInit, OnDestroy {
 
         }
 
-        let range = selection.getRangeAt(0);
-        let rangeContainer = this.getRangeContainer(range);
+        const range = selection.getRangeAt(0);
+        const rangeContainer = this.getRangeContainer(range);
 
         // We only want to emit events for selections that are fully contained within the
         // host element. If the selection bleeds out-of or in-to the host, then we'll
         // just ignore it since we don't control the outer portions.
         if (this.isRangeFullyContained(range)) {
 
-            let startContainer: Node = range.startContainer;
-            let startElement: HTMLElement = startContainer.nodeType === Node.TEXT_NODE ? startContainer.parentElement : <HTMLElement>startContainer;
-            let startElementIdx: number = parseInt(startElement.getAttribute('index'));
+            const startElement: HTMLElement = this.adjustElForMarkedElements(range.startContainer, (el:HTMLElement) => {
+                return <HTMLElement> el.nextElementSibling
+            });
+            if(startElement === null){
+                return;
+            }
+            const startElementIdx: number = parseInt(startElement.getAttribute('index'));
 
-            let endContainer: Node = range.endContainer;
-            let endElement: HTMLElement = endContainer.nodeType === Node.TEXT_NODE ? endContainer.parentElement : <HTMLElement>endContainer;
-            let endElementIdx: number = parseInt(endElement.getAttribute('index'));
+            const endElement: HTMLElement = this.adjustElForMarkedElements(range.endContainer, (el:HTMLElement) => {
+                return <HTMLElement> el.previousElementSibling
+            });
+            if(endElement === null){
+                return;
+            }
+            const endElementIdx: number = parseInt(endElement.getAttribute('index'));
 
 
-            var viewportRectangle = range.getBoundingClientRect();
-            var localRectangle = this.viewportToHost(viewportRectangle, rangeContainer);
+            const viewportRectangle = range.getBoundingClientRect();
+            const localRectangle = this.viewportToHost(viewportRectangle, rangeContainer);
 
             // Since emitting event may cause the calling context to change state, we
             // want to run the .emit() inside of the Angular Zone. This way, it can
@@ -262,6 +270,22 @@ export class TextSelectDirective implements OnInit, OnDestroy {
         }
 
     }
+
+    private adjustElForMarkedElements(startContainer: Node,
+                                           siblingFunction: (a:HTMLElement)=>HTMLElement): HTMLElement | null {
+        const element = startContainer.nodeType === Node.TEXT_NODE ? startContainer.parentElement : <HTMLElement>startContainer;
+        let currentElement = element;
+        for (let i = 0; i < 20; i++) {
+            if (currentElement !== null && currentElement.getAttribute('index') === null) {
+                currentElement = siblingFunction(currentElement)
+            } else {
+                return currentElement;
+            }
+        }
+
+        return null;
+    }
+
 
     /** Convert the given viewport-relative rectangle to a host-relative rectangle.
      * --
