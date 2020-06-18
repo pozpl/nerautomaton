@@ -34,9 +34,13 @@ export class ReviewAnnotationPageComponent implements OnInit {
 
         this.annotationDataService.saveAnnotation(processedText).subscribe(
             editResult => {
-                this.location.back();
+                this.goBackToTextsList();
             });
 
+    }
+
+    goBackToTextsList(){
+        this.location.back();
     }
 
 }

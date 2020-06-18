@@ -1,6 +1,37 @@
-<app-text-item *ngIf="labels && labels.length > 0 && annotatedText"
-               [nerTextAnnotationDto]="annotatedText"
-               [labels]="labels"
-               (finishedAnnotation)="processFinishedAnnotation($event)"
->
-</app-text-item>
+<div fxLayout="column">
+    <div fxFlex="1 1 100%"
+         fxLayoutAlign="left"
+         fxLayout="row"
+         class="return-to-texts-nav"
+    >
+        <a
+            (click)="goBackToTextsList()"
+            class="return-to-texts-button"
+            mat-raised-button
+        >
+            Return
+        </a>
+    </div>
+    <app-text-item *ngIf="labels && labels.length > 0 && annotatedText"
+                   [nerTextAnnotationDto]="annotatedText"
+                   [labels]="labels"
+                   (finishedAnnotation)="processFinishedAnnotation($event)"
+    >
+    </app-text-item>
+
+    <div *ngIf="! labels || labels.length === 0"
+         fxLayout="row"
+         fxLayoutAlign="center"
+         fxFlex="1 1 100%"
+    >
+        <div class="text-center">
+            <div>
+                No labels configured for a task
+            </div>
+            <div class="action-buttons">
+                <button mat-raised-button (click)="goBackToTextsList()">Return</button>
+            </div>
+        </div>
+    </div>
+
+</div>
