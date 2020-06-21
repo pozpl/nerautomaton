@@ -55,8 +55,9 @@ public class JobTextAccessServiceImpl implements IJobTextAccessService {
 					throw new NerServiceException("Access violation for Ner Job " + jobId + " and user: " + jobOwner.getUsername());
 				}
 
+				int adjustedPage = page >= 0 ? page : 0;
 				final Page<NerJobTextItem> textItemsPage = this.nerJobTextItemRepository.getForJob(job,
-						PageRequest.of(0, PER_PAGE, Sort.by(Sort.Direction.DESC, "id")));
+						PageRequest.of(adjustedPage, PER_PAGE, Sort.by(Sort.Direction.DESC, "id")));
 				final List<JobTextDto> textItems = textItemsPage.getContent().stream()
 						.map(textItem -> JobTextDto.builder()
 								.id(textItem.getId().intValue())
@@ -64,7 +65,7 @@ public class JobTextAccessServiceImpl implements IJobTextAccessService {
 								.jobId(job.getId().intValue())
 								.build()
 						).collect(Collectors.toList());
-				return new PageDto(page, textItemsPage.getSize(), PER_PAGE, textItems);
+				return new PageDto(page, new Long(textItemsPage.getTotalElements()).intValue(), PER_PAGE, textItems);
 			}
 
 			return PageDto.empty();

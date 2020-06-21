@@ -32,7 +32,7 @@ public class NerTextListController {
 	 */
 	@GetMapping(value = "/list")
 	@ResponseBody
-	public PageDto<JobTextDto> list(@RequestParam("page") final Integer page,
+	public PageDto<JobTextDto> list(@RequestParam(name = "page", required = false, defaultValue = "0") final Integer page,
 									@RequestParam("jobId") final Integer jobId,
 									final User user) {
 		try {

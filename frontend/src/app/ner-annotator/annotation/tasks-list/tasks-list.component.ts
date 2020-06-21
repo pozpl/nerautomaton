@@ -12,7 +12,7 @@ import {Router} from "@angular/router";
 export class TasksListComponent implements OnInit {
 
     public dataSource: UserNerTasksDataSource;
-    private page = 1;
+    private page = 0;
 
     displayedColumns = ["name", "review", "continue"];
 

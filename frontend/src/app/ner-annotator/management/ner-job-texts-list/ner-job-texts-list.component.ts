@@ -25,7 +25,7 @@ export class NerJobTextsListComponent implements OnInit, OnChanges {
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
     public dataSource: TextItemsDatasource;
-    private page = 1;
+    private page = 0;
 
     displayedColumns = ["edit", "text", "delete"];
 
