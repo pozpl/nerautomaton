@@ -35,7 +35,7 @@ public class AnnotationTextsAccessController {
 
 	@GetMapping("/list/processed")
 	public PageDto<NerTextAnnotationDto> listProcessed(@RequestParam(name = "jobId") final Integer jobId,
-													   @RequestParam(name = "page", required = false, defaultValue = "1") final Integer page,
+													   @RequestParam(name = "page", required = false, defaultValue = "0") final Integer page,
 													   final User user){
 		try{
 			return this.textsAccessService.getProcessed(jobId, user, page);

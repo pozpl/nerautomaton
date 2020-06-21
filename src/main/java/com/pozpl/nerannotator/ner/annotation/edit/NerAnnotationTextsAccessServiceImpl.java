@@ -107,7 +107,7 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 			}
 
 			final Page<UserNerTextProcessingResult> processedTexts = processingResultRepository.getForUserAndJob(user, job,
-					PageRequest.of(page - 1, 20, Sort.by(Sort.Direction.DESC, "created")));
+					PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "created")));
 
 			final List<NerTextAnnotationDto> annotationTextDtos = new ArrayList<>();
 			for (UserNerTextProcessingResult processedText : processedTexts) {
@@ -115,7 +115,7 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 			}
 
 
-			return new PageDto<>(page, processedTexts.getSize(), 20, annotationTextDtos);
+			return new PageDto<>(page, new Long(processedTexts.getTotalElements()).intValue(), 20, annotationTextDtos);
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}

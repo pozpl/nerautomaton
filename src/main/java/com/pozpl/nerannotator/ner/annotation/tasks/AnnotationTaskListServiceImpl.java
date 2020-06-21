@@ -43,7 +43,7 @@ public class AnnotationTaskListServiceImpl implements IAnnotationTaskListService
 	@Override
 	public PageDto<UserNerTaskDescriptionDto> listAvailableJobs(User user, Integer page) throws NerServiceException {
 		try {
-			final Integer adjustedPage = page != null && page > 0 ? page -1 : 0;
+			final Integer adjustedPage = page != null && page >= 0 ? page : 0;
 			Page<LabelingJob> userJobs = labelingJobsRepository.getJobsForOwner(user, PageRequest.of(adjustedPage, 20, Sort.by(Sort.Direction.DESC, "created")));
 
 			final List<UserNerTaskDescriptionDto> jobs = userJobs.getContent().stream()
@@ -51,7 +51,7 @@ public class AnnotationTaskListServiceImpl implements IAnnotationTaskListService
 					.map(nerJobTry -> nerJobTry.getOrElse(new UserNerTaskDescriptionDto(new NerJobDto(), 0, 0)))
 					.collect(Collectors.toList());
 
-			return new PageDto<>(page, userJobs.getSize(), 20, jobs);
+			return new PageDto<>(page, new Long(userJobs.getTotalElements()).intValue(), 20, jobs);
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}

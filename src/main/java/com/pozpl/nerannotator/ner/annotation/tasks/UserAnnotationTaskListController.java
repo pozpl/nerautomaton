@@ -22,7 +22,7 @@ public class UserAnnotationTaskListController {
 	}
 
 	@GetMapping("/list")
-	public PageDto<UserNerTaskDescriptionDto> list(@RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
+	public PageDto<UserNerTaskDescriptionDto> list(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
 							User user) {
 		try{
 			return annotationTaskListService.listAvailableJobs(user, page);
