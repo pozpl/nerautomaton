@@ -20,8 +20,8 @@ export class TermsAnnotationsService {
             for (let termIdx: number = annotationResult.begin; termIdx <= annotationResult.end; termIdx++) {
                 terms[termIdx].label = annotationResult.annotation;
                 if(termIdx === annotationResult.begin){
-                     terms[termIdx].position = termsSpan === 1 ? 'UNIT' : 'BEGIN';
-                } else if(termIdx === annotationResult.end && termsSpan > 1) {
+                     terms[termIdx].position = termsSpan === 0 ? 'UNIT' : 'BEGIN'; //if first and last indexes are the same than it's UNIT
+                } else if(termIdx === annotationResult.end && termsSpan > 0) {
                     terms[termIdx].position = 'LAST';
                 }else{
                     terms[termIdx].position = 'IN';
