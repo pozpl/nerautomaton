@@ -16,8 +16,16 @@ export class TermsAnnotationsService {
 
         //assign labels from annotation results
         for (const annotationResult of annotationResults) {
+            const termsSpan = annotationResult.end - annotationResult.begin;
             for (let termIdx: number = annotationResult.begin; termIdx <= annotationResult.end; termIdx++) {
                 terms[termIdx].label = annotationResult.annotation;
+                if(termIdx === annotationResult.begin){
+                     terms[termIdx].position = termsSpan === 1 ? 'UNIT' : 'BEGIN';
+                } else if(termIdx === annotationResult.end && termsSpan > 1) {
+                    terms[termIdx].position = 'LAST';
+                }else{
+                    terms[termIdx].position = 'IN';
+                }
             }
         }
 
