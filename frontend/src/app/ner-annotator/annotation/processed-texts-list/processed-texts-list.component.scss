@@ -2,3 +2,12 @@
     min-width: 80%;
     margin-top: 3em;
 }
+
+
+.mat-cell {
+    .ner-job-text-item {
+        overflow-y: hidden;
+        max-height: 2em;
+    }
+}
+
