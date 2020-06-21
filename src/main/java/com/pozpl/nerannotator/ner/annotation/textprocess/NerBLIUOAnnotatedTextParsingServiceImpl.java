@@ -69,7 +69,10 @@ public class NerBLIUOAnnotatedTextParsingServiceImpl implements INerAnnotatedTex
 	}
 
 	private String getSerialiseLabeledTerm(TaggedTermDto taggedTerm, final Set<String> availableLabels) {
-		if(availableLabels.contains(taggedTerm.getLabel()) ){
+		if(StringUtils.isBlank(taggedTerm.getToken())){    //special terms may not have tokens available
+			return "";
+		}
+		if(taggedTerm.getLabel() == null || ! availableLabels.contains(taggedTerm.getLabel()) ){
 			return taggedTerm.getToken() + "\t" + BLIUOScheme.OUT.name();
 		}
 		return taggedTerm.getToken() + "\t" + taggedTerm.getPosition() + "\t" + taggedTerm.getLabel();
