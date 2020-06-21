@@ -23,7 +23,7 @@ export class TasksListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.dataSource.list(1);
+        this.dataSource.list(this.page);
     }
 
     public pageChanged(event: PageEvent) {
