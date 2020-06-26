@@ -109,11 +109,10 @@ public class NerAnnotationTextsAccessServiceImpl implements INerAnnotationTextsA
 			final Page<UserNerTextProcessingResult> processedTexts = processingResultRepository.getForUserAndJob(user, job,
 					PageRequest.of(page, 20, Sort.by(Sort.Direction.DESC, "created")));
 
-			final List<NerTextAnnotationDto> annotationTextDtos = new ArrayList<>();
-			for (UserNerTextProcessingResult processedText : processedTexts) {
-				annotationTextDtos.add(this.toDto(processedText));
-			}
-
+			final List<NerTextAnnotationDto> annotationTextDtos = Try.sequence(processedTexts.get()
+					.map(processeText -> Try.of(() -> this.toDto(processeText)))
+					.collect(Collectors.toList())).getOrElseThrow(NerServiceException::new)
+					.toJavaList();
 
 			return new PageDto<>(page, new Long(processedTexts.getTotalElements()).intValue(), 20, annotationTextDtos);
 		} catch (Exception e) {
