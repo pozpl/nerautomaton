@@ -21,7 +21,7 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
     private unsubscribe: Subject<void> = new Subject<void>();
 
     public dataSource: ProcessedTextsDatasource;
-    public page = 1;
+    public page = 0;
     private jobId: number | undefined;
     public job?: NerJobDto;
     public labels?: LabelDto[];
@@ -46,7 +46,7 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
             takeUntil(this.unsubscribe),
             map(paramsAndQuery => {
                 this.jobId = Number(paramsAndQuery[0].get('jobId'));
-                this.page = Number(paramsAndQuery[1].get('page')) || 1;
+                this.page = Number(paramsAndQuery[1].get('page')) || 0;
 
                 return this.jobId;
             }),
