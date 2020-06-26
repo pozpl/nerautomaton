@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProcessedTextsDatasource} from "./processed-texts-datasource";
 import {NerAnnotationDataService} from "../data/ner-annotation-data.service";
 import {ActivatedRoute, Router} from '@angular/router';
-import {forkJoin, Observable, of, Subject, zip} from "rxjs";
+import {forkJoin, Subject, zip} from "rxjs";
 import {concatMap, map, takeUntil} from "rxjs/operators";
 import {PageEvent} from "@angular/material/paginator";
 import {NerJobsService} from "../../management/ner-jobs/ner-jobs.service";
@@ -40,8 +40,7 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
 
         zip(
             this.activeRoute.paramMap,
-            // this.activeRoute.queryParamMap
-            of(new Map())
+            this.activeRoute.queryParamMap
         ).pipe(
             takeUntil(this.unsubscribe),
             map(paramsAndQuery => {
@@ -60,7 +59,7 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
               this.job = jobAndLabels[0];
               this.labels = jobAndLabels[1];
               this.dataSource.list(this.jobId, this.page);
-        })
+        });
 
     }
 
@@ -82,7 +81,7 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
                 annotatedText: annotatedText,
                 labels: this.labels
             }
-        })
+        });
     }
 
 }
