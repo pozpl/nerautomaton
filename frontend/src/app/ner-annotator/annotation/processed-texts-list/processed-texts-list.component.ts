@@ -70,9 +70,14 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
 
     public pageChanged(event: PageEvent) {
         this.page = event.pageIndex;
-        if (this.jobId) {
-            this.dataSource.list(this.jobId, event.pageIndex);
-        }
+        this.router.navigate([this.jobId], {
+            queryParams:{
+                page: this.page.toString()
+            }
+        });
+        // if (this.jobId) {
+        //     this.dataSource.list(this.jobId, event.pageIndex);
+        // }
     }
 
     public reviewTextAnnotation(annotatedText: NerTextAnnotationDto) {

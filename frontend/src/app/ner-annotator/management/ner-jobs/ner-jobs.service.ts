@@ -17,30 +17,29 @@ export class NerJobsService {
 
     getJobs(page: number): Observable<Page<NerJobDto>> {
         return this.http.get<Page<NerJobDto>>('/ner/edit/list', {
-            params: new HttpParams().set('page', page.toString()),
-            responseType: 'json'
+            params: {
+                page: page.toString()
+            }
         });
     }
 
-    getJob(jobId): Observable<NerJobDto> {
+    getJob(jobId: number): Observable<NerJobDto> {
         return this.http.get<NerJobDto>('/ner/edit/get', {
-            params: new HttpParams().set('id', jobId),
-            responseType: 'json'
+            params: {
+                id: jobId.toString()
+            }
         });
     }
 
     saveJob(jobDto: NerJobDto):Observable<NerJobSaveStatus>{
-        return this.http.post<NerJobSaveStatus>('/ner/edit/save', jobDto, {
-            responseType: 'json',
-            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-        });
+        return this.http.post<NerJobSaveStatus>('/ner/edit/save', jobDto);
     }
 
-    deleteJob(jobId):Observable<void>{
+    deleteJob(jobId: number):Observable<void>{
         return this.http.delete<void>('/ner/edit/delete', {
-            params: new HttpParams().set('id', jobId),
-            responseType: 'json',
-            headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+            params: {
+                id: jobId.toString()
+            }
         });
     }
 }

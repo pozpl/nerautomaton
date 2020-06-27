@@ -11,7 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/ner/edit")
 @PreAuthorize("hasRole('ROLE_PRIVILEGED_USER') OR hasRole('ROLE_ADMIN')")
 public class NerJobsController {
@@ -24,7 +24,6 @@ public class NerJobsController {
 	}
 
 	@GetMapping(value = "/get")
-	@ResponseBody
 	public NerJobDto get(@RequestParam("id")final Integer id, final User user) {
 
 		try {
@@ -35,8 +34,7 @@ public class NerJobsController {
 	}
 
 	@GetMapping(value = "/list")
-	@ResponseBody
-	public PageDto<NerJobDto> list(@RequestParam(value = "page", required = false, defaultValue = "1") final Integer page
+	public PageDto<NerJobDto> list(@RequestParam(value = "page", required = false, defaultValue = "0") final Integer page
 								, final User user) {
 
 		try {
@@ -47,7 +45,6 @@ public class NerJobsController {
 	}
 
 	@PostMapping(value = "/save")
-	@ResponseBody
 	public NerJobSaveStatusDto save(@RequestBody NerJobDto nerJobDto, User user){
 		try{
 			return nerJobService.saveJob(nerJobDto, user);
