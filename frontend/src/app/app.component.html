@@ -3,23 +3,23 @@
     <mat-nav-list>
       <a mat-list-item *ngIf="!auth.authenticated"  routerLinkActive="active" routerLink="/login">
         <mat-icon class="icon">input</mat-icon>
-        <span class="label">Login</span>
+        <span class="menu-label">Login</span>
       </a>
       <a mat-list-item routerLinkActive="active" routerLink="/home">
         <mat-icon class="icon">home</mat-icon>
-        <span class="label">Home</span>
+        <span class="menu-label">Home</span>
       </a>
       <a mat-list-item routerLinkActive="active" routerLink="/ner/jobs">
         <mat-icon class="icon">dashboard</mat-icon>
-        <span class="label">Managment</span>
+        <span class="menu-label">Managment</span>
       </a>
       <a mat-list-item routerLinkActive="active" routerLink="/ner/user/tasks">
         <mat-icon class="icon">code</mat-icon>
-        <span class="label">Tasks</span>
+        <span class="menu-label">Tasks</span>
       </a>
       <a mat-list-item type="button" *ngIf="auth.authenticated" (click)="logout()">
         <mat-icon class="icon">input</mat-icon>
-        <span class="label">LogOut</span>
+        <span class="menu-label">LogOut</span>
       </a>
     </mat-nav-list>
   </mat-sidenav>
@@ -40,31 +40,31 @@
           <li>
             <a routerLinkActive="active" *ngIf="! auth.authenticated" routerLink="/login">
               <mat-icon class="icon">input</mat-icon>
-              <span class="label">Login</span>
+              <span class="menu-label">Login</span>
             </a>
           </li>
           <li>
             <a routerLinkActive="active" routerLink="/home">
               <mat-icon class="icon">home</mat-icon>
-              <span class="label">Home</span>
+              <span class="menu-label">Home</span>
             </a>
           </li>
           <li>
             <a routerLinkActive="active" routerLink="/ner/jobs">
               <mat-icon class="icon">dashboard</mat-icon>
-              <span class="label">Managment</span>
+              <span class="menu-label">Managment</span>
             </a>
           </li>
           <li>
             <a routerLinkActive="active" routerLink="/ner/user/tasks">
               <mat-icon class="icon">code</mat-icon>
-              <span class="label">Tasks</span>
+              <span class="menu-label">Tasks</span>
             </a>
           </li>
           <li>
             <a *ngIf="auth.authenticated" (click)="logout()" >
               <mat-icon class="icon">input</mat-icon>
-              <span class="label">LogOut</span>
+              <span class="menu-label">LogOut</span>
             </a>
           </li>
         </ul>
