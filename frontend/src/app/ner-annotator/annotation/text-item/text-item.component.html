@@ -18,7 +18,7 @@
                                          <span *ngIf="! termDto.specialTextMark"
                                                [ngClass]="termDto.label && annotationsMap.has(termDto.label) != null ? 'annotation-' +annotationsMap.get(termDto.label) + '-applied'  : ''"
                                                [attr.index]="idx"
-                                               style="display: inline-block; padding-right: 1ch;"
+                                               style="display: inline-block; margin-right: 1ch;"
                                          >
                                             {{termDto.token}}
                                          </span>
