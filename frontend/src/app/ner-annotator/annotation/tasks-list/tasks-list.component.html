@@ -63,7 +63,8 @@
 
             </div>
 
-            <mat-paginator [pageSizeOptions]="[20]"
+            <mat-paginator [pageIndex]="page"
+                           [pageSizeOptions]="[20]"
                            (page)="pageChanged($event)"
                            [length]="dataSource.numberDocuments"
                            showFirstLastButtons>
