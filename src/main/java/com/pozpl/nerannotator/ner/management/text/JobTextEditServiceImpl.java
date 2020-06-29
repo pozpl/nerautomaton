@@ -9,6 +9,7 @@ import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -23,6 +24,7 @@ public class JobTextEditServiceImpl implements IJobTextEditService {
 	private final NerJobTextItemRepository nerJobTextItemRepository;
 	private final LabelingJobsRepository labelingJobsRepository;
 
+	@Autowired
 	public JobTextEditServiceImpl(NerJobTextItemRepository nerJobTextItemRepository,
 								  LabelingJobsRepository labelingJobsRepository) {
 		this.nerJobTextItemRepository = nerJobTextItemRepository;
