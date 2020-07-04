@@ -9,6 +9,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface NerJobTextItemRepository extends PagingAndSortingRepository<NerJobTextItem, Long> {
 
@@ -17,8 +19,8 @@ public interface NerJobTextItemRepository extends PagingAndSortingRepository<Ner
 
 
 	@Query("SELECT jti FROM NerJobTextItem AS jti WHERE jti.job = :job AND jti.md5Hash = :md5hash ")
-	NerJobTextItem getForJobAndHash(@Param("job") LabelingJob job,
-									@Param("md5hash") String md5Hash);
+	Optional<NerJobTextItem> getForJobAndHash(@Param("job") LabelingJob job,
+											  @Param("md5hash") String md5Hash);
 
 	@Query("SELECT j FROM NerJobTextItem AS jti " +
 			"JOIN jti.job AS j " +
