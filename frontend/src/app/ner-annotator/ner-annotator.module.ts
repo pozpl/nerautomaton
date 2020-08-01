@@ -20,6 +20,10 @@ import { ProcessedTextsListComponent } from './annotation/processed-texts-list/p
 import { UnprocessedAnnotationPageComponent } from './annotation/unprocessed-annotation-page/unprocessed-annotation-page.component';
 import {ResultsReviewComponent} from "./annotation/text-item/results-review/results-review.component";
 import { ReviewAnnotationPageComponent } from './annotation/review-annotation-page/review-annotation-page.component';
+import { NerJobCsvUploadComponent } from './management/ner-job-csv-upload/ner-job-csv-upload.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { TextCsvUploadDialogComponent } from './management/ner-job-csv-upload/text-csv-upload-dialog/text-csv-upload-dialog.component';
+import {TextCsvFileUploadService} from "./management/ner-job-csv-upload/text-csv-file-upload.service";
 
 @NgModule({
     declarations: [
@@ -34,7 +38,9 @@ import { ReviewAnnotationPageComponent } from './annotation/review-annotation-pa
         TasksListComponent,
         ProcessedTextsListComponent,
         UnprocessedAnnotationPageComponent,
-        ReviewAnnotationPageComponent
+        ReviewAnnotationPageComponent,
+        NerJobCsvUploadComponent,
+        TextCsvUploadDialogComponent
     ],
     imports: [
         CommonModule,
@@ -42,11 +48,13 @@ import { ReviewAnnotationPageComponent } from './annotation/review-annotation-pa
         FlexLayoutModule,
         AppRoutingModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
     ],
     providers: [
         TermsAnnotationsService,
-        NerJobsService
+        NerJobsService,
+        TextCsvFileUploadService
     ]
 })
 export class NerAnnotatorModule {
