@@ -1,7 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {forkJoin, Observable} from "rxjs";
 import {TextCsvFileUploadService} from "../text-csv-file-upload.service";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {NerJobTextDto} from "../../ner-job-texts-list/ner-job-text.dto";
 
 @Component({
   selector: 'app-text-csv-upload-dialog',
@@ -21,7 +22,8 @@ export class TextCsvUploadDialogComponent implements OnInit {
     public files: Set<File> = new Set()
 
     constructor(private uploadService: TextCsvFileUploadService,
-                public dialogRef: MatDialogRef<TextCsvUploadDialogComponent>) {
+                public dialogRef: MatDialogRef<TextCsvUploadDialogComponent>,
+                @Inject(MAT_DIALOG_DATA) private jobId: number) {
     }
 
     ngOnInit() {
@@ -44,14 +46,14 @@ export class TextCsvUploadDialogComponent implements OnInit {
     closeDialog() {
         // if everything was uploaded already, just close the dialog
         if (this.uploadSuccessful) {
-            return this.dialogRef.close();
+            return this.dialogRef.close(this.uploadSuccessful);
         }
 
         // set the component state to "uploading"
         this.uploading = true;
 
         // start the upload and save the progress map
-        this.progress = this.uploadService.upload(this.files);
+        this.progress = this.uploadService.upload(this.files, this.jobId);
 
         // convert the progress map into an array
         let allProgressObservables = [];

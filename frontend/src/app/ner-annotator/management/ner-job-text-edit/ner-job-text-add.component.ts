@@ -16,6 +16,7 @@ export class NerJobTextAddComponent implements OnInit {
 
     @Input("job") jobDto: NerJobDto;
     @Output() savedText: EventEmitter<NerJobTextDto> = new EventEmitter<NerJobTextDto>();
+    @Output() textsUploaded: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(private nerJobTextEditModalService: NerJobTextEditModalService,
                 private textService: NerJobTextEditService) {
@@ -40,6 +41,12 @@ export class NerJobTextAddComponent implements OnInit {
                 },
                 cancel => console.log("closed with error")
             );
+    }
+
+    onTextsUpload(status){
+        if(status){
+            this.textsUploaded.emit();
+        }
     }
 }
 

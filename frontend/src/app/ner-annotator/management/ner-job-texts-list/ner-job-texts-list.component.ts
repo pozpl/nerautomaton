@@ -77,6 +77,11 @@ export class NerJobTextsListComponent implements OnInit, OnChanges {
     onNewTextAdded(newTextItem: NerJobTextDto) {
         this.dataSource.addToTheTop(newTextItem);
     }
+
+    onTextsUpload(){
+        this.page = 0;
+        this.dataSource.listText(this.job.id, this.page);
+    }
 }
 
 

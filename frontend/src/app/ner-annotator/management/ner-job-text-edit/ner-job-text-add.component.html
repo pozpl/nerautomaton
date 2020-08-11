@@ -7,7 +7,9 @@
         </button>
     </div>
     <div class="blocks">
-        <ner-job-csv-upload></ner-job-csv-upload>
+        <ner-job-csv-upload [jobId]="jobDto.id"
+        (textUploaded)="onTextsUpload($event)">
+        </ner-job-csv-upload>
     </div>
 </div>
 

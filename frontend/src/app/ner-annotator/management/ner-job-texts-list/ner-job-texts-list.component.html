@@ -1,5 +1,8 @@
-<ner-job-text-add [job]="job"
-                   (savedText)="onNewTextAdded($event)">
+<ner-job-text-add
+    [job]="job"
+    (savedText)="onNewTextAdded($event)"
+    (textsUploaded)="onTextsUpload()"
+>
 </ner-job-text-add>
 
 <div class="spinner-container" *ngIf="dataSource.loading$ | async">
