@@ -157,10 +157,12 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 			labelsToDelete.stream().forEach(labelToDelete -> this.nerLabelsRepository.delete(labelToDelete));
 
 			final List<NerLabelDto> savedLabelsDtos = new ArrayList<>();
-			for (NerLabelDto labelDto : labelDtos) {
-				final NerLabelEditStatusDto saveStatus = this.saveLabel(labelDto, labelingJob);
-				if (!saveStatus.isError()) {
-					savedLabelsDtos.add(saveStatus.getNerLabelDto());
+			if(labelDtos != null) {
+				for (NerLabelDto labelDto : labelDtos) {
+					final NerLabelEditStatusDto saveStatus = this.saveLabel(labelDto, labelingJob);
+					if (!saveStatus.isError()) {
+						savedLabelsDtos.add(saveStatus.getNerLabelDto());
+					}
 				}
 			}
 
