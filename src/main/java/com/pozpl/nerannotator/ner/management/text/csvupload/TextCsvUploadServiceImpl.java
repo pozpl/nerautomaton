@@ -68,7 +68,7 @@ public class TextCsvUploadServiceImpl implements ITextCsvUploadService {
 		try (final Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
 			 final CSVParser csvParser = new CSVParser(reader,CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
 
-			Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+			final Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
 			for (CSVRecord csvRecord : csvRecords) {
 				final String text = csvRecord.get("text");
@@ -77,7 +77,7 @@ public class TextCsvUploadServiceImpl implements ITextCsvUploadService {
 
 				final Optional<NerJobTextItem> existingItem = nerJobTextItemRepository.getForJobAndHash(labelingJob,
 						textMd5Hash);
-				if(existingItem.isPresent()){
+				if(! existingItem.isPresent()){
 					final NerJobTextItem textItem = NerJobTextItem.of(labelingJob, text, textMd5Hash);
 
 					nerJobTextItemRepository.save(textItem);
