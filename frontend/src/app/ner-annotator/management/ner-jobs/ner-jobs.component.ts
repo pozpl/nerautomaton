@@ -64,7 +64,7 @@ export class NerJobsComponent implements OnInit, OnDestroy {
 
     deleteJob(job: NerJobDto) {
         this.nerJobsService.deleteJob(job.id).subscribe(() => {
-            console.log("Job deleted");
+            this.pagedContent.content = this.pagedContent.content.filter(jobDto => job.id !== jobDto.id );
         });
     }
 

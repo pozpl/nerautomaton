@@ -54,11 +54,10 @@ public class NerJobsController {
 	}
 
 	@DeleteMapping(value = "/delete")
-	@ResponseStatus(code = HttpStatus.OK)
-	public void delete(@RequestParam(value = "id") final Integer jobId,
+	public boolean delete(@RequestParam(value = "id") final Integer jobId,
 					   final User user){
 		try{
-			nerJobService.deleteJob(user, jobId);
+			return nerJobService.deleteJob(user, jobId);
 		}catch (NerServiceException e){
 			throw new NerWebException(e);
 		}

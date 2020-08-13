@@ -42,6 +42,6 @@ public interface INerJobService {
 	 * @param jobId
 	 * @throws NerServiceException
 	 */
-	void deleteJob(User user, Integer jobId) throws NerServiceException;
+	boolean deleteJob(User user, Integer jobId) throws NerServiceException;
 
 }

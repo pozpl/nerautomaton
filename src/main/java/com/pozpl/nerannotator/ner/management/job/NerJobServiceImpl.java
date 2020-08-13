@@ -150,12 +150,16 @@ public class NerJobServiceImpl implements INerJobService {
 	 * @throws NerServiceException
 	 */
 	@Override
-	public void deleteJob(User user, Integer jobId) throws NerServiceException {
+	public boolean deleteJob(final User user, final Integer jobId) throws NerServiceException {
 		try {
 			final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(Long.valueOf(jobId), user);
 			if (nerJobOpt.isPresent()) {
 				labelingJobsRepository.delete(nerJobOpt.get());
+
+				return true;
 			}
+
+			return false;
 		} catch (Exception e) {
 			throw new NerServiceException(e);
 		}

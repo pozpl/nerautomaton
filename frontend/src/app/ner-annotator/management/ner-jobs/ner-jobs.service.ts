@@ -35,8 +35,8 @@ export class NerJobsService {
         return this.http.post<NerJobSaveStatus>('/ner/edit/save', jobDto);
     }
 
-    deleteJob(jobId: number):Observable<void>{
-        return this.http.delete<void>('/ner/edit/delete', {
+    deleteJob(jobId: number):Observable<boolean>{
+        return this.http.delete<boolean>('/ner/edit/delete', {
             params: {
                 id: jobId.toString()
             }
