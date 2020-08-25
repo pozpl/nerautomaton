@@ -1,9 +1,87 @@
-<h1>Greeting</h1>
-<div *ngIf="authenticated()">
-  <p>The ID is {{(user$ | async)?.id}}</p>
-  <p>The content is {{(user$ | async)?.name}}</p>
-</div>
-<div [hidden]="authenticated()">
-  <p>Login to see your greeting</p>
+<div
+    fxLayout="row"
+    fxLayoutAlign="center"
+    class="w-100"
+>
+    <h2>Annotation workflow</h2>
 </div>
 
+<div
+    fxLayout="row"
+    fxLayout.xs="column" fxLayoutAlign="space-evenly"
+    class="home-tiles w-100"
+>
+    <div class="tile">
+
+        <mat-card class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title>Manage workflow</mat-card-title>
+                <mat-card-subtitle>Create jobs and prepare text for annotation</mat-card-subtitle>
+            </mat-card-header>
+<!--            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
+            <div fxLayout="row"
+                 fxLayoutAlign="center"
+                 class="card-icon">
+                <mat-icon>done</mat-icon>
+            </div>
+            <mat-card-content>
+                <p>
+                    One can create and manage multiple annotation projects.
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button>Manage</button>
+<!--                <button mat-button>SHARE</button>-->
+            </mat-card-actions>
+        </mat-card>
+
+
+    </div>
+
+    <div class="tile">
+
+        <mat-card class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title>Annotate</mat-card-title>
+                <mat-card-subtitle>Pick a task and work through it</mat-card-subtitle>
+            </mat-card-header>
+<!--            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
+            <mat-icon>done_all</mat-icon>
+            <mat-card-content>
+                <p>
+                   Annotate text and review the results
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button>Annotate</button>
+            </mat-card-actions>
+        </mat-card>
+
+
+    </div>
+
+    <div class="tile">
+
+        <mat-card class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title>Download results</mat-card-title>
+<!--                <mat-card-subtitle>Download annotation text for library </mat-card-subtitle>-->
+            </mat-card-header>
+<!--            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
+            <mat-icon>done_outline</mat-icon>
+            <mat-card-content>
+                <p>
+                    Download results in the format consumable by the library of your choice
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button>Go to results</button>
+            </mat-card-actions>
+        </mat-card>
+
+    </div>
+
+</div>
