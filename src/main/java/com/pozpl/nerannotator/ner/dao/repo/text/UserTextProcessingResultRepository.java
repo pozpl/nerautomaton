@@ -48,4 +48,10 @@ public interface UserTextProcessingResultRepository extends PagingAndSortingRepo
 			"WHERE tpr.user = :user AND ti.job = :job ")
 	Integer countProcessed(@Param("user") User user,
 						   @Param("job") LabelingJob job);
+
+	@Query("SELECT tpr FROM UserNerTextProcessingResult AS tpr " +
+			"JOIN FETCH NerJobTextItem as ti ON ti = tpr.textItem " +
+			"WHERE ti.job = :job ")
+	Page<UserNerTextProcessingResult> getAllForJob(@Param("job") LabelingJob job,
+												   Pageable pageable);
 }

@@ -34,7 +34,7 @@ public class ResultsBLIOUExportController {
             response.setCharacterEncoding("UTF-8");
 
             ServletOutputStream outputStream = response.getOutputStream();
-            this.resultsExportService.writeToStream(jobId, user, outputStream);
+            this.resultsExportService.writeOwnerResultsToStream(jobId, user, outputStream);
 
             outputStream.flush();
             outputStream.close();

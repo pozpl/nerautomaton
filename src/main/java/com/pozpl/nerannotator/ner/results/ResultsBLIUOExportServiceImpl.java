@@ -36,9 +36,9 @@ public class ResultsBLIUOExportServiceImpl implements IResultsBLIUOExportService
 
 
     @Override
-    public void writeToStream(final Integer jobId,
-                              final User owner,
-                              final OutputStream outputStream) throws NerServiceException {
+    public void writeOwnerResultsToStream(final Integer jobId,
+                                          final User owner,
+                                          final OutputStream outputStream) throws NerServiceException {
 
         final Optional<LabelingJob> jobOpt = this.labelingJobsRepository.findByIdAndOwner(Long.valueOf(jobId), owner);
         if(! jobOpt.isPresent()){
@@ -51,7 +51,7 @@ public class ResultsBLIUOExportServiceImpl implements IResultsBLIUOExportService
 
         try(Writer streamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
 
-            Page<UserNerTextProcessingResult> processedTextsPage = processingResultRepository.getAllForJob(job,
+            Page<UserNerTextProcessingResult> processedTextsPage = processingResultRepository.getForUserAndJob(owner, job,
                     PageRequest.of(page, 100, Sort.by(Sort.Direction.ASC, "id")));
             while (!processedTextsPage.isEmpty()) {
                 for (UserNerTextProcessingResult textResult : processedTextsPage.getContent()) {
@@ -62,7 +62,7 @@ public class ResultsBLIUOExportServiceImpl implements IResultsBLIUOExportService
                 if(page > MAX_ALLOWED_PAGES){//it's seems we are going to download too much data
                     break;
                 }
-                processedTextsPage = processingResultRepository.getAllForJob(job,
+                processedTextsPage = processingResultRepository.getForUserAndJob(owner, job,
                         PageRequest.of(page, 100, Sort.by(Sort.Direction.ASC, "id")));
             }
         } catch (IOException e) {

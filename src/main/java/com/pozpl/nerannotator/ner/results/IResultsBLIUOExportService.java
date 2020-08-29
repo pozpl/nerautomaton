@@ -7,7 +7,7 @@ import java.io.OutputStream;
 
 public interface IResultsBLIUOExportService {
 
-    void writeToStream(Integer jobId,
-                       User user,
-                       OutputStream stream) throws NerServiceException;
+    void writeOwnerResultsToStream(Integer jobId,
+                                   User user,
+                                   OutputStream stream) throws NerServiceException;
 }
