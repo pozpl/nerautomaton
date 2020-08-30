@@ -2,12 +2,23 @@
 
 
     <mat-card class="card">
-        <mat-card-title fxLayout.xs="column">
-            <h3>Precessed texts for task:
+        <mat-card-title
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            fxLayout.xs="column"
+        >
+            <h3>
+                Precessed texts for task:
                 <span *ngIf="job">
                     {{job.name}}
                 </span>
             </h3>
+
+            <a [routerLink]="['/ner/user/tasks']"
+               class=""
+            >
+                Return to jobs list
+            </a>
         </mat-card-title>
         <mat-card-content>
             <div class="spinner-container" *ngIf="dataSource.loading$ | async">
