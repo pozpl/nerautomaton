@@ -24,6 +24,7 @@ import { NerJobCsvUploadComponent } from './management/ner-job-csv-upload/ner-jo
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { TextCsvUploadDialogComponent } from './management/ner-job-csv-upload/text-csv-upload-dialog/text-csv-upload-dialog.component';
 import {TextCsvFileUploadService} from "./management/ner-job-csv-upload/text-csv-file-upload.service";
+import { JobOwnResultsDownloadComponent } from './management/results-download/job-own-results-download/job-own-results-download.component';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import {TextCsvFileUploadService} from "./management/ner-job-csv-upload/text-csv
         UnprocessedAnnotationPageComponent,
         ReviewAnnotationPageComponent,
         NerJobCsvUploadComponent,
-        TextCsvUploadDialogComponent
+        TextCsvUploadDialogComponent,
+        JobOwnResultsDownloadComponent
     ],
     imports: [
         CommonModule,

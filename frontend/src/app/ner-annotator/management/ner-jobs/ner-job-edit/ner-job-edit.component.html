@@ -53,12 +53,23 @@
 
             </div>
 
-            <mat-card-actions>
+            <mat-card-actions
+                fxLayout="row"
+                fxLayoutGap="20px"
+                fxLayoutAlign="center"
+                class="content">
                 <button (click)="saveJob()"
-                    mat-raised-button color="primary">
+                    mat-raised-button
+                        color="primary">
                     <span *ngIf="! jobDto.id">Create Job</span>
                     <span *ngIf="jobDto.id">Save job</span>
                 </button>
+
+                <job-own-results-download
+                    *ngIf="jobDto != null && jobDto.id"
+                    [jobId]="jobDto.id">
+                </job-own-results-download>
+
             </mat-card-actions>
 
         </mat-card>
