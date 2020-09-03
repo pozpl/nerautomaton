@@ -37,7 +37,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	
+
+	compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.1.RELEASE'
+
+
 
 	implementation group: 'io.vavr', name: 'vavr', version: '0.10.2'
 	implementation group: 'io.vavr', name: 'vavr-match', version: '0.10.2'
