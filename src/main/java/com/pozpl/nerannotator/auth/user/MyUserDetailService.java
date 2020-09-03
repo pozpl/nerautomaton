@@ -1,5 +1,6 @@
 package com.pozpl.nerannotator.auth.user;
 
+import com.pozpl.nerannotator.auth.dao.model.ERole;
 import com.pozpl.nerannotator.auth.dao.repo.RoleRepository;
 import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
 import com.pozpl.nerannotator.auth.dao.model.Privilege;
@@ -14,10 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service("userDetailsService")
 @Transactional
@@ -38,13 +36,15 @@ public class MyUserDetailService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 
-		final User user = userRepository.findByUsername(username);
-		if (user == null) {
+		final Optional<User> userOpt = userRepository.findByUsername(username);
+		if (! userOpt.isPresent()) {
 			return new org.springframework.security.core.userdetails.User(
 					"", "", true, true, true, true,
 					getAuthorities(Arrays.asList(
-							roleRepository.findByName("ROLE_USER"))));
+							roleRepository.findByName(ERole.ROLE_USER))));
 		}
+
+		final User user = userOpt.get();
 
 		return new org.springframework.security.core.userdetails.User(
 				user.getUsername(), user.getPassword(), user.isEnabled(), true, true,

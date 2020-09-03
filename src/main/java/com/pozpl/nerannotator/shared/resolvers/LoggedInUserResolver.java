@@ -10,10 +10,11 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.security.Principal;
+import java.util.Optional;
 
 public class LoggedInUserResolver implements HandlerMethodArgumentResolver {
 
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
 	public LoggedInUserResolver(UserRepository userRepository) {
@@ -30,8 +31,8 @@ public class LoggedInUserResolver implements HandlerMethodArgumentResolver {
 		final  Principal principal = webRequest.getUserPrincipal();
 		if(principal != null){
 			final String username = principal.getName();
-			final User user = userRepository.findByUsername(username);
-			return user;
+			final Optional<User> userOpt = userRepository.findByUsername(username);
+			return userOpt.get();//null is internal to method signature
 		}
 
 		return null;
