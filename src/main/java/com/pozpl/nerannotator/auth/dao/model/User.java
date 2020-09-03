@@ -6,7 +6,11 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Data
-@Table(name = "users")
+@Table(	name = "users",
+		uniqueConstraints = {
+				@UniqueConstraint(columnNames = "username"),
+				@UniqueConstraint(columnNames = "email")
+		})
 @Entity
 public class User {
 
