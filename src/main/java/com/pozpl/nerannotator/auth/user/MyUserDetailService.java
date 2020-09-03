@@ -38,10 +38,11 @@ public class MyUserDetailService implements UserDetailsService {
 
 		final Optional<User> userOpt = userRepository.findByUsername(username);
 		if (! userOpt.isPresent()) {
+			final Optional<Role> roleOpt = roleRepository.findByName(ERole.ROLE_USER);
+			final List<Role> authrities = roleOpt.map(role -> Arrays.asList(role)).orElse(Collections.emptyList());
 			return new org.springframework.security.core.userdetails.User(
 					"", "", true, true, true, true,
-					getAuthorities(Arrays.asList(
-							roleRepository.findByName(ERole.ROLE_USER))));
+					getAuthorities( authrities ));
 		}
 
 		final User user = userOpt.get();
