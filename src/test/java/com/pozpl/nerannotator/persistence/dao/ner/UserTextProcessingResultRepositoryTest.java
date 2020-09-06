@@ -124,13 +124,11 @@ public class UserTextProcessingResultRepositoryTest {
 
 	@Test
 	public void getUnprocessed() {
-		final Page<NerJobTextItem> unprocessed = userTextProcessingResultRepository.getUnprocessed(userOne, jobOne,
+		final List<NerJobTextItem> unprocessed = userTextProcessingResultRepository.getUnprocessed(userOne, jobOne,
 				PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "id")));
 		assertNotNull(unprocessed);
-		assertEquals(1, unprocessed.getNumberOfElements());
-		final List<NerJobTextItem> content = unprocessed.getContent();
-		assertNotNull(content);
-		assertEquals(jobOneTextTwo, content.get(0));
+		assertEquals(1, unprocessed.size());
+		assertEquals(jobOneTextTwo, unprocessed.get(0));
 	}
 
 	@Test
