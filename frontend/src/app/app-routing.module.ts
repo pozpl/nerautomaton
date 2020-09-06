@@ -9,6 +9,7 @@ import {TasksListComponent} from "./ner-annotator/annotation/tasks-list/tasks-li
 import {ProcessedTextsListComponent} from "./ner-annotator/annotation/processed-texts-list/processed-texts-list.component";
 import {UnprocessedAnnotationPageComponent} from "./ner-annotator/annotation/unprocessed-annotation-page/unprocessed-annotation-page.component";
 import {ReviewAnnotationPageComponent} from "./ner-annotator/annotation/review-annotation-page/review-annotation-page.component";
+import {RegisterComponent} from "./auth/register/register.component";
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
     {path: 'home', component: HomeComponent},
     {path: 'dashboard', component: HomeComponent},
     {path: 'login', component: LoginComponent},
+    {path: 'register', component: RegisterComponent},
     {path: 'ner/jobs', component: NerJobsComponent},
     {path: 'ner/job/edit/', component: NerJobEditComponent},
     {path: 'ner/job/edit/:id', component: NerJobEditComponent},

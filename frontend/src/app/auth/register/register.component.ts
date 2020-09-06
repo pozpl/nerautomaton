@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth.service";
 
 @Component({
-  selector: 'app-register',
+  selector: 'ner-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
@@ -21,7 +21,6 @@ export class RegisterComponent implements OnInit {
     onSubmit(): void {
         this.authService.register(this.form).subscribe(
             data => {
-                console.log(data);
                 this.isSuccessful = true;
                 this.isSignUpFailed = false;
             },
