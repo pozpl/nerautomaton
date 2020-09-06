@@ -6,8 +6,9 @@ import {Observable, Subject} from "rxjs";
 import {flatMap, map, takeUntil} from "rxjs/operators";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Page} from "../../../shared-components/page";
-import {AuthService} from "../../../auth/auth.service";
 import {PageEvent} from "@angular/material/paginator";
+import {TokenStorageService} from "../../../auth/token-storage.service";
+import {UserDto} from "../../../auth/user.dto.";
 
 @Component({
     selector: 'app-ner-jobs',
@@ -19,19 +20,21 @@ export class NerJobsComponent implements OnInit, OnDestroy {
     private unsubscribe: Subject<void> = new Subject();
 
     pagedContent: Page<NerJobDto>;
+    public user: UserDto | null = null;
 
     //Things related to JObs table
     displayedColumns = ['name', 'dateCreated', 'delete'];
 
     page = 0;
 
-    constructor(public auth: AuthService,
+    constructor(public tokenService: TokenStorageService,
                 public nerJobsService: NerJobsService,
                 private router: Router,
                 private activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit() {
+        this.user = this.tokenService.getUser();
 
         this.activatedRoute.queryParamMap
             .pipe(
