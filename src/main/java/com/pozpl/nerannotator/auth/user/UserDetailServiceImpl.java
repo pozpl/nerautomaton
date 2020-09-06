@@ -19,38 +19,46 @@ import java.util.*;
 
 @Service("userDetailsService")
 @Transactional
-public class MyUserDetailService implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailsService {
 
-	private UserRepository userRepository;
-
-	private RoleRepository roleRepository;
+	private final UserRepository userRepository;
+	private final RoleRepository roleRepository;
 
 	@Autowired
-	public MyUserDetailService(UserRepository userRepository,
-							   RoleRepository roleRepository) {
+	public UserDetailServiceImpl(UserRepository userRepository,
+								 RoleRepository roleRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException {
+	@Transactional
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
-		final Optional<User> userOpt = userRepository.findByUsername(username);
-		if (! userOpt.isPresent()) {
-			final Optional<Role> roleOpt = roleRepository.findByName(ERole.ROLE_USER);
-			final List<Role> authrities = roleOpt.map(role -> Arrays.asList(role)).orElse(Collections.emptyList());
-			return new org.springframework.security.core.userdetails.User(
-					"", "", true, true, true, true,
-					getAuthorities( authrities ));
-		}
-
-		final User user = userOpt.get();
-
-		return new org.springframework.security.core.userdetails.User(
-				user.getUsername(), user.getPassword(), user.isEnabled(), true, true,
-				true, getAuthorities(user.getRoles()));
+		return UserDetailsImpl.build(user);
 	}
+
+//	@Override
+//	public UserDetails loadUserByUsername(String username)
+//			throws UsernameNotFoundException {
+//
+//		final Optional<User> userOpt = userRepository.findByUsername(username);
+//		if (! userOpt.isPresent()) {
+//			final Optional<Role> roleOpt = roleRepository.findByName(ERole.ROLE_USER);
+//			final List<Role> authrities = roleOpt.map(role -> Arrays.asList(role)).orElse(Collections.emptyList());
+//			return new org.springframework.security.core.userdetails.User(
+//					"", "", true, true, true, true,
+//					getAuthorities( authrities ));
+//		}
+//
+//		final User user = userOpt.get();
+//
+//		return new org.springframework.security.core.userdetails.User(
+//				user.getUsername(), user.getPassword(), user.isEnabled(), true, true,
+//				true, getAuthorities(user.getRoles()));
+//	}
 
 	private Collection<? extends GrantedAuthority> getAuthorities(
 			Collection<Role> roles) {
