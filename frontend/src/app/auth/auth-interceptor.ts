@@ -11,16 +11,29 @@ import {AuthService} from "./auth.service";
 
 import 'rxjs/add/operator/do';
 import {Router} from "@angular/router";
+import {TokenStorageService} from "./token-storage.service";
+
+
+const TOKEN_HEADER_KEY = 'Authorization';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
     constructor(private auth: AuthService,
-                private router: Router) {
+                private router: Router,
+                private token: TokenStorageService
+                ) {
     }
+
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        return next.handle(request).do((event: HttpEvent<any>) => {
+
+        let authReq = request;
+        const token = this.token.getToken();
+        if(token != null) {
+            authReq = request.clone({headers: request.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)})
+        }
+        return next.handle(authReq).do((event: HttpEvent<any>) => {
             if (event instanceof HttpResponse) {
                 // do stuff with response if needed
             }
