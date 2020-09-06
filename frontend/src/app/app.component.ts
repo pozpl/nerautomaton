@@ -1,27 +1,32 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {finalize} from 'rxjs/operators'
-import {AuthService} from "./auth/auth.service";
+import {TokenStorageService} from "./auth/token-storage.service";
+import {UserDto} from "./auth/user.dto.";
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
 
-    constructor(public auth: AuthService,
+    private user: UserDto | null = null;
+
+    constructor(public tokenService: TokenStorageService,
                 private http: HttpClient,
                 private router: Router) {
-        this.auth.isLoggedIn();
+    }
+
+
+    ngOnInit(): void {
+        this.user = this.tokenService.getUser();
     }
 
     logout() {
-        this.http.post('logout', {})
-            .pipe(finalize(() => {
-                this.auth.authenticated = false;
-                this.router.navigateByUrl('/login');
-            })).subscribe();
+        this.tokenService.removeToken();
+        this.tokenService.removeUser();
+        this.router.navigate(['/login']);
     }
+
 }

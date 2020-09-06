@@ -21,7 +21,7 @@ export class UnprocessedAnnotationPageComponent implements OnInit, OnDestroy {
     private labels: LabelDto[];
     private dataLoading = false;
 
-    public activeText?: NerTextAnnotationDto;
+    public activeText?: NerTextAnnotationDto | null;
 
     constructor(private annotationDataService: NerAnnotationDataService,
                 private nerLabelsAccessService: NerLabelsAccessService,
@@ -38,17 +38,20 @@ export class UnprocessedAnnotationPageComponent implements OnInit, OnDestroy {
                 flatMap(params => {
                     this.jobId = params['jobId'];
                     return forkJoin({
-                        itemsToProcess: this.annotationDataService.getUnprocessed(this.jobId),
-                        labels: this.nerLabelsAccessService.getLabelsForJob(this.jobId)
+                        itemsToProcess: this.annotationDataService.getUnprocessed(this.jobId || 0),
+                        labels: this.nerLabelsAccessService.getLabelsForJob(this.jobId || 0)
                     });
                 })
             )
             .subscribe(itemsAndLabels => {
-                this.unprocessedTexts = itemsAndLabels.itemsToProcess;
-                this.labels = itemsAndLabels.labels;
-                if (this.unprocessedTexts.length > 0) {
-                    this.activeText = this.unprocessedTexts.shift();
+                if (itemsAndLabels) {
+                    this.unprocessedTexts = itemsAndLabels.itemsToProcess;
+                    this.labels = itemsAndLabels.labels;
+                    if (this.unprocessedTexts.length > 0) {
+                        this.activeText = this.unprocessedTexts.shift();
+                    }
                 }
+
                 this.dataLoading = false;
             });
 
@@ -74,12 +77,12 @@ export class UnprocessedAnnotationPageComponent implements OnInit, OnDestroy {
             if (this.unprocessedTexts.length > 0) {
                 this.activeText = this.unprocessedTexts.shift();
             }
-        } else {
+        } else if(this.jobId) {
             this.annotationDataService.getUnprocessed(this.jobId)
                 .pipe(takeUntil(this.unsubscribe))
                 .subscribe(unprocessedTexts => {
                     this.unprocessedTexts = unprocessedTexts;
-                    if (this.unprocessedTexts.length > 0) {
+                    if (this.unprocessedTexts && this.unprocessedTexts.length > 0) {
                         this.activeText = this.unprocessedTexts.shift();
                     }else{
                         this.activeText = null;

@@ -125,7 +125,9 @@ export class TextItemsDatasource implements DataSource<NerJobTextDto> {
                 finalize(() => this.loadingSubject.next(false))
             ).subscribe(
             result => {
-                this.documentsSubject.next(result.content);
+                if(result.content) {
+                    this.documentsSubject.next(result.content);
+                }
                 this.numberDocuments = result.size;
             });
     }

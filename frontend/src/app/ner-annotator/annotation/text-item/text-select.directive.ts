@@ -101,10 +101,14 @@ export class TextSelectDirective implements OnInit, OnDestroy {
 
         // If the selected node is a Text node, climb up to an element node - in Internet
         // Explorer, the .contains() method only works with Element nodes.
-        while (container.nodeType !== Node.ELEMENT_NODE) {
-
-            container = container.parentNode;
-
+        if(container) {
+            while (container.nodeType !== Node.ELEMENT_NODE) {
+                if (container != null && container.parentNode != null) {
+                    container = container.parentNode;
+                } else {
+                    break;
+                }
+            }
         }
 
         return (container);
@@ -161,10 +165,16 @@ export class TextSelectDirective implements OnInit, OnDestroy {
 
         // If the selected node is a Text node, climb up to an element node - in Internet
         // Explorer, the .contains() method only works with Element nodes.
-        while (selectionContainer.nodeType !== Node.ELEMENT_NODE) {
+        if(selectionContainer) {
+            while (selectionContainer.nodeType !== Node.ELEMENT_NODE) {
 
-            selectionContainer = selectionContainer.parentNode;
+                if(selectionContainer != null && selectionContainer.parentNode != null){
+                    selectionContainer = selectionContainer.parentNode;
+                }else{
+                    break;
+                }
 
+            }
         }
 
         return (hostElement.contains(selectionContainer));
@@ -205,7 +215,7 @@ export class TextSelectDirective implements OnInit, OnDestroy {
 
         // If the new selection is empty (for example, the user just clicked somewhere
         // in the document), then there's no new selection event to emit.
-        if (!selection.rangeCount || !selection.toString()) {
+        if (selection == null || !selection.rangeCount || !selection.toString()) {
 
             return;
 
@@ -219,21 +229,21 @@ export class TextSelectDirective implements OnInit, OnDestroy {
         // just ignore it since we don't control the outer portions.
         if (this.isRangeFullyContained(range)) {
 
-            const startElement: HTMLElement = this.adjustElForMarkedElements(range.startContainer, (el:HTMLElement) => {
+            const startElement: HTMLElement | null = this.adjustElForMarkedElements(range.startContainer, (el:HTMLElement) => {
                 return <HTMLElement> el.nextElementSibling
             });
             if(startElement === null){
                 return;
             }
-            const startElementIdx: number = parseInt(startElement.getAttribute('index'));
+            const startElementIdx: number = parseInt(startElement.getAttribute('index') || "0");
 
-            const endElement: HTMLElement = this.adjustElForMarkedElements(range.endContainer, (el:HTMLElement) => {
+            const endElement: HTMLElement | null = this.adjustElForMarkedElements(range.endContainer, (el:HTMLElement) => {
                 return <HTMLElement> el.previousElementSibling
             });
             if(endElement === null){
                 return;
             }
-            const endElementIdx: number = parseInt(endElement.getAttribute('index'));
+            const endElementIdx: number = parseInt(endElement.getAttribute('index') || "0");
 
 
             const viewportRectangle = range.getBoundingClientRect();
@@ -247,7 +257,7 @@ export class TextSelectDirective implements OnInit, OnDestroy {
 
                     this.hasSelection = true;
                     this.textSelectEvent.emit({
-                        text: selection.toString(),
+                        text: selection? selection.toString() : '',
                         viewportRectangle: {
                             left: viewportRectangle.left,
                             top: viewportRectangle.top,
@@ -306,7 +316,7 @@ export class TextSelectDirective implements OnInit, OnDestroy {
         var localLeft = (viewportRectangle.left - hostRectangle.left);
         var localTop = (viewportRectangle.top - hostRectangle.top);
 
-        var node = rangeContainer;
+        var node: Node | null = rangeContainer;
         // Now that we have the local position, we have to account for any scrolling
         // being performed within the host element. Let's walk from the range container
         // up to the host element and add any relevant scroll offsets to the calculated

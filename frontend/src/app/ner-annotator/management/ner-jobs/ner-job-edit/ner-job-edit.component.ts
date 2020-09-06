@@ -39,11 +39,11 @@ export class NerJobEditComponent implements OnInit, OnDestroy {
                         .pipe(takeUntil(this.unsubscribe))
                         .subscribe(jobDto => {
                             this.jobDto = jobDto;
-                            this.jobLabelsDataSource = new JobLabelsDataSource(this.jobDto.labels);
+                            this.jobLabelsDataSource = new JobLabelsDataSource(this.jobDto.labels || []);
                         })
                 }else{
                     this.jobDto = new NerJobDto();
-                    this.jobLabelsDataSource = new JobLabelsDataSource(this.jobDto.labels);
+                    this.jobLabelsDataSource = new JobLabelsDataSource(this.jobDto.labels || []);
                 }
 
             });
@@ -74,6 +74,7 @@ export class NerJobEditComponent implements OnInit, OnDestroy {
     }
 
     deleteLabel(labelDto: LabelDto){
+        this.jobDto.labels = this.jobDto.labels || [];
         this.jobDto.labels = this.jobDto.labels.filter(el => el != labelDto);
         this.jobLabelsDataSource.updateLabels(this.jobDto.labels);
     }

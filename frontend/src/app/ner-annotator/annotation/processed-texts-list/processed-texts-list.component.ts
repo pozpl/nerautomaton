@@ -51,14 +51,18 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
             }),
             concatMap(jobId => {
                 return forkJoin([
-                    this.nerJobsService.getJob(this.jobId),
-                    this.nerLabelsAccessService.getLabelsForJob(this.jobId)
+                    this.nerJobsService.getJob(this.jobId || 0),
+                    this.nerLabelsAccessService.getLabelsForJob(this.jobId || 0)
                 ]);
             })
         ).subscribe(jobAndLabels => {
-              this.job = jobAndLabels[0];
-              this.labels = jobAndLabels[1];
-              this.dataSource.list(this.jobId, this.page);
+            if(jobAndLabels[0]) {
+                this.job = jobAndLabels[0];
+            }
+            this.labels = jobAndLabels[1];
+            if(this.jobId) {
+                this.dataSource.list(this.jobId, this.page);
+            }
         });
 
     }
@@ -71,7 +75,7 @@ export class ProcessedTextsListComponent implements OnInit, OnDestroy {
     public pageChanged(event: PageEvent) {
         this.page = event.pageIndex;
         this.router.navigate([], {
-            queryParams:{
+            queryParams: {
                 page: this.page.toString()
             }
         });

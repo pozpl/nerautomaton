@@ -56,7 +56,7 @@ export class TextCsvUploadDialogComponent implements OnInit {
         this.progress = this.uploadService.upload(this.files, this.jobId);
 
         // convert the progress map into an array
-        let allProgressObservables = [];
+        let allProgressObservables: Observable<number>[] = [];
         for (let key in this.progress) {
             allProgressObservables.push(this.progress[key].progress);
         }

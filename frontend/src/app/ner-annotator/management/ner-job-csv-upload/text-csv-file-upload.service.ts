@@ -39,9 +39,9 @@ export class TextCsvFileUploadService {
             this.http.request(req)
                 .subscribe(event => {
                         if (event.type === HttpEventType.UploadProgress) {
-
+                            const total = event.total || 1;
                             // calculate the progress percentage
-                            const percentDone = Math.round(100 * event.loaded / event.total);
+                            const percentDone = Math.round(100 * event.loaded / total);
 
                             // pass the percentage into the progress-stream
                             progress.next(percentDone);

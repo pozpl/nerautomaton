@@ -1,5 +1,5 @@
 export interface Page<T> {
-    content: Array<T> | null;
+    content?: Array<T>;
     curPage: number;
     size: number;
     totalPage: number;

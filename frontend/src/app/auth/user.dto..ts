@@ -1,5 +1,8 @@
 export class UserDto{
-    name?: string;
     id?: string;
-    authenticated?: boolean;
+    username: string;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    roles?: string[]
 }

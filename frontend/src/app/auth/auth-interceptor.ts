@@ -42,7 +42,6 @@ export class AuthInterceptor implements HttpInterceptor {
                 if (err.status === 401) {
                     // redirect to the login route
                     // or show a modal
-                    this.auth.authenticated = false;
                     this.router.navigate(['/login']);
                 }
             }

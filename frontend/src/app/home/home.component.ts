@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {AuthService} from "../auth/auth.service";
 import {UserDto} from "../auth/user.dto.";
+import {TokenStorageService} from "../auth/token-storage.service";
 
 @Component({
     templateUrl: './home.component.html',
@@ -9,21 +8,14 @@ import {UserDto} from "../auth/user.dto.";
 })
 export class HomeComponent implements OnInit {
 
-    user: UserDto = null;
+    user: UserDto | null = null;
 
-    constructor(private app: AuthService,
-                private http: HttpClient) {
+    constructor(private tokenStorageService: TokenStorageService) {
     }
 
-    authenticated() {
-        return this.app.authenticated;
-    }
 
     ngOnInit(): void {
-        this.app.isLoggedIn()
-            .subscribe(user => {
-                this.user = user;
-            });
+        this.user = this.tokenStorageService.getUser();
     }
 
 }

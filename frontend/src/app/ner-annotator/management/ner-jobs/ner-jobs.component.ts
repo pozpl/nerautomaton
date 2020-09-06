@@ -64,7 +64,9 @@ export class NerJobsComponent implements OnInit, OnDestroy {
 
     deleteJob(job: NerJobDto) {
         this.nerJobsService.deleteJob(job.id).subscribe(() => {
-            this.pagedContent.content = this.pagedContent.content.filter(jobDto => job.id !== jobDto.id );
+            if(this.pagedContent.content) {
+                this.pagedContent.content = this.pagedContent.content.filter(jobDto => job.id !== jobDto.id);
+            }
         });
     }
 
@@ -87,7 +89,7 @@ export class NerJobsDataSource extends DataSource<any> {
 
     connect(): Observable<NerJobDto[]> {
         return this.dataService.getJobs(0)
-            .pipe(map(pageContext => pageContext.content));
+            .pipe(map(pageContext => pageContext.content || []));
     }
 
     disconnect() {

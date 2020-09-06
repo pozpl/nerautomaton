@@ -32,7 +32,7 @@ export class ProcessedTextsDatasource extends DataSource<NerTextAnnotationDto>{
                 finalize(() => this.loadingSubject.next(false))
             ).subscribe(
             result => {
-                this.documentsSubject.next(result.content);
+                this.documentsSubject.next(result.content || []);
                 this.numberDocuments = result.size;
             });
     }

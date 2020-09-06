@@ -31,8 +31,8 @@ export class TextItemComponent implements OnInit, OnChanges {
     @Output() onReturn = new EventEmitter<boolean>();
 
     annotationCandidateBeginIndex: number;
-    annotationCandidate: AnnotationCandidate;
-    selectedAnnotation: LabelDto;
+    annotationCandidate: AnnotationCandidate | null;
+    selectedAnnotation: LabelDto | null;
 
     public hostRectangle: SelectionRectangle | null;
     private selectedText: string;
@@ -147,15 +147,17 @@ export class TextItemComponent implements OnInit, OnChanges {
     private hideSelection(): void {
 
         // Now that we've shared the text, let's clear the current selection.
-        document.getSelection().removeAllRanges();
-        // CAUTION: In modern browsers, the above call triggers a "selectionchange"
-        // event, which implicitly calls our renderRectangles() callback. However,
-        // in IE, the above call doesn't appear to trigger the "selectionchange"
-        // event. As such, we need to remove the host rectangle explicitly.
-        this.hostRectangle = null;
-        this.selectedText = "";
-        this.showOverlappingRegionsMessage = false; //returning to default state if we showed error about overlapping regions
-
+        const selection = document.getSelection();
+        if(selection) {
+            selection.removeAllRanges();
+            // CAUTION: In modern browsers, the above call triggers a "selectionchange"
+            // event, which implicitly calls our renderRectangles() callback. However,
+            // in IE, the above call doesn't appear to trigger the "selectionchange"
+            // event. As such, we need to remove the host rectangle explicitly.
+            this.hostRectangle = null;
+            this.selectedText = "";
+            this.showOverlappingRegionsMessage = false; //returning to default state if we showed error about overlapping regions
+        }
     }
 
 
@@ -170,7 +172,7 @@ export class TextItemComponent implements OnInit, OnChanges {
      * Approve annotation candidate thus adding it into the list of annotations for given text
      */
     approveAnnotation() {
-        if(this.annotationCandidate) {
+        if(this.annotationCandidate && this.selectedAnnotation) {
             this.resultsDataService.addResult(
                 new AnnotatedResult(
                     this.annotationCandidate.terms,

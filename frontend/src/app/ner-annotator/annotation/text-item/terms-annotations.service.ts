@@ -37,7 +37,7 @@ export class TermsAnnotationsService {
         const annotatedResults:AnnotatedResult[] = [];
 
         let currentLabel:string|null = null;
-        let begin: number|null = null;
+        let begin: number = 0;
         let currentTerms: TaggedTermDto[] = [];
         for (let i = 0; i < terms.length; i++){
             const term = terms[i];
@@ -59,7 +59,7 @@ export class TermsAnnotationsService {
 
                     currentTerms = [];
                     currentLabel = null;
-                    begin = null;
+                    begin = 0;
                 }else if(term.position === 'UNIT'){
                     currentTerms = [];
                     currentTerms.push(term);
@@ -70,7 +70,7 @@ export class TermsAnnotationsService {
                     ));
                     currentTerms = [];
                     currentLabel = null;
-                    begin = null;
+                    begin = 0;
                 }
             }
 

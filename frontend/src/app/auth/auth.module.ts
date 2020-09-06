@@ -10,10 +10,12 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {LoginComponent} from "./login/login.component";
 import {XhrInterceptor} from "./xhr-interceptor.interceptor";
 import {AuthInterceptor} from "./auth-interceptor";
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
     declarations: [
-        LoginComponent
+        LoginComponent,
+        RegisterComponent
     ],
     imports: [
         CommonModule,
