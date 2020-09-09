@@ -5,9 +5,9 @@
         </mat-card-header>
         <mat-card-content>
             <!-- The form goes here -->
-            <div class="alert alert-danger" [hidden]="!error">
+            <mat-error  *ngIf="error">
                 There was a problem logging in. Please try again.
-            </div>
+            </mat-error>
             <form
                 role="form"
                 class="login-form">

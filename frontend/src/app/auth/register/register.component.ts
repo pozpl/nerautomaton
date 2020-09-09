@@ -32,6 +32,7 @@ export class RegisterComponent implements OnInit {
             data => {
                 this.isSuccessful = true;
                 this.isSignUpFailed = false;
+                this.openDialog();
             },
             err => {
                 this.errorMessage = err.error.message;
