@@ -7,8 +7,8 @@ import {flatMap, map, takeUntil} from "rxjs/operators";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Page} from "../../../shared-components/page";
 import {PageEvent} from "@angular/material/paginator";
-import {TokenStorageService} from "../../../auth/token-storage.service";
 import {UserDto} from "../../../auth/user.dto.";
+import {AuthService} from "../../../auth/auth.service";
 
 @Component({
     selector: 'app-ner-jobs',
@@ -27,14 +27,14 @@ export class NerJobsComponent implements OnInit, OnDestroy {
 
     page = 0;
 
-    constructor(public tokenService: TokenStorageService,
+    constructor(public authService: AuthService,
                 public nerJobsService: NerJobsService,
                 private router: Router,
                 private activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit() {
-        this.user = this.tokenService.getUser();
+        this.user = this.authService.getUser();
 
         this.activatedRoute.queryParamMap
             .pipe(

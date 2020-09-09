@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserDto} from "../auth/user.dto.";
-import {TokenStorageService} from "../auth/token-storage.service";
+import {AuthService} from "../auth/auth.service";
 
 @Component({
     templateUrl: './home.component.html',
@@ -10,12 +10,12 @@ export class HomeComponent implements OnInit {
 
     user: UserDto | null = null;
 
-    constructor(private tokenStorageService: TokenStorageService) {
+    constructor(private authService: AuthService) {
     }
 
 
     ngOnInit(): void {
-        this.user = this.tokenStorageService.getUser();
+        this.user = this.authService.getUser();
     }
 
 }

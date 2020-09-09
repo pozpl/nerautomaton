@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
-import {TokenStorageService} from "../token-storage.service";
-import {UserDto} from "../user.dto.";
 
 @Component({
     templateUrl: './login.component.html'
@@ -18,15 +16,14 @@ export class LoginComponent implements OnInit {
     roles: string[] = [];
 
     constructor(private authService: AuthService,
-                private tokenStorage: TokenStorageService,
                 private router: Router) {
     }
 
 
     ngOnInit(): void {
-        if (this.tokenStorage.getToken()) {
+        if (this.authService.isAuthenticated()) {
             this.isLoggedIn = true;
-            const user = this.tokenStorage.getUser();
+            const user = this.authService.getUser();
             if(user) {
                 this.roles = user.roles || [];
             }
@@ -37,13 +34,6 @@ export class LoginComponent implements OnInit {
         this.authService.login(this.credentials)
             .subscribe(
                 data => {
-                    this.tokenStorage.saveToken(data.token);
-                    const user = new UserDto();
-                    user.username = data.username;
-                    user.email = data.email;
-                    user.roles = data.roles;
-                    this.tokenStorage.saveUser(user);
-
                     this.isLoginFailed = false;
                     this.isLoggedIn = true;
                     this.roles = data.roles || [];
