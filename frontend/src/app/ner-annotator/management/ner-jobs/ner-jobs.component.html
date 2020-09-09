@@ -4,12 +4,12 @@
         <div class="container">
             <div fxLayout="column" fxLayoutGap="20px"  fxLayoutAlign="space-around center" class="content">
                 <div class="blocks">
-                    <a button mat-raised-button color="primary" (click)="goToAddJob()" *ngIf="user">
+                    <a button mat-raised-button color="primary" (click)="goToAddJob()" *ngIf="isAuthenticated">
                         <mat-icon>add</mat-icon> Add Job
                     </a>
                 </div>
                 <div class="blocks">
-                    <a button mat-raised-button color="primary"  routerLink="/login" *ngIf="! user">
+                    <a button mat-raised-button color="primary"  routerLink="/login" *ngIf="! isAuthenticated">
                         <mat-icon>input</mat-icon>Login to Add job
                     </a>
                 </div>

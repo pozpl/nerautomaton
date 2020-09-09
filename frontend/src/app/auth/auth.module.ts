@@ -11,11 +11,13 @@ import {LoginComponent} from "./login/login.component";
 import {XhrInterceptor} from "./xhr-interceptor.interceptor";
 import {AuthInterceptor} from "./auth-interceptor";
 import { RegisterComponent } from './register/register.component';
+import {RegistrationSuccessfulDialogComponent} from "./register/registration-successful-dialog.component";
 
 @NgModule({
     declarations: [
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        RegistrationSuccessfulDialogComponent
     ],
     imports: [
         CommonModule,

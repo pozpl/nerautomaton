@@ -7,7 +7,6 @@ import {flatMap, map, takeUntil} from "rxjs/operators";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Page} from "../../../shared-components/page";
 import {PageEvent} from "@angular/material/paginator";
-import {UserDto} from "../../../auth/user.dto.";
 import {AuthService} from "../../../auth/auth.service";
 
 @Component({
@@ -20,7 +19,7 @@ export class NerJobsComponent implements OnInit, OnDestroy {
     private unsubscribe: Subject<void> = new Subject();
 
     pagedContent: Page<NerJobDto>;
-    public user: UserDto | null = null;
+    public isAuthenticated = false;
 
     //Things related to JObs table
     displayedColumns = ['name', 'dateCreated', 'delete'];
@@ -34,7 +33,7 @@ export class NerJobsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.user = this.authService.getUser();
+        this.isAuthenticated = this.authService.isAuthenticated();
 
         this.activatedRoute.queryParamMap
             .pipe(

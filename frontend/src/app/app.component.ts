@@ -1,15 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {UserDto} from "./auth/user.dto.";
 import {AuthService} from "./auth/auth.service";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, OnDestroy{
+
+    private unsubscribe = new Subject<void>();
 
     private user: UserDto | null = null;
 
@@ -20,7 +24,16 @@ export class AppComponent implements OnInit{
 
 
     ngOnInit(): void {
-        this.user = this.authService.getUser();
+        this.authService.getUser()
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(user => {
+                this.user = user;
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     logout() {

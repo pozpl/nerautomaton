@@ -1,11 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
+import {Subject} from "rxjs";
 
 @Component({
     templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit,OnDestroy {
+
+    private unsubscribe = new Subject<void>();
 
     credentials = {username: '', password: ''};
     error = false;
@@ -21,13 +24,21 @@ export class LoginComponent implements OnInit {
 
 
     ngOnInit(): void {
-        if (this.authService.isAuthenticated()) {
-            this.isLoggedIn = true;
-            const user = this.authService.getUser();
-            if(user) {
-                this.roles = user.roles || [];
-            }
-        }
+        // if (this.authService.isAuthenticated()) {
+        //     this.isLoggedIn = true;
+        //     this.authService.getUser()
+        //         .pipe(takeUntil(this.unsubscribe))
+        //         .subscribe(user => {
+        //             if(user) {
+        //                 this.roles = user.roles || [];
+        //             }
+        //         });
+        // }
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     login() {

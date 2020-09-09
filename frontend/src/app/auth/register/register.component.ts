@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth.service";
+import {MatDialog} from "@angular/material/dialog";
+import {RegistrationSuccessfulDialogComponent} from "./registration-successful-dialog.component";
 
 @Component({
   selector: 'ner-register',
@@ -19,7 +21,8 @@ export class RegisterComponent implements OnInit {
     isSignUpFailed = false;
     errorMessage = '';
 
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService,
+                private dialog: MatDialog) { }
 
     ngOnInit(): void {
     }
@@ -35,6 +38,10 @@ export class RegisterComponent implements OnInit {
                 this.isSignUpFailed = true;
             }
         );
+    }
+
+    openDialog() {
+        this.dialog.open(RegistrationSuccessfulDialogComponent);
     }
 
 }
