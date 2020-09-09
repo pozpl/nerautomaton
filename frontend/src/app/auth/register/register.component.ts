@@ -8,7 +8,13 @@ import {AuthService} from "../auth.service";
 })
 export class RegisterComponent implements OnInit {
 
-    form: any = {};
+    hidePassword = true;
+
+    public form = {
+        username: null,
+        email: null,
+        password: null
+    };
     isSuccessful = false;
     isSignUpFailed = false;
     errorMessage = '';
