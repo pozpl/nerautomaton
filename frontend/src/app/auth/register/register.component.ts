@@ -15,7 +15,8 @@ export class RegisterComponent implements OnInit {
     public form = {
         username: null,
         email: null,
-        password: null
+        password: null,
+        passwordCopy: null,
     };
     isSuccessful = false;
     isSignUpFailed = false;
