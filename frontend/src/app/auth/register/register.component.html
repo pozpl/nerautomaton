@@ -69,6 +69,15 @@
                                     [attr.aria-pressed]="hidePassword">
                                 <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                             </button>
+
+                            <password-strength-bar
+                                *ngIf="form.password"
+                                [passwordToCheck]="form.password"
+                                [barLabel]="'Password strenght'">
+                            </password-strength-bar>
+
+
+
                         </mat-form-field>
                         <mat-form-field appearance="fill" class="width-100">
                             <mat-label>Enter password again</mat-label>

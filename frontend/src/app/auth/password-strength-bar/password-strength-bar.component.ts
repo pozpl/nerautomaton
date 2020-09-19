@@ -1,14 +1,14 @@
 import {Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 
 @Component({
-    selector: 'app-password-strength-bar',
+    selector: 'password-strength-bar',
     templateUrl: './password-strength-bar.component.html',
     styleUrls: ['./password-strength-bar.component.scss']
 })
 export class PasswordStrengthBarComponent implements OnInit, OnChanges {
 
-    @Input() passwordToCheck: string;
-    @Input() barLabel: string;
+    @Input() passwordToCheck?: string | null;
+    @Input() barLabel?: string | null;
     bar0: string;
     bar1: string;
     bar2: string;

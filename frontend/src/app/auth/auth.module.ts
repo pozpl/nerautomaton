@@ -12,12 +12,15 @@ import {XhrInterceptor} from "./xhr-interceptor.interceptor";
 import {AuthInterceptor} from "./auth-interceptor";
 import { RegisterComponent } from './register/register.component';
 import {RegistrationSuccessfulDialogComponent} from "./register/registration-successful-dialog.component";
+import { PasswordStrengthBarComponent } from './password-strength-bar/password-strength-bar.component';
+import {BrowserModule} from "@angular/platform-browser";
 
 @NgModule({
     declarations: [
         LoginComponent,
         RegisterComponent,
-        RegistrationSuccessfulDialogComponent
+        RegistrationSuccessfulDialogComponent,
+        PasswordStrengthBarComponent
     ],
     imports: [
         CommonModule,
@@ -25,6 +28,7 @@ import {RegistrationSuccessfulDialogComponent} from "./register/registration-suc
         FlexLayoutModule,
         AppRoutingModule,
         FormsModule,
+        BrowserModule,
 
         SharedComponentsModule
     ],
