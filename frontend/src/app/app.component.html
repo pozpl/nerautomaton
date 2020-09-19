@@ -9,11 +9,11 @@
         <mat-icon class="icon">home</mat-icon>
         <span class="menu-label">Home</span>
       </a>
-      <a mat-list-item routerLinkActive="active" routerLink="/ner/jobs">
+      <a mat-list-item *ngIf="user" routerLinkActive="active" routerLink="/ner/jobs">
         <mat-icon class="icon">dashboard</mat-icon>
         <span class="menu-label">Managment</span>
       </a>
-      <a mat-list-item routerLinkActive="active" routerLink="/ner/user/tasks">
+      <a mat-list-item *ngIf="user" routerLinkActive="active" routerLink="/ner/user/tasks">
         <mat-icon class="icon">code</mat-icon>
         <span class="menu-label">Tasks</span>
       </a>
@@ -50,13 +50,13 @@
             </a>
           </li>
           <li>
-            <a routerLinkActive="active" routerLink="/ner/jobs">
+            <a routerLinkActive="active" *ngIf="user" routerLink="/ner/jobs">
               <mat-icon class="icon">dashboard</mat-icon>
               <span class="menu-label">Managment</span>
             </a>
           </li>
           <li>
-            <a routerLinkActive="active" routerLink="/ner/user/tasks">
+            <a routerLinkActive="active" *ngIf="user" routerLink="/ner/user/tasks">
               <mat-icon class="icon">code</mat-icon>
               <span class="menu-label">Tasks</span>
             </a>

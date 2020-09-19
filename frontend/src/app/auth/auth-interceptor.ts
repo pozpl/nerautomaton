@@ -40,6 +40,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }, (err: any) => {
             if (err instanceof HttpErrorResponse) {
                 if (err.status === 401) {
+                    this.auth.signOut(); //Automatically sign out user if we received unauthenticated response.
                     // redirect to the login route
                     // or show a modal
                     this.router.navigate(['/login']);
