@@ -15,7 +15,7 @@ export class AppComponent implements OnInit, OnDestroy{
 
     private unsubscribe = new Subject<void>();
 
-    private user: UserDto | null = null;
+    public user: UserDto | null = null;
 
     constructor(public authService: AuthService,
                 private http: HttpClient,

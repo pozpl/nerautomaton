@@ -18,8 +18,8 @@ export class UnprocessedAnnotationPageComponent implements OnInit, OnDestroy {
 
     private unprocessedTexts: NerTextAnnotationDto[];
     private jobId?: number;
-    private labels: LabelDto[];
-    private dataLoading = false;
+    public labels: LabelDto[];
+    public dataLoading = false;
 
     public activeText?: NerTextAnnotationDto | null;
 

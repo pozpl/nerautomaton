@@ -64,24 +64,6 @@ dependencies {
 }
 
 
-//jar {
-//	from('frontend/dist') {
-//		Public is a default supported Spring Boot resources directory.
-//		into 'public'
-//	}
-//}
-
-//frontend:build will be run before the processResources
-//processResources.dependsOn('frontend:npmbuild')
-
-//bootJar {
-//	dependsOn ':frontend:npmbuild'
-//
-//	into('BOOT-INF/classes/static') {
-//		from "${project(':frontend').projectDir}/dist"
-//	}
-//}
-
 
 flyway {
 	url = 'jdbc:postgresql://localhost:5432/ner'

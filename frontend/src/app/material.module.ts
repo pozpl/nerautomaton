@@ -15,6 +15,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 @NgModule({
     imports: [
@@ -53,7 +54,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
         MatPaginatorModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatGridListModule
     ]
 })
 export class MaterialModule {
