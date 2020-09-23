@@ -1,0 +1,11 @@
+[Unit]
+Description=nerannotator
+After=syslog.target
+
+[Service]
+User=nerannotator
+ExecStart=/var/nerannotator/nerannotator.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
