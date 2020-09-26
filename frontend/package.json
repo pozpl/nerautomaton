@@ -9,7 +9,7 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "buildProd": "ng build --prod",
-        "buildStandalone": "ng build",
+        "buildStandalone": "ng build --prod",
         "serveStandaloneWatch": "ng serve --proxy-config proxy-dev.json --watch=true",
         "buildToSpring": "ng build --prod --output-path=../src/main/resources/static",
         "buildSyncToSpring": "ng build --watch --output-path=../src/main/resources/static "
