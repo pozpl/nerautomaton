@@ -58,13 +58,12 @@ task serveStandaloneClient(type: NpmTask, dependsOn: npmInstall) {
 task bootStandaloneClient(type: GradleBuild) {
     group 'application'
     setTasks(['clean', 'buildStandaloneClient', 'serveStandaloneClient'])
-//    finalizedBy 'npm_shutdown'
+
 }
 
 task bootStandaloneClientWatch(type: GradleBuild) {
     group 'application'
     setTasks(['clean', 'serveStandaloneClientWatch'])
-//    finalizedBy 'npm_shutdown'
 }
 
 //------------------------------------------------------------------------------------------------------------------------

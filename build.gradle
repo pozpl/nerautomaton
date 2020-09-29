@@ -35,7 +35,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	implementation group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.1.RELEASE'
@@ -81,9 +80,6 @@ task bootStandaloneBackend {
 	dependsOn bootRun
 }
 
-jar.dependsOn  ':buildJsAndCopyToSpring'
-
-
 //------------------------------------------------------------------------------------------------------------------------
 //    Tasks - Application
 //------------------------------------------------------------------------------------------------------------------------
@@ -96,10 +92,15 @@ task copyCompiledJs(type: Copy) {
 
 task buildJsAndCopyToSpring(type: GradleBuild){
 	group 'application'
-	setTasks([':frontend:buildClientToSpring', ':copyCompiledJs'])
+	setTasks([':frontend:buildStandaloneClient', ':copyCompiledJs'])
 }
 
 task bootFullApplication(type: GradleBuild) {
 	group 'application'
 	setTasks([':frontend:npmUpdate', ':frontend:clean', ':buildJsAndCopyToSpring', ':bootRun'])
 }
+
+
+build.dependsOn buildJsAndCopyToSpring
+bootJar.dependsOn buildJsAndCopyToSpring
+jar.dependsOn  buildJsAndCopyToSpring
