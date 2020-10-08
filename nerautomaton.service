@@ -4,7 +4,7 @@ After=syslog.target
 
 [Service]
 User=nerannotator
-ExecStart=/var/nerannotator/nerannotator.jar --spring.profiles.active=provided --spring.config.additional-location=/etc/nerannotator/provided.proerties
+ExecStart=/usr/bin/java -Dspring.profiles.active=provided -Dspring.config.additional-location=/etc/nerannotator/provided.properties -jar /opt/nerannotator/nerannotator.jar
 SuccessExitStatus=143
 
 [Install]
