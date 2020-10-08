@@ -1,10 +1,11 @@
-package com.pozpl.nerannotator.ner.management.text.csvupload;
+package com.pozpl.nerannotator.ner.management.text.upload.csv;
 
 import com.pozpl.nerannotator.auth.dao.model.User;
 import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 import com.pozpl.nerannotator.ner.dao.model.text.NerJobTextItem;
 import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.ner.dao.repo.text.NerJobTextItemRepository;
+import com.pozpl.nerannotator.ner.management.text.upload.NerTextUploadResultDto;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -45,12 +46,12 @@ public class TextCsvUploadServiceImpl implements ITextCsvUploadService {
 	 * @throws NerServiceException
 	 */
 	@Override
-	public NerTextCsvUploadResultDto processCsv(final MultipartFile file,
-												final Integer jobId,
-												final User user) throws NerServiceException {
+	public NerTextUploadResultDto processCsv(final MultipartFile file,
+											 final Integer jobId,
+											 final User user) throws NerServiceException {
 
 		if(file.isEmpty()){
-			return NerTextCsvUploadResultDto.error("File is empty");
+			return NerTextUploadResultDto.error("File is empty");
 		}
 
 		final Optional<LabelingJob> labelingJobOpt = this.labelingJobsRepository.findById(jobId.longValue());
@@ -89,6 +90,6 @@ public class TextCsvUploadServiceImpl implements ITextCsvUploadService {
 		}
 
 
-		return NerTextCsvUploadResultDto.ok();
+		return NerTextUploadResultDto.ok();
 	}
 }

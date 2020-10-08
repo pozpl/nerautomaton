@@ -1,6 +1,7 @@
-package com.pozpl.nerannotator.ner.management.text.csvupload;
+package com.pozpl.nerannotator.ner.management.text.upload.csv;
 
 import com.pozpl.nerannotator.auth.dao.model.User;
+import com.pozpl.nerannotator.ner.management.text.upload.NerTextUploadResultDto;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import com.pozpl.nerannotator.shared.exceptions.NerWebException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,9 @@ public class TextsCsvUploadController {
 	}
 
 	@PostMapping("/upload")
-	public NerTextCsvUploadResultDto uploadTextsCsv(@RequestParam("file") MultipartFile file,
-													@RequestParam("jobId")Integer jobId,
-													User user) {
+	public NerTextUploadResultDto uploadTextsCsv(@RequestParam("file") MultipartFile file,
+												 @RequestParam("jobId")Integer jobId,
+												 User user) {
 		try {
 			return textCsvUploadService.processCsv(file, jobId, user);
 		}catch (NerServiceException e){
