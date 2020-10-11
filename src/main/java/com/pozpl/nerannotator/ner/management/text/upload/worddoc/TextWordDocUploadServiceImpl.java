@@ -8,6 +8,7 @@ import com.pozpl.nerannotator.ner.dao.repo.text.NerJobTextItemRepository;
 import com.pozpl.nerannotator.ner.management.text.upload.NerTextUploadResultDto;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import io.vavr.control.Try;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -154,6 +155,7 @@ public class TextWordDocUploadServiceImpl implements ITextWordDocUploadService {
                                 final XWPFParagraph paragraph = paragraphs.get(j);
                                 final String text  = paragraph.getText();
                                 pageStringBuilder.append(text);
+                                pageStringBuilder.append("\n");
                             }
                         }
 
@@ -166,7 +168,10 @@ public class TextWordDocUploadServiceImpl implements ITextWordDocUploadService {
                             endIndex = paragraphs.size()-1;
                         }
 
-                        texts.add(pageStringBuilder.toString());
+                        final String pageText = pageStringBuilder.toString();
+                        if(! StringUtils.isBlank(pageText)) {
+                            texts.add(pageText);
+                        }
 
                     }
                 }
