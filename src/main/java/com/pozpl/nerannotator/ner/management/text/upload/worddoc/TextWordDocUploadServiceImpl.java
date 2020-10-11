@@ -17,9 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import javax.transaction.Transactional;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +69,7 @@ public class TextWordDocUploadServiceImpl implements ITextWordDocUploadService {
                     "from user %d session ", labelingJob.getOwner().getId(), user.getId()));
         }
 
-        final Try<List<String>> textsTry = this.extractTextChunksFromDocument(file, labelingJob, user);
+        final Try<List<String>> textsTry = getExamplesFromPage(file);//this.extractTextChunksFromDocument(file, labelingJob, user);
         boolean precessingStatus = textsTry.flatMapTry(texts -> this.processTexts(texts, labelingJob, user))
                 .getOrElseThrow(NerServiceException::new);
 
@@ -114,5 +121,104 @@ public class TextWordDocUploadServiceImpl implements ITextWordDocUploadService {
             logger.error("Error parsing DOC file from User: " + user.getId() + " for Labeling Job " + labelingJob.getId());
             return Try.failure(e);
         }
+    }
+
+
+    private Try<List<String>> getExamplesFromPage(final MultipartFile file){
+        try {
+            final InputStream fis = file.getInputStream();
+            final XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
+            final List<String> texts = new ArrayList<>();
+
+            //Determine how many paragraphs per page
+            final List<Integer> paragraphCountList = getParagraphCountPerPage(xdoc);
+
+            if (paragraphCountList != null && paragraphCountList.size() > 0) {
+
+                int docCount = 0;
+                int startIndex = 0;
+                int endIndex = paragraphCountList.get(0);
+
+
+                //Loop through the paragraph counts for each page
+                for (int i=0; i < paragraphCountList.size(); i++) {
+                    final List<XWPFParagraph> paragraphs = xdoc.getParagraphs();
+
+                    if (paragraphs != null && paragraphs.size() > 0) {
+
+                        final StringBuilder pageStringBuilder = new StringBuilder();
+
+                        //Get the paragraphs from the input Word document
+                        for (int j=startIndex; j < endIndex; j++) {
+                            if (paragraphs.get(j) != null) {
+                                final XWPFParagraph paragraph = paragraphs.get(j);
+                                final String text  = paragraph.getText();
+                                pageStringBuilder.append(text);
+                            }
+                        }
+
+                        //Set the start and end point for the next set of paragraphs
+                        startIndex = endIndex;
+
+                        if (i < paragraphCountList.size()-2) {
+                            endIndex = endIndex + paragraphCountList.get(i+1);
+                        } else {
+                            endIndex = paragraphs.size()-1;
+                        }
+
+                        texts.add(pageStringBuilder.toString());
+
+                    }
+                }
+            }
+
+            return Try.success(texts);
+        } catch (Exception e) {
+            logger.error("Error parsing DOC file");
+            return Try.failure(e);
+        }
+    }
+
+    private List<Integer> getParagraphCountPerPage(final XWPFDocument doc) throws Exception {
+        final List<Integer> paragraphCountList = new ArrayList<>();
+        int paragraphCount = 0;
+
+        final Document domDoc = convertStringToDOM(doc.getDocument().getBody().toString());
+        final NodeList rootChildNodeList = domDoc.getChildNodes().item(0).getChildNodes();
+
+        for (int i=0; i < rootChildNodeList.getLength(); i++) {
+            final Node childNode = rootChildNodeList.item(i);
+
+            if (childNode.getNodeName().equals("w:p")) {
+                paragraphCount++;
+
+                if (childNode.getChildNodes() != null) {
+                    for (int k=0; k < childNode.getChildNodes().getLength(); k++) {
+                        if (childNode.getChildNodes().item(k).getNodeName().equals("w:r")) {
+                            for (int m=0; m < childNode.getChildNodes().item(k).getChildNodes().getLength(); m++) {
+                                if (childNode.getChildNodes().item(k).getChildNodes().item(m).getNodeName().equals("w:br")) {
+
+                                    paragraphCountList.add(paragraphCount);
+                                    paragraphCount = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        paragraphCountList.add(paragraphCount+1);
+
+        return paragraphCountList;
+    }
+
+
+    private Document convertStringToDOM(String xmlData) throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+
+        Document document =  builder.parse(new InputSource(new StringReader(xmlData)));
+
+        return document;
     }
 }
