@@ -70,7 +70,7 @@ public class TextWordDocUploadServiceImpl implements ITextWordDocUploadService {
                     "from user %d session ", labelingJob.getOwner().getId(), user.getId()));
         }
 
-        final Try<List<String>> textsTry = getExamplesFromPage(file);//this.extractTextChunksFromDocument(file, labelingJob, user);
+        final Try<List<String>> textsTry = getExamplesFromPage(file, labelingJob, user);
         boolean precessingStatus = textsTry.flatMapTry(texts -> this.processTexts(texts, labelingJob, user))
                 .getOrElseThrow(NerServiceException::new);
 
@@ -102,30 +102,10 @@ public class TextWordDocUploadServiceImpl implements ITextWordDocUploadService {
         }
     }
 
-    private Try<List<String>> extractTextChunksFromDocument(final MultipartFile file,
-                                                            final LabelingJob labelingJob,
-                                                            final User user){
-        try {
-            final InputStream fis = file.getInputStream();
-            final XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
 
-            final List<XWPFParagraph> paragraphList = xdoc.getParagraphs();
-            final List<String> texts = new ArrayList<>();
-            for (XWPFParagraph paragraph : paragraphList) {
-
-                final String text = paragraph.getText();
-                texts.add(text);
-            }
-
-            return Try.success(texts);
-        } catch (Exception e) {
-            logger.error("Error parsing DOC file from User: " + user.getId() + " for Labeling Job " + labelingJob.getId());
-            return Try.failure(e);
-        }
-    }
-
-
-    private Try<List<String>> getExamplesFromPage(final MultipartFile file){
+    private Try<List<String>> getExamplesFromPage(final MultipartFile file,
+                                                  final LabelingJob labelingJob,
+                                                  final User user){
         try {
             final InputStream fis = file.getInputStream();
             final XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
@@ -179,7 +159,7 @@ public class TextWordDocUploadServiceImpl implements ITextWordDocUploadService {
 
             return Try.success(texts);
         } catch (Exception e) {
-            logger.error("Error parsing DOC file");
+            logger.error("Error parsing DOC file from User: " + user.getId() + " for Labeling Job " + labelingJob.getId());
             return Try.failure(e);
         }
     }
