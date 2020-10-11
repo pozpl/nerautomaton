@@ -7,7 +7,8 @@ import {BehaviorSubject, Observable, of, Subject} from "rxjs";
 })
 export class TextCsvFileUploadService {
 
-    public static readonly UPLOAD_URL = '/ner/texts/csv/upload';
+    public static readonly CSV_UPLOAD_URL = '/ner/texts/csv/upload';
+    public static readonly DOC_UPLOAD_URL = 'ner/texts/word-doc/upload';
 
     constructor(private http: HttpClient) {
     }
@@ -27,7 +28,8 @@ export class TextCsvFileUploadService {
 
             // create a http-post request and pass the form
             // tell it to report the upload progress
-            const req = new HttpRequest('POST', TextCsvFileUploadService.UPLOAD_URL, formData, {
+            const uploadUrl = this.resolveRequestFromFileExtension(file.name);
+            const req = new HttpRequest('POST', uploadUrl, formData, {
                 reportProgress: true
             });
 
@@ -69,6 +71,17 @@ export class TextCsvFileUploadService {
 
         // return the map of progress.observables
         return status;
+    }
+
+    private resolveRequestFromFileExtension(fileName: string): string {
+        if(fileName.endsWith(".csv")) {
+            return TextCsvFileUploadService.CSV_UPLOAD_URL;
+        }else if(fileName.endsWith('.doc') || fileName.endsWith('.docx')) {
+            return TextCsvFileUploadService.DOC_UPLOAD_URL;
+        }else{
+            //AS a fallback assume that it's CSV for now
+            return TextCsvFileUploadService.CSV_UPLOAD_URL;
+        }
     }
 
 }
