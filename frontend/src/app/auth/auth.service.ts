@@ -5,6 +5,7 @@ import {JwtResponseDto} from "./jwt-response.dto";
 import {TokenStorageService} from "./token-storage.service";
 import {tap} from "rxjs/operators";
 import {UserDto} from "./user.dto.";
+import {AuthResultDto} from "./auth-result.dto";
 
 
 @Injectable()
@@ -26,19 +27,22 @@ export class AuthService {
 
 
 
-    login(credentials): Observable<JwtResponseDto> {
-        return this.http.post<JwtResponseDto>(AuthService.SIGN_IN_URL , {
+    login(credentials): Observable<AuthResultDto> {
+        return this.http.post<AuthResultDto>(AuthService.SIGN_IN_URL , {
             username: credentials.username,
             password: credentials.password
         }).pipe(
-            tap(data => {
-                this.tokenService.saveToken(data.token);
-                const user = new UserDto();
-                user.username = data.username;
-                user.email = data.email;
-                user.roles = data.roles;
-                this.tokenService.saveUser(user);
-                this.userSubject.next(user);
+            tap(authResponse => {
+                if(authResponse.jwtResponse) {
+                    const jwtResponse = authResponse.jwtResponse;
+                    this.tokenService.saveToken(jwtResponse.token);
+                    const user = new UserDto();
+                    user.username = jwtResponse.username;
+                    user.email = jwtResponse.email;
+                    user.roles = jwtResponse.roles;
+                    this.tokenService.saveUser(user);
+                    this.userSubject.next(user);
+                }
             })
         );
     }

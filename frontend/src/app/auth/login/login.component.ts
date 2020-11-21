@@ -24,16 +24,6 @@ export class LoginComponent implements OnInit,OnDestroy {
 
 
     ngOnInit(): void {
-        // if (this.authService.isAuthenticated()) {
-        //     this.isLoggedIn = true;
-        //     this.authService.getUser()
-        //         .pipe(takeUntil(this.unsubscribe))
-        //         .subscribe(user => {
-        //             if(user) {
-        //                 this.roles = user.roles || [];
-        //             }
-        //         });
-        // }
     }
 
     ngOnDestroy(): void {
@@ -44,15 +34,22 @@ export class LoginComponent implements OnInit,OnDestroy {
     login() {
         this.authService.login(this.credentials)
             .subscribe(
-                data => {
-                    this.isLoginFailed = false;
-                    this.isLoggedIn = true;
-                    this.roles = data.roles || [];
-                    this.router.navigateByUrl('/');
-                    // this.reloadPage();
+                authResponse => {
+                    if(authResponse.jwtResponse) {
+                        this.isLoginFailed = false;
+                        this.isLoggedIn = true;
+                        this.roles = authResponse.jwtResponse.roles || [];
+                        this.router.navigateByUrl('/');
+                        // this.reloadPage();
+                    }else{
+                        this.isLoginFailed = true;
+                        this.error = true;
+                    }
                 },
                 err => {
-                    this.errorMessage = err.error.message;
+                    if(err && err.error) {
+                        this.errorMessage = err.error.message;
+                    }
                     this.isLoginFailed = true;
                     this.error = true;
                 }
