@@ -7,9 +7,7 @@ import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.ner.dao.repo.text.NerJobTextItemRepository;
 import com.pozpl.nerannotator.ner.management.text.upload.NerTextUploadResultDto;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
-import io.vavr.control.Try;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -49,6 +47,13 @@ public class TxtFileUploadServiceImpl implements ITxtFileUploadService {
         if(file.isEmpty()){
             return NerTextUploadResultDto.error("File is empty");
         }
+        if(file.getSize() > 1038336){
+            return NerTextUploadResultDto.error("File too large");
+        }
+        final String fileExtension = FilenameUtils.getExtension(file.getName());
+        if( ! (StringUtils.isNotBlank(fileExtension) && StringUtils.equalsAnyIgnoreCase(fileExtension, "txt"))){
+            return NerTextUploadResultDto.error("File is not a text file");
+        }
 
         final Optional<LabelingJob> labelingJobOpt = this.labelingJobsRepository.findById(jobId.longValue());
         if (!labelingJobOpt.isPresent()) {
@@ -61,6 +66,7 @@ public class TxtFileUploadServiceImpl implements ITxtFileUploadService {
             throw new NerServiceException(String.format("Labeling job Text save: attempt to save text item for job belonging to user %d " +
                     "from user %d session ", labelingJob.getOwner().getId(), user.getId()));
         }
+
 
         try(final InputStream fileStream = file.getInputStream()){
             final BufferedReader reader = new BufferedReader(new InputStreamReader(fileStream, "UTF-8"));
