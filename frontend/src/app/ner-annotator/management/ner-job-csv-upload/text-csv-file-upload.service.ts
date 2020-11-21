@@ -9,6 +9,7 @@ export class TextCsvFileUploadService {
 
     public static readonly CSV_UPLOAD_URL = '/ner/texts/csv/upload';
     public static readonly DOC_UPLOAD_URL = 'ner/texts/word-doc/upload';
+    public static readonly TXT_DOUBLE_ENTER_UPLOAD_URL = 'ner/texts/txt-file/upload';
 
     constructor(private http: HttpClient) {
     }
@@ -78,6 +79,8 @@ export class TextCsvFileUploadService {
             return TextCsvFileUploadService.CSV_UPLOAD_URL;
         }else if(fileName.endsWith('.doc') || fileName.endsWith('.docx')) {
             return TextCsvFileUploadService.DOC_UPLOAD_URL;
+        }else if(fileName.endsWith(".txt")){
+            return TextCsvFileUploadService.TXT_DOUBLE_ENTER_UPLOAD_URL;
         }else{
             //AS a fallback assume that it's CSV for now
             return TextCsvFileUploadService.CSV_UPLOAD_URL;
