@@ -50,7 +50,7 @@ public class TxtFileUploadServiceImpl implements ITxtFileUploadService {
         if(file.getSize() > 1038336){
             return NerTextUploadResultDto.error("File too large");
         }
-        final String fileExtension = FilenameUtils.getExtension(file.getName());
+        final String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
         if( ! (StringUtils.isNotBlank(fileExtension) && StringUtils.equalsAnyIgnoreCase(fileExtension, "txt"))){
             return NerTextUploadResultDto.error("File is not a text file");
         }
@@ -77,14 +77,14 @@ public class TxtFileUploadServiceImpl implements ITxtFileUploadService {
                 if(StringUtils.isEmpty(line)){
                     newLineCounter++;
                 }
-                if(newLineCounter == 2){
+                if(newLineCounter >= 3){
                     newLineCounter = 0;
                     final String textToSave = content.toString();
                     final boolean result  = processText(textToSave, labelingJob, user);
                     content.setLength(0);//clearing the buffer
                 }else {
                     content.append(line + "\n");
-                    if(newLineCounter == 1 && StringUtils.isNotEmpty(line)){
+                    if(newLineCounter >=1 && StringUtils.isNotEmpty(line)){
                         newLineCounter = 0;//if next line after the new line is not empty reset counter
                     }
                 }
@@ -107,13 +107,14 @@ public class TxtFileUploadServiceImpl implements ITxtFileUploadService {
                                       final LabelingJob labelingJob,
                                       final User user) throws NerServiceException {
         try {
+            final String trimmedText = text.trim();
 
-            final String textMd5Hash = DigestUtils.md5DigestAsHex(text.getBytes());
+            final String textMd5Hash = DigestUtils.md5DigestAsHex(trimmedText.getBytes());
 
             final Optional<NerJobTextItem> existingItem = nerJobTextItemRepository.getForJobAndHash(labelingJob,
                     textMd5Hash);
             if (!existingItem.isPresent()) {
-                final NerJobTextItem textItem = NerJobTextItem.of(labelingJob, text, textMd5Hash);
+                final NerJobTextItem textItem = NerJobTextItem.of(labelingJob, trimmedText, textMd5Hash);
 
                 nerJobTextItemRepository.save(textItem);
             }

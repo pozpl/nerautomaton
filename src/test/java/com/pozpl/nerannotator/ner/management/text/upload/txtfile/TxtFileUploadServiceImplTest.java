@@ -52,10 +52,11 @@ public class TxtFileUploadServiceImplTest {
         builder.append("line2\n");
         builder.append("\n");
         builder.append("\n");
+        builder.append("\n");
         builder.append("line3\n");
-        builder.append("line4");
+        builder.append("line4\n");
 
-        file = new MockMultipartFile("test.txt", builder.toString().getBytes("UTF-8"));
+        file = new MockMultipartFile("test.txt","test.txt","text" ,builder.toString().getBytes("UTF-8"));
     }
 
     @After
