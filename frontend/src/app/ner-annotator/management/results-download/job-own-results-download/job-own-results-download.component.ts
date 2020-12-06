@@ -17,8 +17,13 @@ export class JobOwnResultsDownloadComponent implements OnInit {
     }
 
     download(): void {
-        this.downloadService.downloadForOwner(this.jobId)
+        this.downloadService.downloadBLIOU(this.jobId)
             .subscribe(blob => saveAs(blob, 'annotation-result.txt'));
+    }
+
+    downloadJson(): void {
+        this.downloadService.downloadSpacyJson(this.jobId)
+            .subscribe(blob => saveAs(blob, 'annotation-result.json'));
     }
 
 }
