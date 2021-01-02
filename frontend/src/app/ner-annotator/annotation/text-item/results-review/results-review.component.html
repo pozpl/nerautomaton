@@ -9,7 +9,9 @@
                 <ng-container matColumnDef="tokens">
                     <mat-header-cell *matHeaderCellDef> Tokens</mat-header-cell>
                     <mat-cell *matCellDef="let element">
-                        <span *ngFor="let token of element.tokens">
+                        <span *ngFor="let token of element.tokens"
+                            class="annotated-token"
+                        >
                             {{token.token}}
                         </span>
                     </mat-cell>

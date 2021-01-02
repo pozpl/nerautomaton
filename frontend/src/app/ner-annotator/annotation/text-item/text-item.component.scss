@@ -172,3 +172,7 @@ $green-palette-list: create-palette(green);
         background-color: $current-color;
     }
 }
+
+.delete-result-icon{
+    cursor: pointer;
+}
