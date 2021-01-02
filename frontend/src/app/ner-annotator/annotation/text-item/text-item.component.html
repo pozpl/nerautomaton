@@ -16,11 +16,18 @@
                                              <br>
                                          </ng-container>
                                          <span *ngIf="! termDto.specialTextMark"
-                                               [ngClass]="termDto.label && annotationsMap.has(termDto.label) != null ? 'annotation-' +annotationsMap.get(termDto.label) + '-applied'  : ''"
+                                               [ngClass]="termDto.label && annotationsMap.has(termDto.label) != null ? 'annotation-' + annotationsMap.get(termDto.label) + '-applied'  : ''"
                                                [attr.index]="idx"
                                                style="display: inline-block; margin-right: 1ch;"
                                          >
                                             {{termDto.token}}
+
+                                             <mat-icon *ngIf="termDto.position && (termDto.position === 'UNIT' || termDto.position === 'LAST')"
+                                                (click)="deleteAnnotation(termDto)"
+                                                       style="cursor: pointer;"
+                                             >
+                                                 delete
+                                             </mat-icon>
                                          </span>
 
                                      </ng-container>

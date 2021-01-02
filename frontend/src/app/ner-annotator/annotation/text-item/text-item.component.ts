@@ -202,6 +202,12 @@ export class TextItemComponent implements OnInit, OnChanges {
         this.onReturn.emit(true);
     }
 
+    deleteAnnotation(term: TaggedTermDto) {
+        if(term.annotationBeginIdx !== undefined && term.annotationBeginIdx !== null && term.annotationEndIdx !== undefined
+            && term.annotationEndIdx !== null){
+            this.resultsDataService.deleteResult(term.annotationBeginIdx, term.annotationEndIdx);
+        }
+    }
 
     private checkThatRegionsCanBeAnnotated(begin: number,
                                            end: number): boolean {

@@ -12,13 +12,20 @@ export class TermsAnnotationsService {
 
     assignAnnotationResultsToTerms(terms: TaggedTermDto[], annotationResults: AnnotatedResult[]): TaggedTermDto[] {
 
-        terms.map(term => term.label = null);//delete all labels
+        terms.map(term => {
+            term.label = null;
+            term.position = null;
+            term.annotationBeginIdx = null;
+            term.annotationEndIdx = null;
+        });//delete all labels
 
         //assign labels from annotation results
         for (const annotationResult of annotationResults) {
             const termsSpan = annotationResult.end - annotationResult.begin;
             for (let termIdx: number = annotationResult.begin; termIdx <= annotationResult.end; termIdx++) {
                 terms[termIdx].label = annotationResult.annotation;
+                terms[termIdx].annotationBeginIdx = annotationResult.begin;
+                terms[termIdx].annotationEndIdx = annotationResult.end;
                 if(termIdx === annotationResult.begin){
                      terms[termIdx].position = termsSpan === 0 ? 'UNIT' : 'BEGIN'; //if first and last indexes are the same than it's UNIT
                 } else if(termIdx === annotationResult.end && termsSpan > 0) {
