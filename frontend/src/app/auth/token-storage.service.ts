@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {UserDto} from "./user.dto.";
+import {SESSION_STORAGE} from "../system/web-storage/web-storage.provider";
+import {StorageService} from "../system/web-storage/storage.service";
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
@@ -9,29 +11,29 @@ const USER_KEY = 'auth-user';
 })
 export class TokenStorageService {
 
-  constructor() { }
+  constructor(@Inject(SESSION_STORAGE) private storageService: StorageService ) { }
 
 
     signOut(): void {
-        window.sessionStorage.clear();
+        this.storageService.clear();
     }
 
     public saveToken(token: string): void {
-        window.sessionStorage.removeItem(TOKEN_KEY);
-        window.sessionStorage.setItem(TOKEN_KEY, token);
+      this.storageService.remove(TOKEN_KEY);
+      this.storageService.set(TOKEN_KEY, token);
     }
 
     public getToken(): string | null {
-        return sessionStorage.getItem(TOKEN_KEY);
+      return this.storageService.get(TOKEN_KEY);
     }
 
     public saveUser(user: UserDto): void {
-        window.sessionStorage.removeItem(USER_KEY);
-        window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+      this.storageService.remove(USER_KEY);
+      this.storageService.set(USER_KEY, JSON.stringify(user));
     }
 
     public getUser(): UserDto | null {
-        const userDtoStr = sessionStorage.getItem(USER_KEY)
+        const userDtoStr = this.storageService.get(USER_KEY);
         if(! userDtoStr){
             return null;
         }
@@ -39,10 +41,10 @@ export class TokenStorageService {
     }
 
     public removeToken(): void {
-      window.sessionStorage.removeItem(TOKEN_KEY);
+      this.storageService.remove(TOKEN_KEY);
     }
     public removeUser(): void {
-      window.sessionStorage.removeItem(USER_KEY);
+      this.storageService.remove(USER_KEY);
     }
 
 }
