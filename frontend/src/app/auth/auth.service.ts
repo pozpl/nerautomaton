@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, ReplaySubject} from "rxjs";
-import {JwtResponseDto} from "./jwt-response.dto";
 import {TokenStorageService} from "./token-storage.service";
 import {tap} from "rxjs/operators";
 import {UserDto} from "./user.dto.";
@@ -27,7 +26,7 @@ export class AuthService {
 
 
 
-    login(credentials): Observable<AuthResultDto> {
+    public login(credentials): Observable<AuthResultDto> {
         return this.http.post<AuthResultDto>(AuthService.SIGN_IN_URL , {
             username: credentials.username,
             password: credentials.password
@@ -47,7 +46,7 @@ export class AuthService {
         );
     }
 
-    register(user): Observable<any> {
+    public register(user): Observable<any> {
         return this.http.post(AuthService.SIGN_UP_URL, {
             username: user.username,
             email: user.email,
@@ -56,16 +55,16 @@ export class AuthService {
     }
 
 
-    isAuthenticated(): boolean {
+    public isAuthenticated(): boolean {
         return this.tokenService.getUser() != null && this.tokenService.getToken() != null;
     }
 
-    signOut() {
+    public signOut() {
         this.tokenService.signOut();
         this.userSubject.next(null);
     }
 
-    getUser(): Observable<UserDto | null>{
+    public getUser(): Observable<UserDto | null>{
         return this.userSubject.asObservable();
     }
 
