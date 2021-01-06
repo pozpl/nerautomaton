@@ -26,7 +26,7 @@ export class AdminGuard implements CanActivate {
                 map(userDto => {
                     return userDto !== null
                         && userDto.roles !== undefined
-                        && userDto.roles.indexOf('ROLE_ADMIN') > -1
+                        && userDto.roles.includes('ROLE_ADMIN')
                 })
             );
         }
