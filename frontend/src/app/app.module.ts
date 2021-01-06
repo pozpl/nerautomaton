@@ -17,6 +17,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {NerAnnotatorModule} from "./ner-annotator/ner-annotator.module";
 import {SharedComponentsModule} from "./shared-components/shared-components.module";
 import {AuthModule} from "./auth/auth.module";
+import {AdminModule} from "./admin/admin.module";
 
 
 @NgModule({
@@ -29,14 +30,15 @@ import {AuthModule} from "./auth/auth.module";
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    
+
     BrowserAnimationsModule,
     MaterialModule,
     FlexLayoutModule,
 
     SharedComponentsModule,
     AuthModule,
-    NerAnnotatorModule
+    NerAnnotatorModule,
+    AdminModule
   ],
   providers: [
   ],
