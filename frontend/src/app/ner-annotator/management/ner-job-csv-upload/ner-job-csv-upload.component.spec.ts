@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NerJobCsvUploadComponent } from './ner-job-csv-upload.component';
 
@@ -6,7 +6,7 @@ describe('NerJobCsvUploadComponent', () => {
   let component: NerJobCsvUploadComponent;
   let fixture: ComponentFixture<NerJobCsvUploadComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NerJobCsvUploadComponent ]
     })

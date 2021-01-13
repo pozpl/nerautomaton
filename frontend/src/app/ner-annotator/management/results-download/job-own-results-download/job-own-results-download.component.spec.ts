@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { JobOwnResultsDownloadComponent } from './job-own-results-download.component';
 
@@ -6,7 +6,7 @@ describe('JobOwnResultsDownloadComponent', () => {
   let component: JobOwnResultsDownloadComponent;
   let fixture: ComponentFixture<JobOwnResultsDownloadComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ JobOwnResultsDownloadComponent ]
     })

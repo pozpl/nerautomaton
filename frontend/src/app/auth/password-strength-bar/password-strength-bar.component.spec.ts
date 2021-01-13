@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PasswordStrengthBarComponent } from './password-strength-bar.component';
 
@@ -6,7 +6,7 @@ describe('PasswordStrengthBarComponent', () => {
   let component: PasswordStrengthBarComponent;
   let fixture: ComponentFixture<PasswordStrengthBarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PasswordStrengthBarComponent ]
     })

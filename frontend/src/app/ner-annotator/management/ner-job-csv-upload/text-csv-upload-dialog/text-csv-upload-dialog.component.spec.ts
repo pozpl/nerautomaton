@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TextCsvUploadDialogComponent } from './text-csv-upload-dialog.component';
 
@@ -6,7 +6,7 @@ describe('TextCsvUploadDialogComponent', () => {
   let component: TextCsvUploadDialogComponent;
   let fixture: ComponentFixture<TextCsvUploadDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TextCsvUploadDialogComponent ]
     })
