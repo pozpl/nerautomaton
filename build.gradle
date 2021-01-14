@@ -92,6 +92,9 @@ task copyCompiledJs(type: Copy) {
 	group 'application'
 	from "${project(':frontend').projectDir}/dist/frontend"
 	into "${rootDir}/src/main/resources/static"
+	doLast {
+		println("Copy files finished")
+	}
 }
 
 task buildJsAndCopyToSpring(type: GradleBuild){
@@ -105,6 +108,4 @@ task bootFullApplication(type: GradleBuild) {
 }
 
 
-build.dependsOn buildJsAndCopyToSpring
-bootJar.dependsOn buildJsAndCopyToSpring
-jar.dependsOn  buildJsAndCopyToSpring
+processResources.dependsOn buildJsAndCopyToSpring

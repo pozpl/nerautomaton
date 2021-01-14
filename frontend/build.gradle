@@ -41,6 +41,9 @@ task buildStandaloneClient(type: NpmTask, dependsOn: npmInstall) {
     group 'build frontend'
     description = 'Compile client side folder for development'
     args = ['run', 'buildStandalone']
+    doLast {
+        println("Build client side code finished")
+    }
 }
 
 task serveStandaloneClientWatch(type: NpmTask, dependsOn: npmInstall) {
