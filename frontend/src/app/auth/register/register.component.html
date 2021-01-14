@@ -26,7 +26,7 @@
                                 <div *ngIf="username.errors.minlength">
                                     Username must be at least 3 characters
                                 </div>
-                                <div *ngIf="username.errors.maxlength">
+                                <div *ngIf="username.errors && username.errors.maxlength">
                                     Username must be at most 20 characters
                                 </div>
                             </mat-error>
@@ -44,8 +44,8 @@
                                    email
                                    #email="ngModel">
                             <mat-error *ngIf="registerForm.submitted && email.invalid">
-                                <div *ngIf="email.errors.required">Email is required</div>
-                                <div *ngIf="email.errors.email">
+                                <div *ngIf="email.errors && email.errors.required">Email is required</div>
+                                <div *ngIf="email.errors && email.errors.email">
                                     Email must be a valid email address
                                 </div>
                             </mat-error>

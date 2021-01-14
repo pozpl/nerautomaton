@@ -63,7 +63,7 @@ export class UnprocessedAnnotationPageComponent implements OnInit, OnDestroy {
     }
 
 
-    processFinishedAnnotation(processedText: NerTextAnnotationDto) {
+    public processFinishedAnnotation(processedText: NerTextAnnotationDto) {
 
         this.annotationDataService.saveAnnotation(processedText).subscribe(
             editResult => {
@@ -91,11 +91,11 @@ export class UnprocessedAnnotationPageComponent implements OnInit, OnDestroy {
         }
     }
 
-    private goToTaskList(){
+    public goToTaskList(){
         this.router.navigate(['ner/user/tasks'])
     }
 
-    private reviewProcessedTexts(){
+    public reviewProcessedTexts(){
         this.router.navigate(['ner/job/annotate/processed/', this.jobId])
     }
 
