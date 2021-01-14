@@ -23,7 +23,7 @@
                         <h3>Recent Jobs</h3>
                     </mat-card-title>
                     <mat-card-content>
-                        <div  *ngIf="pagedContent != null" class="example-container mat-elevation-z8">
+                        <div  *ngIf="pagedContent != null && pagedContent.content" class="example-container mat-elevation-z8">
                             <mat-table #table [dataSource]="pagedContent.content">
 
                                 <ng-container matColumnDef="name">

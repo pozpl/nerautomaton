@@ -22,8 +22,8 @@
                                    maxlength="20"
                                    #username="ngModel">
                             <mat-error *ngIf="registerForm.submitted && username.invalid">
-                                <div *ngIf="username.errors.required">Username is required</div>
-                                <div *ngIf="username.errors.minlength">
+                                <div *ngIf="username.errors && username.errors.required">Username is required</div>
+                                <div *ngIf="username.errors && username.errors.minlength">
                                     Username must be at least 3 characters
                                 </div>
                                 <div *ngIf="username.errors && username.errors.maxlength">

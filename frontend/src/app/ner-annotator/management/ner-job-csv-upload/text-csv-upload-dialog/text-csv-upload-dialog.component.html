@@ -29,7 +29,7 @@
                     mode="determinate"
                     [value]="progress[file.name].progress | async"
                 ></mat-progress-bar>
-                <div *ngIf="progress && progress[file.name].error | async">
+                <div *ngIf="progress && progress[file.name] && progress[file.name].error | async">
                     <mat-icon>error</mat-icon>
                 </div>
             </mat-list-item>

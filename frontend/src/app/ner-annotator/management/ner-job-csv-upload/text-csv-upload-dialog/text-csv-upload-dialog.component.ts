@@ -11,7 +11,7 @@ import {NerJobTextDto} from "../../ner-job-texts-list/ner-job-text.dto";
 })
 export class TextCsvUploadDialogComponent implements OnInit {
 
-    progress: { [key: string]: { progress: Observable<number> } };
+    progress: { [key: string]: { progress: Observable<number> , error: Observable<boolean>} };
     canBeClosed = true
     primaryButtonText = 'Upload'
     showCancelButton = true
