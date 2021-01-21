@@ -22,5 +22,8 @@ public class NerJobDto {
 	private Date created;
 
 	private List<NerLabelDto> labels;
+
+	private Integer unprocessed;
+	private Integer processed;
 	
 }

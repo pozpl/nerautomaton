@@ -4,6 +4,7 @@ import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.ner.dao.model.LanguageCodes;
 import com.pozpl.nerannotator.auth.dao.model.User;
 import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
+import com.pozpl.nerannotator.ner.dao.repo.text.UserTextProcessingResultRepository;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import com.pozpl.nerannotator.ner.management.labels.INerLabelEditingService;
 import com.pozpl.nerannotator.ner.management.labels.NerLabelDto;
@@ -28,12 +29,15 @@ public class NerJobServiceImpl implements INerJobService {
 	private final LabelingJobsRepository labelingJobsRepository;
 
 	private INerLabelEditingService nerLabelEditingService;
+	private final UserTextProcessingResultRepository userTextProcessingResultRepository;
 
 	@Autowired
 	public NerJobServiceImpl(final LabelingJobsRepository labelingJobsRepository,
-							 final INerLabelEditingService nerLabelEditingService) {
+							 final INerLabelEditingService nerLabelEditingService,
+							 final UserTextProcessingResultRepository userTextProcessingResultRepository) {
 		this.labelingJobsRepository = labelingJobsRepository;
 		this.nerLabelEditingService = nerLabelEditingService;
+		this.userTextProcessingResultRepository = userTextProcessingResultRepository;
 	}
 
 	/**
@@ -49,7 +53,7 @@ public class NerJobServiceImpl implements INerJobService {
 		try {
 			final Optional<LabelingJob> nerJobOpt = labelingJobsRepository.findByIdAndOwner(Long.valueOf(id), user);
 
-			return nerJobOpt.map(nerJob -> Try.of(() -> toDto(nerJob)))
+			return nerJobOpt.map(nerJob -> Try.of(() -> toDto(nerJob, user)))
 					.flatMap(tryDto -> {
 						if(tryDto.isFailure()){
 							return Optional.empty();
@@ -78,7 +82,7 @@ public class NerJobServiceImpl implements INerJobService {
 			Page<LabelingJob> userJobs = labelingJobsRepository.getJobsForOwner(owner, PageRequest.of(adjustedPage, 20, Sort.by(Sort.Direction.DESC, "created")));
 
 			final List<NerJobDto> jobs = userJobs.getContent().stream()
-					.map(nerJob -> Try.of(() -> toDto(nerJob)))
+					.map(nerJob -> Try.of(() -> toDto(nerJob, owner)))
 					.map(nerJobTry -> nerJobTry.getOrElse(new NerJobDto()))
 					.collect(Collectors.toList());
 
@@ -135,7 +139,7 @@ public class NerJobServiceImpl implements INerJobService {
 
 			return  NerJobSaveStatusDto.builder()
 					.status(NerJobSaveStatusDto.SaveStatus.OK)
-					.nerJobDto(toDto(labelingJobToSave))
+					.nerJobDto(toDto(labelingJobToSave, user))
 					.build();
 		} catch (Exception e) {
 			throw new NerServiceException(e);
@@ -167,15 +171,22 @@ public class NerJobServiceImpl implements INerJobService {
 	}
 
 
-	private NerJobDto toDto(final LabelingJob labelingJob) throws NerServiceException {
+	private NerJobDto toDto(final LabelingJob labelingJob,
+							final User user) throws NerServiceException {
 
 		final List<NerLabelDto> nerLabelDtos = this.nerLabelEditingService.listLabelsAvailableForTask(labelingJob);
+
+		final Integer countProcessed = this.userTextProcessingResultRepository.countProcessed(user, labelingJob);
+		final Integer countUnprocessed = this.userTextProcessingResultRepository.countUnprocessed(user, labelingJob);
+
 
 		return NerJobDto.builder()
 				.id(labelingJob.getId().intValue())
 				.name(labelingJob.getName())
 				.created(labelingJob.getCreated().getTime())
 				.labels(nerLabelDtos)
+				.processed(countProcessed)
+				.unprocessed(countUnprocessed)
 				.build();
 	}
 }
