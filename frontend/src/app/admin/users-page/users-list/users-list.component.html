@@ -1,1 +1,68 @@
-<p>users-list works!</p>
+<div>
+    <br>
+    <div class="container">
+        <div class="container">
+            <div fxLayout="column" fxLayoutGap="20px"  fxLayoutAlign="space-around center" class="content">
+                <div class="blocks">
+                    <a button mat-raised-button color="primary" (click)="goToAddUser()">
+                        <mat-icon>add</mat-icon> Add User
+                    </a>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <div fxLayout="row" fxLayoutAlign="center center" class="content">
+                <mat-card class="card">
+                    <mat-card-title fxLayout.xs="column">
+                        <h3>Users</h3>
+                    </mat-card-title>
+                    <mat-card-content>
+                        <div  *ngIf="pagedContent != null" class="example-container mat-elevation-z8">
+                            <mat-table #table [dataSource]="pagedContent.content">
+
+                                <ng-container matColumnDef="username">
+                                    <mat-header-cell *matHeaderCellDef> Username </mat-header-cell>
+                                    <mat-cell *matCellDef="let element">
+                                        <a (click)="goToEditUser(element.id)" class="pointer">{{element.username}}</a>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="email">
+                                    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="passwordResetCode">
+                                    <mat-header-cell *matHeaderCellDef> Password Reset Code </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.passwordResetCode}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="delete">
+                                    <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
+                                    <mat-cell *matCellDef="let element">
+                                        <button (click)="deleteUser(element)"
+                                                mat-icon-button
+                                        >
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                            </mat-table>
+
+                            <mat-paginator [pageIndex]="page"
+                                           [pageSizeOptions]="[20]"
+                                           (page)="pageChanged($event)"
+                                           [length]="pagedContent.size"
+                                           showFirstLastButtons>
+                            </mat-paginator>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>
