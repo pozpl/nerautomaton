@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -35,7 +36,7 @@ public class UsersEditServiceImpl implements IUsersEditService {
             final Page<User> users = userRepository.list(PageRequest.of(adjustedPage, PER_PAGE, Sort.by(Sort.Direction.ASC, "username")));
 
             return new PageDto(adjustedPage, new Long(users.getTotalElements()).intValue(), PER_PAGE,
-                    users.getContent());
+                    users.getContent().stream().map(this::toDto).collect(Collectors.toList()));
         }catch (Exception e){
             throw new NerServiceException(e);
         }
@@ -54,7 +55,7 @@ public class UsersEditServiceImpl implements IUsersEditService {
             final User user = userOpt.get();
 
             return UserEditDto.builder()
-                    .userName(user.getUsername())
+                    .username(user.getUsername())
                     .email(user.getEmail())
                     .build();
         }catch (Exception e){
@@ -84,5 +85,14 @@ public class UsersEditServiceImpl implements IUsersEditService {
         }catch (Exception e){
             throw new NerServiceException(e);
         }
+    }
+
+
+    private UserEditDto toDto(User user) {
+        return UserEditDto.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .id(user.getId())
+                .build();
     }
 }

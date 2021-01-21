@@ -11,7 +11,7 @@ import javax.annotation.security.RolesAllowed;
 
 @RestController
 @RequestMapping("/admin/user/edit")
-@RolesAllowed({"ROLE_ADMIN"}) //Only global admin deserves this
+@RolesAllowed("ROLE_ADMIN") //Only global admin deserves this
 public class UserEditController {
 
     private final IUsersEditService usersEditService;
