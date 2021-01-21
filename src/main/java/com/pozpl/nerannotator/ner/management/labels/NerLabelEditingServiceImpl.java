@@ -149,10 +149,13 @@ public class NerLabelEditingServiceImpl implements INerLabelEditingService {
 		try {
 			final List<NerLabel> labels = this.nerLabelsRepository.getForJob(labelingJob);
 			//labels those are not in the provided list
-			final List<NerLabel> labelsToDelete = labels.stream()
-					.filter(label -> !labelDtos.stream()
-							.anyMatch(labelDto -> label.getId().equals(labelDto.getId())))
-					.collect(Collectors.toList());
+			final List<NerLabel> labelsToDelete = new ArrayList<>();
+			for (NerLabel existingLabel : labels) {
+				final boolean foundId = labelDtos.stream().anyMatch(dto -> dto.getId().intValue() == (existingLabel.getId().intValue()));
+				if(! foundId){
+					labelsToDelete.add(existingLabel);
+				}
+			}
 
 			labelsToDelete.stream().forEach(labelToDelete -> this.nerLabelsRepository.delete(labelToDelete));
 
