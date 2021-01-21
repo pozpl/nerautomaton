@@ -9,9 +9,9 @@
       "projectType": "application",
       "prefix": "app",
       "schematics": {
-          "@schematics/angular:component": {
-              "style": "scss"
-          }
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
       },
       "architect": {
         "build": {
@@ -30,7 +30,7 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss",
-                "src/assets/fonts/material-icons/material-icons.css"
+              "src/assets/fonts/material-icons/material-icons.css"
             ],
             "scripts": []
           },
@@ -91,7 +91,7 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss",
-                "src/assets/fonts/material-icons/material-icons.css"
+              "src/assets/fonts/material-icons/material-icons.css"
             ],
             "scripts": [],
             "assets": [
@@ -143,5 +143,8 @@
       }
     }
   },
-  "defaultProject": "frontend"
+  "defaultProject": "frontend",
+  "cli": {
+    "analytics": "25076c55-8702-4bbb-8760-28e926e7e6d2"
+  }
 }
