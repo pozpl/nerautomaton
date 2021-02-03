@@ -67,7 +67,9 @@
 
                 <job-own-results-download
                     *ngIf="jobDto != null && jobDto.id"
-                    [jobId]="jobDto.id">
+                    [jobId]="jobDto.id"
+                    [jobName]="jobDto.name"
+                >
                 </job-own-results-download>
 
             </mat-card-actions>

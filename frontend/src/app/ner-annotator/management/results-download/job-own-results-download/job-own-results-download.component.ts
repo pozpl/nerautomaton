@@ -10,6 +10,7 @@ import { saveAs } from 'file-saver';
 export class JobOwnResultsDownloadComponent implements OnInit {
 
     @Input() jobId: number;
+    @Input() jobName?: string;
 
     constructor(private downloadService: JobOwnResultsDownloadService) { }
 
@@ -18,12 +19,28 @@ export class JobOwnResultsDownloadComponent implements OnInit {
 
     download(): void {
         this.downloadService.downloadBLIOU(this.jobId)
-            .subscribe(blob => saveAs(blob, 'annotation-result.txt'));
+            .subscribe(blob => {
+                if(this.jobName){
+                    saveAs(blob, this.prepareFileNameFromJobName(this.jobName) + '.txt');
+                }else{
+                    saveAs(blob, 'annotation-result.txt');
+                }
+            });
     }
 
     downloadJson(): void {
         this.downloadService.downloadSpacyJson(this.jobId)
-            .subscribe(blob => saveAs(blob, 'annotation-result.json'));
+            .subscribe(blob => {
+                if(this.jobName){
+                    saveAs(blob, this.prepareFileNameFromJobName(this.jobName) + '.json');
+                }else{
+                    saveAs(blob, 'annotation-result.json');
+                }
+            });
+    }
+
+    private prepareFileNameFromJobName(jobName: string) {
+        return jobName.replace(" ", '_');
     }
 
 }
