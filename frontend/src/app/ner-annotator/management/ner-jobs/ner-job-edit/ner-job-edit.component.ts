@@ -79,6 +79,14 @@ export class NerJobEditComponent implements OnInit, OnDestroy {
         this.jobLabelsDataSource.updateLabels(this.jobDto.labels);
     }
 
+    public reviewTask(jobId: number){
+        this.router.navigate(['ner/job/annotate/processed/', jobId]);
+    }
+
+    public continueTask(jobId: number){
+        this.router.navigate(['ner/job/unprocessed/', jobId]);
+    }
+
 }
 
 

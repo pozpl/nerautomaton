@@ -65,12 +65,42 @@
                     <span *ngIf="jobDto.id">Save job</span>
                 </button>
 
+            </mat-card-actions>
+
+        </mat-card>
+
+        <mat-card *ngIf="jobDto && jobDto.id && jobDto.labels && jobDto.labels.length > 0
+                                && ((jobDto.processed && jobDto.processed > 0) || (jobDto.unprocessed && jobDto.unprocessed > 0))">
+            <mat-card-actions
+                fxLayout="column"
+                fxLayoutGap="20px"
+                fxLayoutAlign="center"
+                class="content">
+                <div fxLayout="row"
+                     fxLayoutGap="20px"
+                     fxLayoutAlign="center"
+                >
+                    <button (click)="reviewTask(jobDto.id)"
+                            [disabled]="jobDto.processed === 0"
+                            mat-raised-button>
+                        <mat-icon>list</mat-icon>
+                        Review annotation for {{jobDto.processed}} texts
+                    </button>
+
+                    <button (click)="continueTask(jobDto.id)"
+                            [disabled]="jobDto.unprocessed === 0"
+                            mat-raised-button color="primary">
+                        <mat-icon class="icon">forward</mat-icon>
+                        Annotate {{jobDto.unprocessed}} texts
+                    </button>
+                </div>
+
                 <job-own-results-download
                     *ngIf="jobDto != null && jobDto.id && jobDto.processed && jobDto.processed > 0"
-                    [jobId]="jobDto.id"
-                    [jobName]="jobDto.name"
+                    [job]="jobDto"
                 >
                 </job-own-results-download>
+
 
             </mat-card-actions>
 

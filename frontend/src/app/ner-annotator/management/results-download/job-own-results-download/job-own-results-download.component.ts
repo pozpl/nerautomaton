@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {JobOwnResultsDownloadService} from "./job-own-results-download.service";
 import { saveAs } from 'file-saver';
+import {NerJobDto} from "../../ner-jobs/ner-job.dto";
 
 @Component({
   selector: 'job-own-results-download',
@@ -9,8 +10,7 @@ import { saveAs } from 'file-saver';
 })
 export class JobOwnResultsDownloadComponent implements OnInit {
 
-    @Input() jobId: number;
-    @Input() jobName?: string;
+    @Input() job: NerJobDto;
 
     constructor(private downloadService: JobOwnResultsDownloadService) { }
 
@@ -18,25 +18,29 @@ export class JobOwnResultsDownloadComponent implements OnInit {
     }
 
     download(): void {
-        this.downloadService.downloadBLIOU(this.jobId)
-            .subscribe(blob => {
-                if(this.jobName){
-                    saveAs(blob, this.prepareFileNameFromJobName(this.jobName) + '.txt');
-                }else{
-                    saveAs(blob, 'annotation-result.txt');
-                }
-            });
+        if(this.job.id) {
+            this.downloadService.downloadBLIOU(this.job.id)
+                .subscribe(blob => {
+                    if (this.job.name) {
+                        saveAs(blob, this.prepareFileNameFromJobName(this.job.name) + '.txt');
+                    } else {
+                        saveAs(blob, 'annotation-result.txt');
+                    }
+                });
+        }
     }
 
     downloadJson(): void {
-        this.downloadService.downloadSpacyJson(this.jobId)
-            .subscribe(blob => {
-                if(this.jobName){
-                    saveAs(blob, this.prepareFileNameFromJobName(this.jobName) + '.json');
-                }else{
-                    saveAs(blob, 'annotation-result.json');
-                }
-            });
+        if(this.job) {
+            this.downloadService.downloadSpacyJson(this.job.id)
+                .subscribe(blob => {
+                    if (this.job.name) {
+                        saveAs(blob, this.prepareFileNameFromJobName(this.job.name) + '.json');
+                    } else {
+                        saveAs(blob, 'annotation-result.json');
+                    }
+                });
+        }
     }
 
     private prepareFileNameFromJobName(jobName: string) {
