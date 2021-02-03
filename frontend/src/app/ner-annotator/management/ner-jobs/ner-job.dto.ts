@@ -6,5 +6,8 @@ export class NerJobDto {
     public name: string;
     public created: Date;
 
-    public labels?: LabelDto[]
+    public labels?: LabelDto[];
+
+    public unprocessed?: number;
+    public processed?: number;
 }
