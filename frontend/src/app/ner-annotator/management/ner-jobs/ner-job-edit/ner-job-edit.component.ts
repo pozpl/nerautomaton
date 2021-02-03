@@ -87,6 +87,15 @@ export class NerJobEditComponent implements OnInit, OnDestroy {
         this.router.navigate(['ner/job/unprocessed/', jobId]);
     }
 
+    public onNewTextsAdded(){
+        this.nerJobService.getJob(this.jobDto.id)
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(jobDto => {
+                this.jobDto.unprocessed = jobDto.unprocessed;
+                this.jobDto.processed = jobDto.processed;
+            });
+    }
+
 }
 
 

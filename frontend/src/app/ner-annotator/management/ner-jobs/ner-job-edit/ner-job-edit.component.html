@@ -107,7 +107,10 @@
         </mat-card>
 
         <mat-card *ngIf="jobDto != null && jobDto.id" class="card">
-            <ner-job-texts-list [job]="jobDto">
+            <ner-job-texts-list
+                [job]="jobDto"
+                (jobTextsUploaded)="onNewTextsAdded()"
+            >
             </ner-job-texts-list>
         </mat-card>
 

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {NerJobTextDto} from "./ner-job-text.dto";
 import {NerJobDto} from "../ner-jobs/ner-job.dto";
 import {NerJobTextAccessService} from "./ner-job-text-access.service";
@@ -21,6 +21,7 @@ import {NerJobTextEditModalService} from "../ner-job-text-edit/ner-job-text-edit
 export class NerJobTextsListComponent implements OnInit, OnChanges {
 
     @Input() job: NerJobDto;
+    @Output() jobTextsUploaded = new EventEmitter<boolean>()
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
@@ -68,6 +69,7 @@ export class NerJobTextsListComponent implements OnInit, OnChanges {
             .subscribe(dto => {
                     if (dto !== null) {
                         this.dataSource.listText(this.job.id, this.page);
+                        this.jobTextsUploaded.emit(true);
                     }
 
                 }
@@ -76,11 +78,13 @@ export class NerJobTextsListComponent implements OnInit, OnChanges {
 
     onNewTextAdded(newTextItem: NerJobTextDto) {
         this.dataSource.addToTheTop(newTextItem);
+        this.jobTextsUploaded.emit(true);
     }
 
     onTextsUpload(){
         this.page = 0;
         this.dataSource.listText(this.job.id, this.page);
+        this.jobTextsUploaded.emit(true);
     }
 }
 
