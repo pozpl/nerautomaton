@@ -21,30 +21,25 @@ import {AdminModule} from "./admin/admin.module";
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-
-    BrowserAnimationsModule,
-    MaterialModule,
-    FlexLayoutModule,
-
-    SharedComponentsModule,
-    AuthModule,
-    NerAnnotatorModule,
-    AdminModule
-  ],
-  providers: [
-  ],
-  bootstrap: [AppComponent],
-  entryComponents: [
-  ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MaterialModule,
+        FlexLayoutModule,
+        SharedComponentsModule,
+        AuthModule,
+        NerAnnotatorModule,
+        AdminModule
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
