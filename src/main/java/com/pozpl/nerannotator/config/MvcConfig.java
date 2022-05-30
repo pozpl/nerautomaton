@@ -1,27 +1,22 @@
 package com.pozpl.nerannotator.config;
 
 
-import com.pozpl.nerannotator.shared.resolvers.LoggedInUserResolver;
 import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
+import com.pozpl.nerannotator.shared.resolvers.LoggedInUserResolver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.resource.PathResourceResolver;
 
-import java.io.IOException;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 @EnableWebMvc
-@EnableConfigurationProperties({ResourceProperties.class})
+@EnableConfigurationProperties({WebProperties.class})
 public class MvcConfig implements WebMvcConfigurer {
 
 	UserRepository userRepository;
@@ -54,14 +49,14 @@ public class MvcConfig implements WebMvcConfigurer {
 	};
 
 	@Autowired
-	private ResourceProperties resourceProperties = new ResourceProperties();
+	private WebProperties resourceProperties = new WebProperties();
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		//Add all static files
 //		Integer cachePeriod = Long.valueOf(resourceProperties.getCache().getPeriod().get(ChronoUnit.SECONDS)).intValue();
 		registry.addResourceHandler(STATIC_RESOURCES)
-				.addResourceLocations(resourceProperties.getStaticLocations());
+				.addResourceLocations(resourceProperties.getResources().getStaticLocations());
 				//.setCachePeriod(cachePeriod);
 
 		//Create mapping to index.html for Angular HTML5 mode.
