@@ -31,4 +31,5 @@
 /frontend/ng
 frontend/npm
 /frontend/node/
+/frontend/.angular
 /lombok.config
