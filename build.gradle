@@ -14,7 +14,7 @@ buildscript {
 
 plugins {
 	id "org.flywaydb.flyway" version "6.4.1"
-	id "io.freefair.lombok" version "5.0.1"
+	id "io.freefair.lombok" version "6.4.3"
 }
 
 apply plugin: 'java'
