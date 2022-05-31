@@ -25,11 +25,11 @@
 
 /src/main/resources/static
 
-/frontend/dist
-/frontend/build
-/frontend/node_modules
-/frontend/ng
-frontend/npm
-/frontend/node/
-/frontend/.angular
+/modules/frontend/dist
+/modules/frontend/build
+/modules/frontend/node_modules
+/modules/frontend/ng
+/modulesfrontend/npm
+/modules/frontend/node/
+/modules/frontend/.angular
 /lombok.config

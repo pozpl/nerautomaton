@@ -60,7 +60,7 @@ dependencies {
 	implementation 'edu.stanford.nlp:stanford-corenlp:4.4.0'
 
 
-	runtimeOnly(project(':frontend'))
+	runtimeOnly(project(':modules:frontend'))
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 
@@ -92,7 +92,7 @@ task bootStandaloneBackend {
 
 task copyCompiledJs(type: Copy) {
 	group 'application'
-	from "${project(':frontend').projectDir}/dist/frontend"
+	from "${project(':modules:frontend').projectDir}/dist/frontend"
 	into "${rootDir}/src/main/resources/static"
 	doLast {
 		println("Copy files finished")
@@ -101,12 +101,12 @@ task copyCompiledJs(type: Copy) {
 
 task buildJsAndCopyToSpring(type: GradleBuild){
 	group 'application'
-	setTasks([':frontend:buildStandaloneClient', ':copyCompiledJs'])
+	setTasks([':modules:frontend:buildStandaloneClient', ':copyCompiledJs'])
 }
 
 task bootFullApplication(type: GradleBuild) {
 	group 'application'
-	setTasks([':frontend:npmUpdate', ':frontend:clean', ':buildJsAndCopyToSpring', ':bootRun'])
+	setTasks([':modules:frontend:npmUpdate', ':modules:frontend:clean', ':buildJsAndCopyToSpring', ':bootRun'])
 }
 
 
