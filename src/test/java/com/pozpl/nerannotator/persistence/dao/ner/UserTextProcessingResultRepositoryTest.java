@@ -10,16 +10,16 @@ import com.pozpl.nerannotator.ner.dao.model.text.NerJobTextItem;
 import com.pozpl.nerannotator.ner.dao.model.text.UserNerTextProcessingResult;
 import com.pozpl.nerannotator.ner.dao.repo.text.NerJobTextItemRepository;
 import com.pozpl.nerannotator.ner.dao.repo.text.UserTextProcessingResultRepository;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.transaction.Transactional;
@@ -28,9 +28,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(
 		classes = { NerAnnotatorApplicationTests.class },
 		loader = AnnotationConfigContextLoader.class)
@@ -61,7 +61,7 @@ public class UserTextProcessingResultRepositoryTest {
 
     private UserNerTextProcessingResult jobOneTextOneProcessed;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		userOne = new User("username_one", "password_2", "First Name", "Last Name", "email@example");
 
@@ -96,7 +96,7 @@ public class UserTextProcessingResultRepositoryTest {
 		this.userTextProcessingResultRepository.save(jobOneTextOneProcessed);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.userTextProcessingResultRepository.delete(jobOneTextOneProcessed);
 

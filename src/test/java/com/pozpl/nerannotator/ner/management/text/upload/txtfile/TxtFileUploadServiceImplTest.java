@@ -6,25 +6,25 @@ import com.pozpl.nerannotator.ner.dao.model.text.NerJobTextItem;
 import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.ner.dao.repo.text.NerJobTextItemRepository;
 import com.pozpl.nerannotator.ner.management.text.upload.NerTextUploadResultDto;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class TxtFileUploadServiceImplTest {
 
     private TxtFileUploadServiceImpl txtFileUploadService;
@@ -40,7 +40,7 @@ public class TxtFileUploadServiceImplTest {
     private User user;
     private LabelingJob labelingJob;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         txtFileUploadService = new TxtFileUploadServiceImpl(labelingJobsRepository, nerJobTextItemRepository);
         user = new User();
@@ -59,7 +59,7 @@ public class TxtFileUploadServiceImplTest {
         file = new MockMultipartFile("test.txt","test.txt","text" ,builder.toString().getBytes("UTF-8"));
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
     }
 

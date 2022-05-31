@@ -1,34 +1,34 @@
 package com.pozpl.nerannotator.persistence.dao.ner;
 
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
-import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
-import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
-import com.pozpl.nerannotator.ner.dao.model.LanguageCodes;
 import com.pozpl.nerannotator.auth.dao.model.User;
+import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
+import com.pozpl.nerannotator.ner.dao.model.LanguageCodes;
 import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 import com.pozpl.nerannotator.ner.dao.model.text.NerJobTextItem;
+import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.ner.dao.repo.text.NerJobTextItemRepository;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.transaction.Transactional;
-
 import java.util.Calendar;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(
 		classes = { NerAnnotatorApplicationTests.class },
 		loader = AnnotationConfigContextLoader.class)
@@ -54,7 +54,7 @@ public class NerTextItemRepositoryTest {
 
 	private NerJobTextItem jobTwoTextOne;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		userOne = new User("username_one", "password_2", "First Name", "Last Name", "email@example");
@@ -86,7 +86,7 @@ public class NerTextItemRepositoryTest {
 		nerJobTextItemRepository.save(jobTwoTextOne);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 
 		nerJobTextItemRepository.delete(jobOneTextOne);

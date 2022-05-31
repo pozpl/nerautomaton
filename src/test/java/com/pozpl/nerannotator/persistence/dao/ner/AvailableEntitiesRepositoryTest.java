@@ -9,23 +9,24 @@ import com.pozpl.nerannotator.auth.dao.model.User;
 import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 import com.pozpl.nerannotator.ner.dao.model.text.NerLabel;
 import com.pozpl.nerannotator.ner.dao.repo.text.NerLabelsRepository;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(
 		classes = { NerAnnotatorApplicationTests.class },
 		loader = AnnotationConfigContextLoader.class)
@@ -51,7 +52,7 @@ public class AvailableEntitiesRepositoryTest {
 
 	private NerLabel jobTwoEntityOne;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		userOne = new User("username_one", "password_2", "First Name", "Last Name", "email@example");
@@ -86,7 +87,7 @@ public class AvailableEntitiesRepositoryTest {
 		availableEntitiesRepository.save(jobTwoEntityOne);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 
 		availableEntitiesRepository.delete(jobOneEntityOne);
