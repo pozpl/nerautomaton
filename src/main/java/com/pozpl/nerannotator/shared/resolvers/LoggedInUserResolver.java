@@ -1,7 +1,7 @@
 package com.pozpl.nerannotator.shared.resolvers;
 
-import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.repo.UserRepository;
+import auth.dao.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

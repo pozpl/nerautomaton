@@ -1,3 +1,6 @@
 rootProject.name = 'nerannotator'
 
 include 'modules:frontend'
+include 'modules:user:user-api', 'modules:user:user-impl'
+include 'modules:auth:auth-api', 'modules:auth:auth-impl'
+include 'modules:shared'

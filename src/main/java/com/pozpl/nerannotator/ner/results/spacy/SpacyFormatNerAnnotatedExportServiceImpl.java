@@ -1,7 +1,7 @@
 package com.pozpl.nerannotator.ner.results.spacy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.model.User;
 import com.pozpl.nerannotator.ner.annotation.textprocess.BLIUOScheme;
 import com.pozpl.nerannotator.ner.annotation.textprocess.INerAnnotatedTextParsingService;
 import com.pozpl.nerannotator.ner.annotation.textprocess.TaggedTermDto;

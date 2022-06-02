@@ -1,8 +1,8 @@
 package com.pozpl.nerannotator.config;
 
-import com.pozpl.nerannotator.auth.jwt.AuthEntryPointJwt;
-import com.pozpl.nerannotator.auth.user.AuthTokenFilter;
-import com.pozpl.nerannotator.auth.user.UserDetailServiceImpl;
+import com.pozpl.nerannotator.auth.impl.jwt.AuthEntryPointJwt;
+import com.pozpl.nerannotator.auth.impl.user.AuthTokenFilter;
+import com.pozpl.nerannotator.auth.impl.user.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

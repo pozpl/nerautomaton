@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.ner.management.text;
 
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.model.User;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 
 /**

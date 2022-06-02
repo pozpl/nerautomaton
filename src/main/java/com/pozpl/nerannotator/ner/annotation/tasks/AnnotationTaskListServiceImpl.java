@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.ner.annotation.tasks;
 
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.model.User;
 import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.ner.dao.repo.text.UserTextProcessingResultRepository;

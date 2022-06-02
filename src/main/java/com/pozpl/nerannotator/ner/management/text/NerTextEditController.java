@@ -1,11 +1,8 @@
 package com.pozpl.nerannotator.ner.management.text;
 
 import com.pozpl.nerannotator.shared.exceptions.NerWebException;
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.model.User;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
-import com.pozpl.nerannotator.ner.management.text.IJobTextEditService;
-import com.pozpl.nerannotator.ner.management.text.JobTextDto;
-import com.pozpl.nerannotator.ner.management.text.JobTextEditStatusDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

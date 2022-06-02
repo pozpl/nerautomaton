@@ -2,7 +2,7 @@ package com.pozpl.nerannotator.ner.annotation.edit;
 
 import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
 import com.pozpl.nerannotator.ner.dao.repo.text.UserTextProcessingResultRepository;
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.model.User;
 import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 import com.pozpl.nerannotator.ner.dao.model.text.NerJobTextItem;
 import com.pozpl.nerannotator.ner.dao.model.text.UserNerTextProcessingResult;
@@ -20,7 +20,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;

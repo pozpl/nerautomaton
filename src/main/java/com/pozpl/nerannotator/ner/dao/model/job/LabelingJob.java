@@ -1,7 +1,7 @@
 package com.pozpl.nerannotator.ner.dao.model.job;
 
 import com.pozpl.nerannotator.ner.dao.model.LanguageCodes;
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

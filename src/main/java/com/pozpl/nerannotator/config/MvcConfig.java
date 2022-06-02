@@ -1,7 +1,7 @@
 package com.pozpl.nerannotator.config;
 
 
-import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
+import auth.dao.repo.UserRepository;
 import com.pozpl.nerannotator.shared.resolvers.LoggedInUserResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.WebProperties;

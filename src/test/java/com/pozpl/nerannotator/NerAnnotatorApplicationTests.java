@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 
 @Configuration
-@EnableJpaRepositories(basePackages = {"com.pozpl.nerannotator.auth.dao", "com.pozpl.nerannotator.ner.dao"})
+@EnableJpaRepositories(basePackages = {"auth.dao", "com.pozpl.nerannotator.ner.dao"})
 @PropertySource("persistence.properties")
 @EnableTransactionManagement
 @SpringBootApplication(scanBasePackages = {"com.pozpl.nerannotator.persistence", "com.pozpl.nerannotator.service"})

@@ -1,9 +1,8 @@
 package com.pozpl.nerannotator.ner.management.text;
 
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.model.User;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import com.pozpl.nerannotator.shared.pagination.PageDto;
-import org.springframework.data.domain.Page;
 
 public interface IJobTextAccessService {
 

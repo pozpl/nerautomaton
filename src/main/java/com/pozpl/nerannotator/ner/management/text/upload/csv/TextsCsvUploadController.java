@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.ner.management.text.upload.csv;
 
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.model.User;
 import com.pozpl.nerannotator.ner.management.text.upload.NerTextUploadResultDto;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import com.pozpl.nerannotator.shared.exceptions.NerWebException;

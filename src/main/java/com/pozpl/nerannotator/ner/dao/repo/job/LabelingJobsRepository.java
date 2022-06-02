@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.ner.dao.repo.job;
 
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.model.User;
 import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

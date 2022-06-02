@@ -1,6 +1,6 @@
 package com.pozpl.nerannotator.ner.results.spacy;
 
-import com.pozpl.nerannotator.auth.dao.model.User;
+import auth.dao.model.User;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import com.pozpl.nerannotator.shared.exceptions.NerWebException;
 import org.springframework.beans.factory.annotation.Autowired;

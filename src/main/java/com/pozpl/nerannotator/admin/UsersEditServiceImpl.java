@@ -1,7 +1,7 @@
 package com.pozpl.nerannotator.admin;
 
-import com.pozpl.nerannotator.auth.dao.model.User;
-import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
+import auth.dao.model.User;
+import auth.dao.repo.UserRepository;
 import com.pozpl.nerannotator.shared.exceptions.NerServiceException;
 import com.pozpl.nerannotator.shared.pagination.PageDto;
 import org.springframework.beans.factory.annotation.Autowired;

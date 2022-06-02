@@ -1,8 +1,8 @@
 package com.pozpl.nerannotator.persistence.dao.ner;
 
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
-import com.pozpl.nerannotator.auth.dao.model.User;
-import com.pozpl.nerannotator.auth.dao.repo.UserRepository;
+import auth.dao.model.User;
+import auth.dao.repo.UserRepository;
 import com.pozpl.nerannotator.ner.dao.model.LanguageCodes;
 import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
 import com.pozpl.nerannotator.ner.dao.model.text.NerJobTextItem;
