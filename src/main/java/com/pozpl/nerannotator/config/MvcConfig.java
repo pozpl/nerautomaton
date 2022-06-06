@@ -1,8 +1,7 @@
 package com.pozpl.nerannotator.config;
 
 
-import auth.dao.repo.UserRepository;
-import com.pozpl.nerannotator.shared.resolvers.LoggedInUserResolver;
+import com.pozpl.nerannotator.auth.impl.resolvers.LoggedInUserResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,16 +18,12 @@ import java.util.List;
 @EnableConfigurationProperties({WebProperties.class})
 public class MvcConfig implements WebMvcConfigurer {
 
-	UserRepository userRepository;
+	private LoggedInUserResolver loggedInUserResolver;
 
-	@Autowired
-	public MvcConfig(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
 
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-		argumentResolvers.add(new LoggedInUserResolver(userRepository));
+		argumentResolvers.add(loggedInUserResolver);
 	}
 
 

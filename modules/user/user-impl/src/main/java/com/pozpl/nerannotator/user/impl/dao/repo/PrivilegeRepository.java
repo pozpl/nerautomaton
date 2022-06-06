@@ -1,6 +1,7 @@
 package com.pozpl.nerannotator.user.impl.dao.repo;
 
-import auth.dao.model.Privilege;
+
+import com.pozpl.nerannotator.user.impl.dao.model.Privilege;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

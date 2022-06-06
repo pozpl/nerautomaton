@@ -14,10 +14,14 @@ import javax.sql.DataSource;
 
 
 @Configuration
-@EnableJpaRepositories(basePackages = {"auth.dao", "com.pozpl.nerannotator.ner.dao"})
-@PropertySource("persistence.properties")
+@EnableJpaRepositories(basePackages = {"com.pozpl.nerannotator.ner.impl.dao", "com.pozpl.nerannotator.user.impl.dao"})
+@PropertySource("application-test.properties")
 @EnableTransactionManagement
-@SpringBootApplication(scanBasePackages = {"com.pozpl.nerannotator.persistence", "com.pozpl.nerannotator.service"})
+@SpringBootApplication(scanBasePackages = {
+		"com.pozpl.nerannotator.ner",
+		"com.pozpl.nerannotator.user",
+		"com.pozpl.nerannotator.shared"
+})
 public class NerAnnotatorApplicationTests {
 
 	@Autowired

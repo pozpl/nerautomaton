@@ -29,6 +29,14 @@ public class UserIntDto {
         this.password = password;
     }
 
+    public UserIntDto(String username, String firstName, String lastName, String email, String password) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
     public UserIntDto(Long id, String username, String firstName, String lastName, String email, String password, List<ERole> roles) {
         this.id = id;
         this.username = username;
@@ -67,12 +75,20 @@ public class UserIntDto {
         return roles;
     }
 
+    public static UserIntDto create(final String username,
+                                    final String firstName,
+                                    final String lastName,
+                                    final String email,
+                                    final String password) {
+        return new UserIntDto(username, firstName, lastName, email, password);
+    }
+
     public static UserIntDto of(final Long id,
                                 final String username,
                                 final String firstName,
                                 final String lastName,
                                 final String email,
-                                final String password){
+                                final String password) {
         return new UserIntDto(id, username, firstName, lastName, email, password);
     }
 
@@ -82,7 +98,7 @@ public class UserIntDto {
                                 final String lastName,
                                 final String email,
                                 final String password,
-                                final List<ERole> roles){
+                                final List<ERole> roles) {
         return new UserIntDto(id, username, firstName, lastName, email, password, roles);
     }
 }

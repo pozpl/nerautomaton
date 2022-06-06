@@ -1,13 +1,15 @@
 package com.pozpl.nerannotator.persistence.dao.ner;
 
+import com.pozpl.neraannotator.user.api.IUserService;
+import com.pozpl.neraannotator.user.api.UserIntDto;
+import com.pozpl.neraannotator.user.api.UserSaveResultDto;
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
-import auth.dao.repo.UserRepository;
-import com.pozpl.nerannotator.ner.dao.repo.job.LabelingJobsRepository;
-import com.pozpl.nerannotator.ner.dao.model.LanguageCodes;
-import auth.dao.model.User;
-import com.pozpl.nerannotator.ner.dao.model.job.LabelingJob;
-
+import com.pozpl.nerannotator.ner.impl.dao.model.LanguageCodes;
+import com.pozpl.nerannotator.ner.impl.dao.model.job.LabelingJob;
+import com.pozpl.nerannotator.ner.impl.dao.model.user.UserId;
+import com.pozpl.nerannotator.ner.impl.dao.repo.job.LabelingJobsRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,12 +37,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class LabelingTaskRepositoryTest {
 
 	@Autowired
-	public UserRepository userRepository;
+	public IUserService userRepository;
 
 	@Autowired
 	public LabelingJobsRepository labelingTaskRepository;
 
-	private User userOne;
+	private UserIntDto userOne;
 
 	private LabelingJob jobOne;
 	private LabelingJob jobTwo;
@@ -48,18 +50,19 @@ public class LabelingTaskRepositoryTest {
 	@BeforeEach
 	public void setUp() throws Exception {
 
-		userOne = new User("username_one", "password_2", "First Name", "Last Name", "email@example");
+		userOne = UserIntDto.create("username_one", "password_2", "First Name", "Last Name", "email@example");
 
-		userRepository.save(userOne);
+		final UserSaveResultDto saveResultDto = userRepository.save(userOne);
+		userOne = saveResultDto.getUser();
 
 		Calendar hourAgo = Calendar.getInstance();
 		hourAgo.add(Calendar.HOUR, -1);
 
 		Calendar now = Calendar.getInstance();
 
-		jobOne = LabelingJob.builder().name("ner job One").owner(userOne).languageCode( LanguageCodes.EN)
+		jobOne = LabelingJob.builder().name("ner job One").owner(UserId.of(userOne)).languageCode( LanguageCodes.EN)
 				.updated(hourAgo).created( hourAgo).build();
-		jobTwo = LabelingJob.builder().name("ner job Two").owner(userOne).languageCode(LanguageCodes.EN)
+		jobTwo = LabelingJob.builder().name("ner job Two").owner(UserId.of(userOne)).languageCode(LanguageCodes.EN)
 				.created(now).updated( now).build();
 
 		labelingTaskRepository.save(jobOne);
@@ -81,7 +84,7 @@ public class LabelingTaskRepositoryTest {
 
 	@Test
 	public void getJobs() throws Exception{
-		Page<LabelingJob> jobsPage = labelingTaskRepository.getJobsForOwner(userOne, PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created")));
+		Page<LabelingJob> jobsPage = labelingTaskRepository.getJobsForOwner(UserId.of(userOne), PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created")));
 
 
 		assertNotNull(jobsPage);
@@ -90,6 +93,6 @@ public class LabelingTaskRepositoryTest {
 		assertEquals(2, jobsPage.getTotalElements());
 		List<LabelingJob> jobs =  jobsPage.getContent();
 		assertNotNull(jobs);
-		assertEquals(jobOne, jobs.get(0));
+		Assertions.assertEquals(jobOne, jobs.get(0));
 	}
 }

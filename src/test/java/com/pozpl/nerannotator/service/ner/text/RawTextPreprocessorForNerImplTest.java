@@ -1,8 +1,8 @@
 package com.pozpl.nerannotator.service.ner.text;
 
-import com.pozpl.nerannotator.ner.annotation.textprocess.RawTextPreprocessorForNerImpl;
-import com.pozpl.nerannotator.ner.annotation.textprocess.SpecialTextMark;
-import com.pozpl.nerannotator.ner.annotation.textprocess.TaggedTermDto;
+import com.pozpl.nerannotator.ner.impl.annotation.textprocess.RawTextPreprocessorForNerImpl;
+import com.pozpl.nerannotator.ner.impl.annotation.textprocess.SpecialTextMark;
+import com.pozpl.nerannotator.ner.impl.annotation.textprocess.TaggedTermDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
