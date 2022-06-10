@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: ner_postgres
+    hostname: postgres-ner
+    image: postgres
+    ports:
+      - "54321:5432"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=ner_password
+      - POSTGRES_USER=ner_user
+      - POSTGRES_DB=ner
+    volumes:
+      - ./local-docker/postgres_data:/var/lib/postgresql/data/
