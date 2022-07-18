@@ -33,3 +33,17 @@
 /modules/frontend/node/
 /modules/frontend/.angular
 /lombok.config
+/modules/auth/auth-impl/out/
+/modules/auth/auth-impl/build/
+/modules/auth/auth-api/build/
+/modules/auth/auth-api/out/
+/modules/shared/build/
+/modules/shared/out/
+/modules/user/user-api/build/
+/modules/user/user-api/out/
+/modules/admin/admin-impl/build/
+/modules/admin/admin-impl/out/
+/modules/ner/ner-impl/build/
+/modules/ner/ner-impl/out/
+/modules/user/user-impl/build/
+/modules/user/user-impl/out/
