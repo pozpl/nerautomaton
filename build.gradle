@@ -13,7 +13,7 @@ buildscript {
 }
 
 plugins {
-	id "org.flywaydb.flyway" version "6.4.1"
+	id "org.flywaydb.flyway" version "9.0.1"
 	id "io.freefair.lombok" version "6.4.3"
 }
 

@@ -6,7 +6,7 @@ services:
     hostname: postgres-ner
     image: postgres
     ports:
-      - "54321:5432"
+      - "5432:5432"
     restart: unless-stopped
     environment:
       - POSTGRES_PASSWORD=ner_password
