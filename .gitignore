@@ -47,3 +47,4 @@
 /modules/ner/ner-impl/out/
 /modules/user/user-impl/build/
 /modules/user/user-impl/out/
+/dev-env-docker/local-docker/postgres_data/
