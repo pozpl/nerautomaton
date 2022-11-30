@@ -7,7 +7,7 @@ version '0.0.2'
 
 
 node {
-    version = '14.19.0'
+    version = '18.12.1'
     download = true
     workDir = file("${project.projectDir}/node")
     nodeModulesDir = file("${project.projectDir}")
