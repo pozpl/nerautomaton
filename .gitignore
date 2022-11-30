@@ -48,3 +48,13 @@
 /modules/user/user-impl/build/
 /modules/user/user-impl/out/
 /dev-env-docker/local-docker/postgres_data/
+/modules/admin/admin-api/build/
+/modules/user/build/
+/modules/ner/build/
+/modules/build/
+/modules/admin/build/
+/modules/auth/build/
+/modules/taxonomy-build/build/
+/modules/ner/ner-api/build/
+/modules/taxonomy-build/taxonomy-build-api/build/
+/modules/taxonomy-build/taxonomy-build-impl/build/
