@@ -108,8 +108,8 @@ public class PageDto<T> {
 	}
 
 
-	public static PageDto empty(){
-		return new PageDto(1, 0, 1, Collections.emptyList());
+	public static <T> PageDto<T> empty(){
+		return new PageDto<>(1, 0, 1, Collections.emptyList());
 	}
 
 }

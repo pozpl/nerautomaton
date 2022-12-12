@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.persistence.dao.ner;
+package com.pozpl.nerannotator.persistence.dao.ner.dao;
 
 import com.pozpl.neraannotator.user.api.IUserService;
 import com.pozpl.neraannotator.user.api.UserIntDto;
@@ -6,16 +6,17 @@ import com.pozpl.neraannotator.user.api.UserSaveResultDto;
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
 import com.pozpl.nerannotator.ner.impl.dao.model.LanguageCodes;
 import com.pozpl.nerannotator.ner.impl.dao.model.job.LabelingJob;
-import com.pozpl.nerannotator.ner.impl.dao.model.text.NerLabel;
 import com.pozpl.nerannotator.ner.impl.dao.model.user.UserId;
 import com.pozpl.nerannotator.ner.impl.dao.repo.job.LabelingJobsRepository;
-import com.pozpl.nerannotator.ner.impl.dao.repo.text.NerLabelsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -27,12 +28,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
 		classes = { NerAnnotatorApplicationTests.class },
 		loader = AnnotationConfigContextLoader.class)
 @Transactional
-public class AvailableEntitiesRepositoryTest {
+public class LabelingTaskRepositoryTest {
 
 	@Autowired
 	public IUserService userRepository;
@@ -40,18 +42,10 @@ public class AvailableEntitiesRepositoryTest {
 	@Autowired
 	public LabelingJobsRepository labelingTaskRepository;
 
-	@Autowired
-	public NerLabelsRepository availableEntitiesRepository;
-
 	private UserIntDto userOne;
 
 	private LabelingJob jobOne;
 	private LabelingJob jobTwo;
-
-	private NerLabel jobOneEntityOne;
-	private NerLabel jobOneEntityTwo;
-
-	private NerLabel jobTwoEntityOne;
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -73,43 +67,32 @@ public class AvailableEntitiesRepositoryTest {
 
 		labelingTaskRepository.save(jobOne);
 		labelingTaskRepository.save(jobTwo);
-
-		jobOneEntityOne = NerLabel.builder()
-				.job(jobOne)
-		.created(now)
-		.updated(now)
-		.name("Annotation1").build();
-		jobOneEntityTwo = jobOneEntityOne.toBuilder().name("Annotation2").description("This one have descriiption")
-				.created(hourAgo).updated(hourAgo).build();
-
-		jobTwoEntityOne = jobOneEntityOne.toBuilder().job(jobTwo).build();//complete copy of annotation1 but for different job
-
-		availableEntitiesRepository.save(jobOneEntityOne);
-		availableEntitiesRepository.save(jobOneEntityTwo);
-		availableEntitiesRepository.save(jobTwoEntityOne);
 	}
+
+
 
 	@AfterEach
 	public void tearDown() throws Exception {
-
-		availableEntitiesRepository.delete(jobOneEntityOne);
-		availableEntitiesRepository.delete(jobOneEntityTwo);
-		availableEntitiesRepository.delete(jobTwoEntityOne);
 
 		labelingTaskRepository.delete(jobOne);
 		labelingTaskRepository.delete(jobTwo);
 
 		userRepository.delete(userOne);
+
 	}
+
 
 	@Test
-	public void testGetForJob() throws Exception{
-		List<NerLabel> labels = availableEntitiesRepository.getForJob(jobOne);
+	public void getJobs() {
+		Page<LabelingJob> jobsPage = labelingTaskRepository.getJobsForOwner(UserId.of(userOne), PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created")));
 
-		assertNotNull(labels);
-		assertEquals(2, labels.size());
 
-		Assertions.assertEquals(jobOneEntityOne, labels.get(0));
+		assertNotNull(jobsPage);
+		assertEquals(2, jobsPage.getNumberOfElements());
+		assertEquals(1, jobsPage.getTotalPages());
+		assertEquals(2, jobsPage.getTotalElements());
+		List<LabelingJob> jobs =  jobsPage.getContent();
+		assertNotNull(jobs);
+		Assertions.assertEquals(jobOne, jobs.get(0));
 	}
-
 }

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class UsersEditServiceImpl implements IUsersEditService {
 
-    private final int PER_PAGE = 20;
+    private final static int PER_PAGE = 20;
 
     private final IUserService userRepository;
 
@@ -32,10 +32,10 @@ public class UsersEditServiceImpl implements IUsersEditService {
     public PageDto<UserEditDto> list(final Integer page,
                                      final UserIntDto admin) throws NerServiceException {
         try {
-            final Integer adjustedPage = page != null && page >= 0 ? page : 0;
+            final int adjustedPage = page != null && page >= 0 ? page : 0;
             final Page<UserIntDto> users = userRepository.list(PageRequest.of(adjustedPage, PER_PAGE, Sort.by(Sort.Direction.ASC, "username")));
 
-            return new PageDto(adjustedPage, Long.valueOf(users.getTotalElements()).intValue(), PER_PAGE,
+            return new PageDto<>(adjustedPage, Long.valueOf(users.getTotalElements()).intValue(), PER_PAGE,
                     users.getContent().stream().map(this::toDto).collect(Collectors.toList()));
         }catch (Exception e){
             throw new NerServiceException(e);
@@ -48,7 +48,7 @@ public class UsersEditServiceImpl implements IUsersEditService {
         try {
             final Optional<UserIntDto> userOpt = userRepository.findById(id);
 
-            if (! userOpt.isPresent()){
+            if (userOpt.isEmpty()){
                 throw new NerServiceException("Can not find user by id " + id + " requested by " + admin.getUsername());
             }
 
@@ -74,7 +74,7 @@ public class UsersEditServiceImpl implements IUsersEditService {
         try {
             final Optional<UserIntDto> userOpt = userRepository.findById(id);
 
-            if (! userOpt.isPresent()){
+            if (userOpt.isEmpty()){
                 throw new NerServiceException("Can not find user by id " + id + " requested for remove by " + admin.getUsername());
             }
 

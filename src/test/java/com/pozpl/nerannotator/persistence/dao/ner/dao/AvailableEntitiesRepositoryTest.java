@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.persistence.dao.ner;
+package com.pozpl.nerannotator.persistence.dao.ner.dao;
 
 import com.pozpl.neraannotator.user.api.IUserService;
 import com.pozpl.neraannotator.user.api.UserIntDto;
@@ -6,19 +6,16 @@ import com.pozpl.neraannotator.user.api.UserSaveResultDto;
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
 import com.pozpl.nerannotator.ner.impl.dao.model.LanguageCodes;
 import com.pozpl.nerannotator.ner.impl.dao.model.job.LabelingJob;
-import com.pozpl.nerannotator.ner.impl.dao.model.text.NerJobTextItem;
+import com.pozpl.nerannotator.ner.impl.dao.model.text.NerLabel;
 import com.pozpl.nerannotator.ner.impl.dao.model.user.UserId;
 import com.pozpl.nerannotator.ner.impl.dao.repo.job.LabelingJobsRepository;
-import com.pozpl.nerannotator.ner.impl.dao.repo.text.NerJobTextItemRepository;
+import com.pozpl.nerannotator.ner.impl.dao.repo.text.NerLabelsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -30,13 +27,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
 		classes = { NerAnnotatorApplicationTests.class },
 		loader = AnnotationConfigContextLoader.class)
 @Transactional
-public class NerTextItemRepositoryTest {
+public class AvailableEntitiesRepositoryTest {
 
 	@Autowired
 	public IUserService userRepository;
@@ -45,17 +41,17 @@ public class NerTextItemRepositoryTest {
 	public LabelingJobsRepository labelingTaskRepository;
 
 	@Autowired
-	public NerJobTextItemRepository nerJobTextItemRepository;
+	public NerLabelsRepository availableEntitiesRepository;
 
 	private UserIntDto userOne;
 
 	private LabelingJob jobOne;
 	private LabelingJob jobTwo;
 
-	private NerJobTextItem jobOneTextOne;
-	private NerJobTextItem jobOneTextTwo;
+	private NerLabel jobOneEntityOne;
+	private NerLabel jobOneEntityTwo;
 
-	private NerJobTextItem jobTwoTextOne;
+	private NerLabel jobTwoEntityOne;
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -78,22 +74,27 @@ public class NerTextItemRepositoryTest {
 		labelingTaskRepository.save(jobOne);
 		labelingTaskRepository.save(jobTwo);
 
-		jobOneTextOne = NerJobTextItem.of(jobOne, "text_one", "hash_one");
-		jobOneTextTwo = NerJobTextItem.of(jobOne, "text_two", "hash_two");
+		jobOneEntityOne = NerLabel.builder()
+				.job(jobOne)
+		.created(now)
+		.updated(now)
+		.name("Annotation1").build();
+		jobOneEntityTwo = jobOneEntityOne.toBuilder().name("Annotation2").description("This one have description")
+				.created(hourAgo).updated(hourAgo).build();
 
-		jobTwoTextOne = NerJobTextItem.of(jobTwo, "text_one", "hash_one");//same text different job
+		jobTwoEntityOne = jobOneEntityOne.toBuilder().job(jobTwo).build();//complete copy of annotation1 but for different job
 
-		nerJobTextItemRepository.save(jobOneTextOne);
-		nerJobTextItemRepository.save(jobOneTextTwo);
-		nerJobTextItemRepository.save(jobTwoTextOne);
+		availableEntitiesRepository.save(jobOneEntityOne);
+		availableEntitiesRepository.save(jobOneEntityTwo);
+		availableEntitiesRepository.save(jobTwoEntityOne);
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
 
-		nerJobTextItemRepository.delete(jobOneTextOne);
-		nerJobTextItemRepository.delete(jobOneTextTwo);
-		nerJobTextItemRepository.delete(jobTwoTextOne);
+		availableEntitiesRepository.delete(jobOneEntityOne);
+		availableEntitiesRepository.delete(jobOneEntityTwo);
+		availableEntitiesRepository.delete(jobTwoEntityOne);
 
 		labelingTaskRepository.delete(jobOne);
 		labelingTaskRepository.delete(jobTwo);
@@ -102,17 +103,13 @@ public class NerTextItemRepositoryTest {
 	}
 
 	@Test
-	public void testGetForJob(){
-		Page<NerJobTextItem> textItemsPage = nerJobTextItemRepository.getForJob(jobOne, PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created", "id")));
+	public void testGetForJob() {
+		List<NerLabel> labels = availableEntitiesRepository.getForJob(jobOne);
 
+		assertNotNull(labels);
+		assertEquals(2, labels.size());
 
-		assertNotNull(textItemsPage);
-		assertEquals(2, textItemsPage.getNumberOfElements());
-		assertEquals(1, textItemsPage.getTotalPages());
-		assertEquals(2, textItemsPage.getTotalElements());
-		List<NerJobTextItem> jobs =  textItemsPage.getContent();
-		assertNotNull(jobs);
-		Assertions.assertEquals(jobOneTextOne, jobs.get(0));
-		Assertions.assertEquals(jobOneTextTwo, jobs.get(1));
+		Assertions.assertEquals(jobOneEntityOne, labels.get(0));
 	}
+
 }
