@@ -2,6 +2,6 @@ plugins{
     id "io.freefair.lombok" version "6.4.3"
 }
 dependencies {
-    implementation project(':modules:user:user-api')
+    api project(':modules:user:user-api')
     implementation project(':modules:shared')
 }
