@@ -64,8 +64,7 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-	implementation project(':modules:user:user-api')
-
+	testImplementation project(':modules:user:user-api')
 }
 
 subprojects {
