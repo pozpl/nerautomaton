@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -40,10 +39,7 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/index.html", "/", "/home", "/login", "/api/auth/**", "/health")
-//                .permitAll()
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-//                .antMatchers("/*.js", "/*.js.map", "/*.css", "/*.css.map", "/*.ico").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
@@ -62,37 +58,12 @@ public class SecurityConfiguration {
                         "/*.js", "/*.js.map", "/*.css", "/*.css.map", "/*.ico");
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/index.html", "/", "/home", "/login", "/api/auth/**", "/health")
-//                .permitAll()
-//                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-//                .antMatchers("/*.js", "/*.js.map", "/*.css", "/*.css.map", "/*.ico").permitAll()
-//                .anyRequest().authenticated()
-//                .and().csrf()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .and().logout()
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));//explicit logout because I can
-//
-//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//
-//    }
 
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
     }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(authenticationProvider());
-//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -108,8 +79,4 @@ public class SecurityConfiguration {
         return authProvider;
     }
 
-//    @Bean
-//    public PasswordEncoder encoder() {
-//        return new BCryptPasswordEncoder(11);
-//    }
 }
