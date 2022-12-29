@@ -38,10 +38,10 @@ public class JobTextAccessServiceImpl implements IJobTextAccessService {
 	/**
 	 * List texts for job
 	 *
-	 * @param jobId
-	 * @param page
-	 * @return
-	 * @throws NerServiceException
+	 * @param jobId - job id
+	 * @param page - page
+	 * @return returns job texts pagination
+	 * @throws NerServiceException - throws exception if something happens
 	 */
 	@Override
 	public PageDto<JobTextDto> getTextForJob(final Integer jobId,
@@ -52,7 +52,7 @@ public class JobTextAccessServiceImpl implements IJobTextAccessService {
 
 			if (jobOpt.isPresent()) {
 				final LabelingJob job = jobOpt.get();
-				if (!job.getOwner().equals(jobOwner)) {
+				if (!job.getOwner().getId().equals(jobOwner.getId())) {
 					throw new NerServiceException("Access violation for Ner Job " + jobId + " and user: " + jobOwner.getUsername());
 				}
 
@@ -66,7 +66,7 @@ public class JobTextAccessServiceImpl implements IJobTextAccessService {
 								.jobId(job.getId().intValue())
 								.build()
 						).collect(Collectors.toList());
-				return new PageDto(page, new Long(textItemsPage.getTotalElements()).intValue(), PER_PAGE, textItems);
+				return new PageDto<>(page, Long.valueOf(textItemsPage.getTotalElements()).intValue(), PER_PAGE, textItems);
 			}
 
 			return PageDto.empty();

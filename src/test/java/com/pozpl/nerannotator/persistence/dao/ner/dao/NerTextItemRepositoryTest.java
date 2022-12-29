@@ -1,4 +1,4 @@
-package com.pozpl.nerannotator.persistence.dao.ner;
+package com.pozpl.nerannotator.persistence.dao.ner.dao;
 
 import com.pozpl.neraannotator.user.api.IUserService;
 import com.pozpl.neraannotator.user.api.UserIntDto;
@@ -6,8 +6,10 @@ import com.pozpl.neraannotator.user.api.UserSaveResultDto;
 import com.pozpl.nerannotator.NerAnnotatorApplicationTests;
 import com.pozpl.nerannotator.ner.impl.dao.model.LanguageCodes;
 import com.pozpl.nerannotator.ner.impl.dao.model.job.LabelingJob;
+import com.pozpl.nerannotator.ner.impl.dao.model.text.NerJobTextItem;
 import com.pozpl.nerannotator.ner.impl.dao.model.user.UserId;
 import com.pozpl.nerannotator.ner.impl.dao.repo.job.LabelingJobsRepository;
+import com.pozpl.nerannotator.ner.impl.dao.repo.text.NerJobTextItemRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 		classes = { NerAnnotatorApplicationTests.class },
 		loader = AnnotationConfigContextLoader.class)
 @Transactional
-public class LabelingTaskRepositoryTest {
+public class NerTextItemRepositoryTest {
 
 	@Autowired
 	public IUserService userRepository;
@@ -42,10 +44,18 @@ public class LabelingTaskRepositoryTest {
 	@Autowired
 	public LabelingJobsRepository labelingTaskRepository;
 
+	@Autowired
+	public NerJobTextItemRepository nerJobTextItemRepository;
+
 	private UserIntDto userOne;
 
 	private LabelingJob jobOne;
 	private LabelingJob jobTwo;
+
+	private NerJobTextItem jobOneTextOne;
+	private NerJobTextItem jobOneTextTwo;
+
+	private NerJobTextItem jobTwoTextOne;
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -67,32 +77,42 @@ public class LabelingTaskRepositoryTest {
 
 		labelingTaskRepository.save(jobOne);
 		labelingTaskRepository.save(jobTwo);
+
+		jobOneTextOne = NerJobTextItem.of(jobOne, "text_one", "hash_one");
+		jobOneTextTwo = NerJobTextItem.of(jobOne, "text_two", "hash_two");
+
+		jobTwoTextOne = NerJobTextItem.of(jobTwo, "text_one", "hash_one");//same text different job
+
+		nerJobTextItemRepository.save(jobOneTextOne);
+		nerJobTextItemRepository.save(jobOneTextTwo);
+		nerJobTextItemRepository.save(jobTwoTextOne);
 	}
-
-
 
 	@AfterEach
 	public void tearDown() throws Exception {
+
+		nerJobTextItemRepository.delete(jobOneTextOne);
+		nerJobTextItemRepository.delete(jobOneTextTwo);
+		nerJobTextItemRepository.delete(jobTwoTextOne);
 
 		labelingTaskRepository.delete(jobOne);
 		labelingTaskRepository.delete(jobTwo);
 
 		userRepository.delete(userOne);
-
 	}
 
-
 	@Test
-	public void getJobs() throws Exception{
-		Page<LabelingJob> jobsPage = labelingTaskRepository.getJobsForOwner(UserId.of(userOne), PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created")));
+	public void testGetForJob(){
+		Page<NerJobTextItem> textItemsPage = nerJobTextItemRepository.getForJob(jobOne, PageRequest.of(0, 20, Sort.by(Sort.Direction.ASC, "created", "id")));
 
 
-		assertNotNull(jobsPage);
-		assertEquals(2, jobsPage.getNumberOfElements());
-		assertEquals(1, jobsPage.getTotalPages());
-		assertEquals(2, jobsPage.getTotalElements());
-		List<LabelingJob> jobs =  jobsPage.getContent();
+		assertNotNull(textItemsPage);
+		assertEquals(2, textItemsPage.getNumberOfElements());
+		assertEquals(1, textItemsPage.getTotalPages());
+		assertEquals(2, textItemsPage.getTotalElements());
+		List<NerJobTextItem> jobs =  textItemsPage.getContent();
 		assertNotNull(jobs);
-		Assertions.assertEquals(jobOne, jobs.get(0));
+		Assertions.assertEquals(jobOneTextOne, jobs.get(0));
+		Assertions.assertEquals(jobOneTextTwo, jobs.get(1));
 	}
 }
